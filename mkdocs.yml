@@ -1,0 +1,69 @@
+site_name: "Cuerpo, sensor y escena"
+site_description: "Documentación técnica — metodologías generativas en tiempo real para artes escénicas y musicales"
+site_author: "José"
+
+repo_url: https://github.com/joseurgilesc/Cuerpo-sensor-y-escena
+repo_name: "Cuerpo-sensor-y-escena"
+
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Modo oscuro
+    - scheme: slate
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Modo claro
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex
+  - pymdownx.keys
+  - footnotes
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search:
+      lang: es
+
+nav:
+  - Inicio: index.md
+  - "1. Presentación del sistema": 01-presentacion.md
+  - "2. Arquitectura general": 02-arquitectura.md
+  - "3. Preparación del entorno": 03-preparacion.md
+  - "4. Captura corporal: Kinect y Orbbec": 04-captura-corporal.md
+  - "5. Arduino e interfaces físicas": 05-arduino.md
+  - "6. Comunicación entre hardware y software": 06-comunicacion.md
+  - "7. Visuales generativos": 07-visuales.md
+  - "8. Integración sonora con Ableton Live": 08-ableton.md
+  - "9. Prototipos integrados": 09-prototipos.md
+  - "10. Pruebas y validación": 10-pruebas.md
+  - "11. Operación y mantenimiento": 11-operacion.md
+  - "12. Entrega y transferencia": 12-entrega.md
+  - Glosario técnico: glosario.md
