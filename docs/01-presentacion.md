@@ -47,6 +47,28 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 | Visuales generativos | openFrameworks, p5.js o Processing | Generar imagen a partir de los datos. |
 | Sonido interactivo | Ableton Live | Generar y controlar sonido a partir de los datos. |
 
+**Esquema general del sistema**
+
+<figure markdown>
+![Esquema general del sistema — del cuerpo y los sensores a la imagen y el sonido en tiempo real](assets/schema-sistema.svg)
+<figcaption>Figura 1. Esquema general del sistema. Detalle técnico en [2. Arquitectura general](02-arquitectura.md).</figcaption>
+</figure>
+
+**Tecnologías utilizadas**
+
+[![Logotipo de Arduino](assets/logos/arduino.svg){ width="120" }](https://www.arduino.cc/)
+[![Logotipo de Ableton Live](assets/logos/abletonlive.svg){ width="140" }](https://www.ableton.com/)
+[![Logotipo de Processing](assets/logos/processingfoundation.svg){ width="120" }](https://processing.org/)
+[![Logotipo de p5.js](assets/logos/p5dotjs.svg){ width="120" }](https://p5js.org/)
+[![Logotipo de openFrameworks](assets/logos/openframeworks.png){ width="100" }](https://openframeworks.cc/)
+[![Logotipo de Orbbec](assets/logos/orbbec.png){ width="100" }](https://www.orbbec.com/)
+[![Logotipo de MIDI](assets/logos/midi.svg){ width="90" }](https://midi.org/)
+
+No se muestra logotipo de Kinect porque es un producto descontinuado; en su lugar, la captura corporal se apoya en cámaras de profundidad actuales como Orbbec, que mantienen el mismo flujo de datos.
+
+!!! info "Marcas y logotipos"
+    Los logotipos y marcas pertenecen a sus respectivos propietarios y se utilizan aquí únicamente para identificar las tecnologías del sistema.
+
 ## 1.5. Público beneficiario y contextos de uso
 
 **Público**: estudiantes y docentes de artes escénicas y musicales, con o sin experiencia previa en programación o electrónica.

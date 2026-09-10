@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="titulo-sistema desc-sistema" font-family="Segoe UI, Arial, sans-serif">
+  <title id="titulo-sistema">Esquema general del sistema</title>
+  <desc id="desc-sistema">El cuerpo del intérprete (gesto, movimiento y presencia) se captura mediante una cámara de profundidad (Kinect u Orbbec) o mediante sensores físicos con Arduino (luz, presión, movimiento y distancia). Los datos viajan por Serial, MIDI u OSC hasta el computador, donde alimentan los visuales generativos (openFrameworks, p5.js y Processing) y el sonido interactivo (Ableton Live). Ambas corrientes confluyen en la escena: imagen y sonido en tiempo real.</desc>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#009688"/>
+    </marker>
+  </defs>
+
+  <!-- Cajas del flujo -->
+  <rect x="10" y="180" width="200" height="110" rx="12" fill="#EDE7F6" stroke="#673AB7" stroke-width="2.5"/>
+  <rect x="250" y="180" width="200" height="110" rx="12" fill="#E0F2F1" stroke="#673AB7" stroke-width="2"/>
+  <rect x="490" y="180" width="200" height="110" rx="12" fill="#EDE7F6" stroke="#673AB7" stroke-width="2"/>
+  <rect x="730" y="180" width="200" height="110" rx="12" fill="#E0F2F1" stroke="#673AB7" stroke-width="2"/>
+  <rect x="980" y="180" width="205" height="110" rx="12" fill="#EDE7F6" stroke="#673AB7" stroke-width="3"/>
+  <rect x="250" y="390" width="200" height="110" rx="12" fill="#EDE7F6" stroke="#673AB7" stroke-width="2"/>
+  <rect x="730" y="390" width="200" height="110" rx="12" fill="#E0F2F1" stroke="#673AB7" stroke-width="2"/>
+
+  <!-- Flechas del flujo (1 a 7) -->
+  <path d="M 210 235 L 250 235" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 450 235 L 490 235" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 350 390 L 350 330 L 522 330 L 522 290" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 690 235 L 730 235" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 658 290 L 658 350 L 840 350 L 840 390" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 930 235 L 980 235" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+  <path d="M 930 445 L 962 445 L 962 265 L 980 265" fill="none" stroke="#009688" stroke-width="2.5" marker-end="url(#flecha)"/>
+
+  <!-- Rótulos de los flujos de datos -->
+  <text x="470" y="222" text-anchor="middle" font-size="12" fill="#009688">datos</text>
+  <text x="432" y="321" text-anchor="middle" font-size="12" fill="#009688">señales de sensores</text>
+  <text x="745" y="341" text-anchor="middle" font-size="12" fill="#009688">datos</text>
+
+  <!-- 1. Cuerpo del intérprete -->
+  <text text-anchor="middle">
+    <tspan x="110" y="222" font-size="16" font-weight="600" fill="#212121">1. Cuerpo del intérprete</tspan>
+    <tspan x="110" y="245" font-size="13" fill="#37474F">gesto, movimiento,</tspan>
+    <tspan x="110" y="263" font-size="13" fill="#37474F">presencia</tspan>
+  </text>
+
+  <!-- 2. Captura corporal -->
+  <text text-anchor="middle">
+    <tspan x="350" y="222" font-size="16" font-weight="600" fill="#212121">2. Captura corporal</tspan>
+    <tspan x="350" y="245" font-size="13" fill="#37474F">cámara de profundidad</tspan>
+    <tspan x="350" y="263" font-size="13" fill="#37474F">Kinect u Orbbec</tspan>
+  </text>
+
+  <!-- 3. Interfaces físicas -->
+  <text text-anchor="middle">
+    <tspan x="350" y="422" font-size="16" font-weight="600" fill="#212121">3. Interfaces físicas</tspan>
+    <tspan x="350" y="445" font-size="13" fill="#37474F">Arduino + sensores</tspan>
+    <tspan x="350" y="463" font-size="13" fill="#37474F">luz, presión, movimiento,</tspan>
+    <tspan x="350" y="481" font-size="13" fill="#37474F">distancia</tspan>
+  </text>
+
+  <!-- 4. Comunicación -->
+  <text text-anchor="middle">
+    <tspan x="590" y="222" font-size="16" font-weight="600" fill="#212121">4. Comunicación</tspan>
+    <tspan x="590" y="245" font-size="13" fill="#37474F">Serial, MIDI, OSC</tspan>
+    <tspan x="590" y="263" font-size="13" fill="#37474F">al computador</tspan>
+  </text>
+
+  <!-- 5. Visuales generativos -->
+  <text text-anchor="middle">
+    <tspan x="830" y="222" font-size="16" font-weight="600" fill="#212121">5. Visuales generativos</tspan>
+    <tspan x="830" y="245" font-size="13" fill="#37474F">openFrameworks, p5.js,</tspan>
+    <tspan x="830" y="263" font-size="13" fill="#37474F">Processing</tspan>
+  </text>
+
+  <!-- 6. Sonido interactivo -->
+  <text text-anchor="middle">
+    <tspan x="830" y="422" font-size="16" font-weight="600" fill="#212121">6. Sonido interactivo</tspan>
+    <tspan x="830" y="446" font-size="15" fill="#37474F">Ableton Live</tspan>
+  </text>
+
+  <!-- 7. Escena -->
+  <text text-anchor="middle">
+    <tspan x="1082" y="222" font-size="16" font-weight="600" fill="#212121">7. Escena</tspan>
+    <tspan x="1082" y="246" font-size="14" fill="#37474F">imagen + sonido</tspan>
+    <tspan x="1082" y="265" font-size="14" fill="#37474F">en tiempo real</tspan>
+  </text>
+</svg>
