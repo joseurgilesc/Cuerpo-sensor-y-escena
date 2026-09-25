@@ -46,13 +46,61 @@ Antes de instalar, verifica que dispones de todo el hardware:
 
 ## 3.4. Configuración de Arduino IDE
 
-1. Descarga e instala [Arduino IDE](https://www.arduino.cc/en/software).
-2. Conecta la placa Arduino por USB.
-3. En **Herramientas → Placa**, selecciona el modelo correcto.
-4. En **Herramientas → Puerto**, selecciona el puerto que apareció al conectar la placa.
-5. Carga un ejemplo simple (por ejemplo, `Blink`) para verificar la conexión.
+Arduino IDE es el entorno donde se escribe, compila y carga el firmware en la placa. Esta sección cubre la instalación, la selección de placa y puerto, y la primera carga de verificación.
+
+### 3.4.1. Descarga e instalación
+
+1. Descarga la versión estable de [Arduino IDE](https://www.arduino.cc/en/software) para tu sistema operativo (Windows 10/11 o macOS).
+2. Ejecuta el instalador y acepta la instalación de los **controladores** (drivers) que propone: son necesarios para que el computador reconozca la placa.
+3. Abre Arduino IDE. La ventana principal muestra un **sketch** (programa) vacío, listo para editar:
+
+<figure markdown>
+![Ventana principal de Arduino IDE 2.x con el ejemplo Blink](assets/screenshots/arduino-ide-blink.png){ width="700" }
+<figcaption>Figura 2. Arduino IDE 2.x con el ejemplo Blink abierto.</figcaption>
+</figure>
+
+### 3.4.2. Conexión de la placa
+
+1. Conecta la placa Arduino al computador por **USB**.
+2. Comprueba que el **LED de alimentación** de la placa se enciende.
+3. La primera vez, el sistema operativo puede tardar unos segundos en instalar el controlador automáticamente.
+
+### 3.4.3. Selección de la placa
+
+1. Si tu modelo no aparece por defecto, instálalo desde **Herramientas → Placa → Gestor de placas**.
+2. En **Herramientas → Placa**, selecciona el **modelo exacto** de tu placa (por ejemplo, *Arduino Uno*):
+
+<figure markdown>
+![Menú Herramientas → Placa con la selección de Arduino Uno](assets/screenshots/arduino-ide-seleccion-placa.png){ width="380" }
+<figcaption>Figura 3. Selección de placa: Herramientas → Placa → Arduino Uno.</figcaption>
+</figure>
+
+### 3.4.4. Selección del puerto
+
+1. Ve a **Herramientas → Puerto** y selecciona el puerto de la placa (en Windows suele llamarse `COM3`, `COM4`, etc.):
+
+<figure markdown>
+![Menú Herramientas → Puerto mostrando el puerto de la placa](assets/screenshots/arduino-ide-seleccion-puerto.png){ width="380" }
+<figcaption>Figura 4. Selección de puerto: Herramientas → Puerto.</figcaption>
+</figure>
+
+2. Si el puerto no aparece, desconecta y reconecta la placa, y revisa que el controlador esté instalado.
+
+### 3.4.5. Primera carga (verificación)
+
+1. Abre un ejemplo simple: **Archivo → Ejemplos → 01.Basics → Blink**.
+2. Haz clic en **Verificar** (✓) para compilar; debe terminar sin errores.
+3. Haz clic en **Subir** (→) para cargar el sketch en la placa.
+4. Observa el **LED integrado** (normalmente en el pin 13) parpadeando: confirma que placa, puerto y firmware funcionan.
+
+### 3.4.6. Librerías adicionales
 
 <!-- TODO: indicar librerías adicionales que instalar desde el gestor de librerías -->
+
+Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.), instala las librerías desde **Herramientas → Administrar bibliotecas** (gestor de librerías). Las librerías concretas de cada interfaz se documentan en la sección [5. Arduino e interfaces físicas](05-arduino.md).
+
+!!! note "Créditos de las imágenes"
+    Las capturas de pantalla del Arduino IDE provienen de [Wikimedia Commons](https://commons.wikimedia.org/) y se usan bajo licencia [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es): *Arduino ide v2 blink screenshot* por 松浦知也; *Select Board Arduino Uno* y *Select port arduino uno* por Edwiyanto.
 
 ## 3.5. Configuración de openFrameworks
 
