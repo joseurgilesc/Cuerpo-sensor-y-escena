@@ -8,3 +8,6 @@ site/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local tool state (Gentle AI)
+.atl/
