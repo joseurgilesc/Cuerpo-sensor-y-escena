@@ -9,7 +9,7 @@ CUERPO ──▶ SENSOR ──▶ DATO ──▶ MAPEO ──▶ IMAGEN + SONIDO
 ```
 
 1. El **intérprete** se mueve en el espacio o manipula un objeto con sensores.
-2. Un **sensor** (cámara de profundidad o interfaz Arduino) captura ese movimiento o esa manipulación.
+2. Un **sensor** (cámara web o interfaz Arduino) captura ese movimiento o esa manipulación.
 3. El sensor produce un **dato** numérico: coordenadas, distancias, niveles de luz o presión.
 4. Un **mapeo** asocia cada dato a un parámetro visual o sonoro.
 5. El resultado es **imagen y sonido** que responden en tiempo real a la acción.
@@ -20,8 +20,8 @@ CUERPO ──▶ SENSOR ──▶ DATO ──▶ MAPEO ──▶ IMAGEN + SONIDO
                  ┌────────────────────────────────────────────┐
                  │                COMPUTADOR                  │
                  │                                            │
-  Kinect/Orbbec──▶│ captura corporal      ┌─▶ visuales (p5)│
-  (USB)           │ (articulaciones)      │                   │
+  Webcam + ml5.js▶│ captura corporal      ┌─▶ visuales (p5)│
+  (navegador)     │ (articulaciones)      │                   │
                  │                        │                   │
   Arduino ──────▶│ lectura de sensores    │─▶ Tone.js (sonido)│
   + sensores     │ (Serial)               │   (Web Audio)     │
@@ -37,7 +37,7 @@ El hardware se organiza en dos vías de entrada complementarias:
 
 | Dispositivo | Tipo de dato | Conexión |
 | --- | --- | --- |
-| Kinect u Orbbec | Posición de articulaciones (X, Y, Z) | USB |
+| Cámara web | Posición de articulaciones (X, Y) | USB |
 | Arduino + sensores | Niveles de luz, presión, distancia; pulsadores | USB |
 | Makey Makey | Contacto (teclas / clics) | USB |
 | Computador | Procesamiento y salida | — |
@@ -50,8 +50,8 @@ Cada programa cumple un rol específico en la cadena:
 
 | Programa | Rol | Entrada | Salida |
 | --- | --- | --- | --- |
-| Driver de la cámara | Entregar frames de profundidad | Hardware | Datos de captura |
-| Aplicación de captura | Detectar articulaciones y enviar coordenadas | Driver | OSC |
+| Cámara web | Entregar frames de video | Hardware | Imagen de video |
+| ml5.js | Detectar la pose (articulaciones) desde el video | Cámara web | Coordenadas |
 | Arduino IDE (firmware) | Leer sensores y enviar valores | Sensores | Serial |
 | p5.js | Generar visuales a partir de datos | OSC/Serial | Imagen |
 | Tone.js | Generar y controlar sonido | Web Audio | Audio |
@@ -71,8 +71,8 @@ La elección del protocolo depende de qué habla con qué (ver [sección 6](06-c
 
 Ruta típica de un dato desde el cuerpo hasta la escena:
 
-1. **Cámara de profundidad** → frames de profundidad.
-2. **Aplicación de captura** → articulaciones con coordenadas X, Y, Z.
+1. **Cámara web** → frames de video.
+2. **ml5.js** → articulaciones con coordenadas X, Y.
 3. **OSC** → mensajes como `/cuerpo/manoDerecha/x`.
 4. **Visuales** (p5.js) → reciben el mensaje y modifican un parámetro.
 5. **OSC** → el mismo dato (o uno derivado) controla Tone.js para generar sonido.
@@ -85,7 +85,7 @@ En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → compu
 
 | Componente | Requisito mínimo |
 | --- | --- |
-| Sistema operativo | Windows 10/11 o macOS (según drivers disponibles) |
+| Sistema operativo | Windows, macOS o Linux (con navegador moderno) |
 | RAM | 8 GB (16 GB recomendado) |
 | CPU | Procesador de 4 núcleos |
 | Puertos USB | Al menos 2 libres (cámara + Arduino) |
@@ -99,8 +99,8 @@ En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → compu
 
 | Dispositivo / Software | Versión probada | Estado |
 | --- | --- | --- |
-| Kinect v1 / v2 | <!-- TODO --> | Pendiente de prueba |
-| Orbbec (modelo) | <!-- TODO --> | Pendiente de prueba |
+| Cámara web | <!-- TODO --> | Pendiente de prueba |
+| ml5.js | <!-- TODO --> | Pendiente de prueba |
 | Arduino (placa) | <!-- TODO --> | Pendiente de prueba |
 | p5.js | <!-- TODO --> | Pendiente de prueba |
 | Tone.js | <!-- TODO --> | Pendiente de prueba |

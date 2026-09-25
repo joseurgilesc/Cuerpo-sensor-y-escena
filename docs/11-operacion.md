@@ -64,7 +64,7 @@ Enciende los dispositivos en este orden:
 
 | Fallo | Acción |
 | --- | --- |
-| La cámara no responde | Reiniciar driver, cambiar cable/puerto |
+| La cámara no responde | Revisar permisos de cámara, reiniciar el navegador |
 | Arduino no se comunica | Verificar puerto, recargar firmware |
 | Audio con cortes | Subir buffer, revisar interfaz |
 | Visuales congelados | Reiniciar aplicación de visuales |

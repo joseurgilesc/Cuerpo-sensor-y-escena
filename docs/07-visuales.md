@@ -22,7 +22,7 @@ El dato de entrada se asocia a un parámetro visual. La clave está en elegir **
 | --- | --- |
 | Posición X | Posición horizontal |
 | Posición Y | Posición vertical / escala |
-| Profundidad Z | Escala / transparencia |
+| Distancia estimada (Z) | Escala / transparencia |
 | Nivel de luz | Color / brillo |
 | Presión | Intensidad / deformación |
 
@@ -35,7 +35,7 @@ El dato de entrada se asocia a un parámetro visual. La clave está en elegir **
 ## 7.5. Color y transparencia
 
 - **Color**: mapea un dato a un matiz (hue) o a un valor de color.
-- **Transparencia**: mapea profundidad o cercanía a la opacidad (cerca = opaco, lejos = transparente).
+- **Transparencia**: mapea la cercanía estimada a la opacidad (cerca = opaco, lejos = transparente).
 
 ## 7.6. Partículas y sistemas de movimiento
 
@@ -65,7 +65,7 @@ Un preset guarda un estado visual completo (formas, colores, mapeos). Permite ca
 
 ## 7.11. Ejemplo cuerpo–imagen
 
-La mano controla posición y escala de una forma; la profundidad controla su transparencia. Ver [prototipo cuerpo–imagen](09-prototipos.md#92-prototipo-cuerpoimagen).
+La mano controla posición y escala de una forma; la distancia estimada controla su transparencia. Ver [prototipo cuerpo–imagen](09-prototipos.md#92-prototipo-cuerpoimagen).
 
 ## 7.12. Ejemplo sensor–imagen
 

@@ -64,7 +64,7 @@ Verificar que cada enlace de la cadena funciona:
 
 | Dispositivo / Software | Versión | Resultado | Notas |
 | --- | --- | --- | --- |
-| Kinect / Orbbec | <!-- TODO --> | <!-- TODO --> | |
+| Cámara web + ml5.js | <!-- TODO --> | <!-- TODO --> | |
 | Arduino | <!-- TODO --> | <!-- TODO --> | |
 | p5.js | <!-- TODO --> | <!-- TODO --> | |
 | Tone.js | <!-- TODO --> | <!-- TODO --> | |

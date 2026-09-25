@@ -57,7 +57,7 @@ nav:
   - "1. Presentación del sistema": 01-presentacion.md
   - "2. Arquitectura general": 02-arquitectura.md
   - "3. Preparación del entorno": 03-preparacion.md
-  - "4. Captura corporal: Kinect y Orbbec": 04-captura-corporal.md
+  - "4. Captura corporal: webcam y ml5.js": 04-captura-corporal.md
   - "5. Arduino e interfaces físicas": 05-arduino.md
   - "6. Comunicación entre hardware y software": 06-comunicacion.md
   - "7. Visuales generativos": 07-visuales.md

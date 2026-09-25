@@ -4,11 +4,11 @@ Definiciones breves de los términos usados a lo largo de la documentación. Est
 
 ## Captura y datos corporales
 
-- **Captura de profundidad**: técnica que mide, para cada píxel, la distancia entre la cámara y el objeto, generando una imagen de profundidad además de la imagen de color.
-- **Cámara de profundidad**: dispositivo que combina un sensor de luz estructurada o de tiempo de vuelo con una cámara para reconstruir la escena en tres dimensiones (por ejemplo, Kinect u Orbbec).
+- **Detección de pose**: técnica de machine learning que estima la posición de los puntos clave del cuerpo (cabeza, hombros, codos, etc.) a partir del video de una cámara.
+- **Cámara web**: cámara de video integrada o conectada al computador, usada como entrada para la detección de pose.
 - **Articulación / joint**: punto del esqueleto corporal detectado por el sistema (cabeza, hombros, codos, muñecas, caderas, rodillas, tobillos, etc.).
-- **Skeleton tracking / seguimiento de esqueleto**: proceso que estima la posición de las articulaciones a partir de la imagen de profundidad.
-- **Coordenadas X, Y, Z**: ejes de posición en el espacio. X es horizontal, Y vertical y Z la profundidad (distancia a la cámara).
+- **Skeleton tracking / seguimiento de pose**: proceso que estima la posición de las articulaciones a partir del video de la cámara.
+- **Coordenadas X, Y**: ejes de posición en el encuadre. X es horizontal e Y vertical; la distancia se estima por el tamaño del cuerpo.
 - **Normalización**: transformación de valores a un rango común (por ejemplo, de 0 a 1) para poder mapearlos a parámetros visuales o sonoros.
 - **Filtrado / suavizado**: procesamiento que reduce el ruido y los saltos de la señal para lograr movimientos continuos y estables.
 
@@ -35,6 +35,7 @@ Definiciones breves de los términos usados a lo largo de la documentación. Est
 
 - **Creative coding / programación creativa**: práctica de programar con fines expresivos y artísticos más que puramente utilitarios.
 - **p5.js**: biblioteca de JavaScript para programación creativa en el navegador.
+- **ml5.js**: biblioteca de machine learning para el navegador, construida sobre TensorFlow.js, que permite detectar poses desde la cámara web.
 - **Visual generativo**: imagen o animación producida a partir de reglas y datos en lugar de dibujarse manualmente.
 - **Partículas / sistema de partículas**: técnica visual donde muchos elementos simples se mueven según reglas para crear comportamientos complejos.
 - **Preset**: configuración guardada que reproduce un estado visual, sonoro o de mapeo determinado.

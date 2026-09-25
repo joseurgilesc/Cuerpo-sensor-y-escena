@@ -14,7 +14,7 @@ El proyecto funciona como un laboratorio transversal en el que confluyen tres as
 
 El objetivo técnico es entregar un sistema **funcional, documentado y reproducible** que permita:
 
-1. Capturar el movimiento corporal con una cámara de profundidad.
+1. Capturar el movimiento corporal con la cámara web y ml5.js.
 2. Leer señales de sensores físicos mediante Arduino.
 3. Comunicar esos datos al computador por Serial u OSC.
 4. Transformar los datos en visuales generativos.
@@ -42,7 +42,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 
 | Bloque | Componentes | Función |
 | --- | --- | --- |
-| Captura corporal | Kinect u Orbbec | Convertir el cuerpo en datos de articulaciones y posición. |
+| Captura corporal | Webcam + ml5.js | Detectar el cuerpo con machine learning y convertirlo en datos de articulaciones. |
 | Interfaces físicas | Arduino + sensores, Makey Makey | Leer luz, presión, movimiento, distancia o contacto. |
 | Visuales generativos | p5.js | Generar imagen a partir de los datos. |
 | Sonido interactivo | Tone.js (en p5.js) | Generar y controlar sonido a partir de los datos. |
@@ -60,9 +60,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 [![Logotipo de Makey Makey](assets/logos/makeymakey.png){ width="140" }](https://makeymakey.com/)
 [![Logotipo de Tone.js](assets/logos/tonejs.svg){ width="130" }](https://tonejs.github.io/)
 [![Logotipo de p5.js](assets/logos/p5dotjs.svg){ width="120" }](https://p5js.org/)
-[![Logotipo de Orbbec](assets/logos/orbbec.png){ width="100" }](https://www.orbbec.com/)
-
-No se muestra logotipo de Kinect porque es un producto descontinuado; en su lugar, la captura corporal se apoya en cámaras de profundidad actuales como Orbbec, que mantienen el mismo flujo de datos.
+[![Logotipo de ml5.js](assets/logos/ml5js.svg){ width="100" }](https://ml5js.org/)
 
 !!! info "Marcas y logotipos"
     Los logotipos y marcas pertenecen a sus respectivos propietarios y se utilizan aquí únicamente para identificar las tecnologías del sistema.
@@ -118,6 +116,6 @@ La implementación técnica avanza en tres momentos:
 
 | Mes | Alcance |
 | --- | --- |
-| **Octubre** | Arquitectura general, preparación del entorno, integración de Kinect u Orbbec, inicio de Arduino y sensores, primeras pruebas de conexión. |
+| **Octubre** | Arquitectura general, preparación del entorno, integración de la cámara web con ml5.js, inicio de Arduino y sensores, primeras pruebas de conexión. |
 | **Noviembre** | Finalización de Arduino y sensores, protocolos de comunicación, visuales generativos, integración sonora con Tone.js, presets y ejemplos cuerpo–imagen–sonido, pruebas en aula y laboratorio. |
 | **Diciembre** | Integración de prototipos, pruebas finales, documentación de operación y mantenimiento, entrega de código y transferencia técnica. |

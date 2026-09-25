@@ -6,7 +6,7 @@ Antes de instalar, verifica que dispones de todo el hardware:
 
 | Elemento | Cantidad | Observaciones |
 | --- | --- | --- |
-| Cámara de profundidad (Kinect u Orbbec) | 1 | Con su adaptador de corriente si lo requiere |
+| Cámara web | 1 | Integrada en el computador o USB |
 | Arduino (placa) | 1 | <!-- TODO: indicar modelo --> |
 | Makey Makey | 1 | Con caimanes y cable USB |
 | Sensores (luz, presión, distancia) | <!-- TODO --> | Según la actividad |
@@ -25,22 +25,22 @@ Antes de instalar, verifica que dispones de todo el hardware:
 | Arduino IDE | <!-- TODO --> | Para cargar el firmware |
 | p5.js | <!-- TODO --> | Visuales en navegador |
 | Tone.js | <!-- TODO --> | Motor de sonido (Web Audio) |
-| Controladores de cámara | <!-- TODO --> | Driver Kinect u Orbbec |
+| ml5.js | <!-- TODO --> | Detección de pose en el navegador |
 
 !!! warning "Consistencia de versiones"
     Usar siempre la misma versión de cada software durante todo el proyecto. Cambiar de versión a mitad del proceso suele romper la comunicación y dificulta reproducir los resultados.
 
-## 3.3. Instalación de controladores
+## 3.3. Cámara web y ml5.js
 
-1. Identifica la cámara (Kinect v1, Kinect v2 u Orbbec).
-2. Descarga e instala el **driver oficial** del fabricante.
-3. Reinicia el computador si el instalador lo solicita.
-4. Conecta la cámara y verifica que el sistema operativo la reconoce.
+La captura usa la **cámara web** del computador, que no requiere controladores adicionales:
 
-<!-- TODO: enlazar los drivers exactos y los pasos específicos para la cámara elegida -->
+1. Verifica que la cámara web del computador funciona.
+2. Incluye la biblioteca **ml5.js** en el sketch (CDN o descarga local).
+3. Autoriza el uso de la cámara cuando el navegador lo solicite.
 
-!!! note "Pendiente de datos del ingeniero"
-    Los enlaces de descarga y los pasos exactos dependen del modelo de cámara. Se documentan en la sección [4. Captura corporal](04-captura-corporal.md).
+<!-- TODO: enlazar la versión exacta de ml5.js -->
+
+La configuración completa se documenta en la sección [4. Captura corporal](04-captura-corporal.md).
 
 ## 3.4. Configuración de Arduino IDE
 
@@ -133,7 +133,7 @@ Una vez instalado todo, realiza una prueba de humo:
 
 ## 3.9. Lista de verificación de la instalación
 
-- [ ] Controladores de cámara instalados y cámara reconocida.
+- [ ] Cámara web funcionando y autorizada en el navegador.
 - [ ] Arduino IDE configurado (placa y puerto correctos).
 - [ ] p5.js funcionando.
 - [ ] Tone.js emitiendo sonido.

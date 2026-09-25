@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="titulo-sistema desc-sistema" font-family="Segoe UI, Arial, sans-serif">
   <title id="titulo-sistema">Esquema general del sistema</title>
-  <desc id="desc-sistema">El cuerpo del intérprete (gesto, movimiento y presencia) se captura mediante una cámara de profundidad (Kinect u Orbbec) o mediante sensores físicos con Arduino (luz, presión, movimiento y distancia). Los datos viajan por Serial u OSC hasta el computador, donde alimentan los visuales generativos (p5.js) y el sonido interactivo (Tone.js). Ambas corrientes confluyen en la escena: imagen y sonido en tiempo real.</desc>
+  <desc id="desc-sistema">El cuerpo del intérprete (gesto, movimiento y presencia) se captura mediante la cámara web con ml5.js o mediante sensores físicos con Arduino (luz, presión, movimiento y distancia). Los datos viajan por Serial u OSC hasta el computador, donde alimentan los visuales generativos (p5.js) y el sonido interactivo (Tone.js). Ambas corrientes confluyen en la escena: imagen y sonido en tiempo real.</desc>
   <defs>
     <marker id="flecha" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#009688"/>
@@ -41,8 +41,8 @@
   <!-- 2. Captura corporal -->
   <text text-anchor="middle">
     <tspan x="350" y="222" font-size="16" font-weight="600" fill="#212121">2. Captura corporal</tspan>
-    <tspan x="350" y="245" font-size="13" fill="#37474F">cámara de profundidad</tspan>
-    <tspan x="350" y="263" font-size="13" fill="#37474F">Kinect u Orbbec</tspan>
+    <tspan x="350" y="245" font-size="13" fill="#37474F">cámara web + ml5.js</tspan>
+    <tspan x="350" y="263" font-size="13" fill="#37474F">detección de pose</tspan>
   </text>
 
   <!-- 3. Interfaces físicas -->

@@ -1,104 +1,83 @@
-# 4. Captura corporal: Kinect y Orbbec
+# 4. Captura corporal: cámara web y ml5.js
 
-## 4.1. Características de los dispositivos
+## 4.1. Características de la captura
 
-Las cámaras de profundidad permiten que el computador «vea» el cuerpo en tres dimensiones. Entregan, además de la imagen de color, un **mapa de profundidad**: la distancia de cada punto de la escena a la cámara.
+La captura corporal usa la **cámara web** del computador y la biblioteca **ml5.js**, que aplica modelos de **machine learning** para detectar la pose del intérprete directamente en el navegador, en el mismo sketch que p5.js y Tone.js.
 
-<!-- TODO: incluir ficha técnica del modelo elegido: resolución, alcance, FPS, campo de visión -->
+- No requiere hardware adicional ni controladores.
+- ml5.js detecta los **puntos clave** del cuerpo (cabeza, hombros, codos, muñecas, caderas, rodillas, tobillos).
+- Las coordenadas se expresan en dos ejes (X, Y); la distancia (Z) se **estima** por el tamaño del cuerpo en el encuadre.
 
-## 4.2. Diferencias entre Kinect y Orbbec
+<!-- TODO: indicar el modelo exacto de ml5.js (PoseNet, MoveNet o similar) -->
 
-| Criterio | Kinect | Orbbec |
-| --- | --- | --- |
-| Fabricante | Microsoft | Orbbec |
-| Tipo de sensor | Luz estructurada / tiempo de vuelo | Luz estructurada / tiempo de vuelo |
-| Disponibilidad | Discontinuada, se consigue usada | En producción |
-| Licencias / drivers | Varía según versión | SDK oficial |
-| Integración | Amplia comunidad | Creciente |
+## 4.2. ml5.js y detección de pose
 
-<!-- TODO: completar comparativa con el modelo exacto y la versión usada -->
+ml5.js es una biblioteca de machine learning para el navegador, construida sobre TensorFlow.js y pensada para usarse junto con p5.js. Su módulo de **detección de pose** (`ml5.poseNet()` o `ml5.handpose()`) estima la posición de los puntos clave a partir del video de la cámara web.
 
-## 4.3. Conexión física e instalación
+## 4.3. Configuración de la cámara web
 
-1. Ubica la cámara en un trípode o soporte estable, a la altura del torso.
-2. Conecta la cámara al computador por USB.
-3. Si el modelo lo requiere (Kinect v1/v2), conecta la fuente de alimentación.
-4. Verifica que el LED de la cámara indique alimentación.
+1. Accede al video con `createCapture(VIDEO)` de p5.js.
+2. Autoriza el uso de la cámara cuando el navegador lo solicite.
+3. Verifica que la cámara entrega el video en el sketch.
 
-## 4.4. Instalación de controladores y librerías
+## 4.4. Puntos clave del cuerpo (keypoints)
 
-1. Instala el **driver** del fabricante (ver [3.3](03-preparacion.md#33-instalacion-de-controladores)).
-2. Instala la **librería/SDK** de captura para tu entorno.
-3. Verifica con un ejemplo del SDK que la cámara entrega imágenes de profundidad.
+El modelo devuelve un conjunto de **puntos clave**, cada uno con su posición (x, y) y un **nivel de confianza**. Los más usados en las actividades son:
 
-<!-- TODO: nombres exactos de drivers, SDK y addons para el modelo elegido -->
+- Nariz, ojos, orejas.
+- Hombros, codos, muñecas.
+- Caderas, rodillas, tobillos.
 
-## 4.5. Captura de profundidad
+## 4.5. Coordenadas X e Y (y distancia estimada)
 
-La imagen de profundidad asigna a cada píxel un valor de distancia. Es la base de todo lo demás: a partir de ella se separa al cuerpo del fondo y se estima su forma.
-
-- **Rango útil**: <!-- TODO: rango del modelo -->
-- **Resolución**: <!-- TODO: resolución del modelo -->
-
-## 4.6. Detección del cuerpo y articulaciones
-
-El SDK detecta el cuerpo y devuelve un **esqueleto** con articulaciones. Los puntos más usados en las actividades son:
-
-- Cabeza, cuello, hombros, codos, muñecas, manos.
-- Caderas, rodillas, tobillos, pies.
-
-Cada articulación se reporta con su posición y un **estado de seguimiento** (rastreada, inferida, no rastreada).
-
-## 4.7. Coordenadas X, Y y Z
-
-Cada articulación se expresa en tres ejes:
+Cada punto clave se expresa en dos ejes; la profundidad se estima a partir del tamaño del cuerpo en el encuadre:
 
 | Eje | Dirección | Uso expresivo |
 | --- | --- | --- |
 | **X** | Horizontal (izquierda–derecha) | Panorámica, posición horizontal |
 | **Y** | Vertical (arriba–abajo) | Altura, salto, agacharse |
-| **Z** | Profundidad (cerca–lejos) | Distancia, avance/retroceso |
+| **Distancia estimada** | Cerca–lejos (por tamaño) | Escala, transparencia |
 
-## 4.8. Normalización y filtrado de datos
+## 4.6. Normalización y filtrado de datos
 
-Los valores crudos de la cámara no se usan directamente: se **normalizan** y se **filtran**.
+Los valores crudos no se usan directamente: se **normalizan** y se **filtran**.
 
-- **Normalización**: mapear los límites reales del espacio a un rango cómodo (por ejemplo, 0 a 1).
-- **Filtrado**: suavizar los saltos del seguimiento (media móvil o filtro de suavizado) para evitar temblores en la imagen y el sonido.
+- **Normalización**: mapear los límites reales del encuadre a un rango cómodo (por ejemplo, 0 a 1).
+- **Filtrado**: suavizar los saltos de la detección (media móvil o filtro de suavizado) para evitar temblores.
 
-## 4.9. Calibración del espacio escénico
+## 4.7. Calibración del espacio escénico
 
 1. Define el **área de actuación** (el rectángulo donde se moverá el intérprete).
 2. Marca los **límites** en el suelo.
-3. Registra los valores X, Y, Z mínimos y máximos alcanzados en los límites.
+3. Registra los valores X, Y mínimos y máximos alcanzados en los límites.
 4. Guarda esos valores como referencia de calibración.
 
-## 4.10. Delimitación de zonas de interacción
+## 4.8. Delimitación de zonas de interacción
 
-Divide el espacio en **zonas** para que cada zona dispare una respuesta distinta:
+Divide el encuadre en **zonas** para que cada zona dispare una respuesta distinta:
 
 - **Zona central**: comportamiento base.
 - **Zonas laterales**: modifican un parámetro (por ejemplo, panorámica).
-- **Zona cercana/lejana**: modifica intensidad o volumen.
+- **Zona cercana/lejana**: modifica intensidad o volumen (por tamaño estimado).
 
-## 4.11. Ejemplo: movimiento corporal controlando una imagen
+## 4.9. Ejemplo: movimiento corporal controlando una imagen
 
 Un prototipo básico: la **mano derecha** controla la posición de una forma en pantalla.
 
-1. Lee la posición X, Y de la mano.
+1. Lee la posición X, Y de la muñeca.
 2. Normaliza X e Y al tamaño de la ventana.
 3. Dibuja la forma en esa posición.
 
 ```
-X de la mano  ──▶  posición horizontal de la forma
-Y de la mano  ──▶  posición vertical de la forma
+X de la muñeca  ──▶  posición horizontal de la forma
+Y de la muñeca  ──▶  posición vertical de la forma
 ```
 
-## 4.12. Ejemplo: gesto corporal controlando un parámetro sonoro
+## 4.10. Ejemplo: gesto corporal controlando un parámetro sonoro
 
 Un gesto (subir el brazo) controla un filtro de sonido.
 
-1. Lee la altura (Y) de la mano.
+1. Lee la altura (Y) de la muñeca.
 2. Normaliza Y al rango del filtro.
 3. Envía el valor a Tone.js.
 
@@ -106,12 +85,12 @@ Un gesto (subir el brazo) controla un filtro de sonido.
 altura de la mano  ──▶  frecuencia de corte del filtro
 ```
 
-## 4.13. Problemas frecuentes y soluciones
+## 4.11. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
-| La cámara no se detecta | Driver no instalado o cable defectuoso | Reinstalar driver, cambiar cable/puerto |
-| El esqueleto tiembla | Ruido en el seguimiento | Aumentar suavizado/filtrado |
-| Se pierde el seguimiento al agacharse | Oclusión o salida del campo de visión | Ajustar ángulo y distancia de la cámara |
+| No se detecta la pose | Mala iluminación o persona fuera de encuadre | Mejorar la luz, centrar a la persona |
+| El esqueleto tiembla | Ruido en la detección | Aumentar suavizado/filtrado |
+| Se pierde la detección | Oclusión o salida del encuadre | Ajustar ángulo y distancia de la cámara |
 | Valores fuera de rango | Espacio mal calibrado | Recalibrar límites |
-| Latencia alta | USB sobrecargado o resolución alta | Usar puerto directo, bajar resolución |
+| Latencia alta | Video de alta resolución o CPU saturada | Bajar resolución del video |

@@ -74,7 +74,7 @@ Para danza, prioriza relaciones que el cuerpo entienda de forma natural:
 
 - Comprobación previa con la [lista de verificación](11-operacion.md#112-lista-de-verificacion-antes-de-una-sesion).
 - Plan de contingencia ante fallos (ver [11.8](11-operacion.md#118-recuperacion-ante-fallos)).
-- Iluminación y fondo que no interfieran con la cámara de profundidad.
+- Iluminación y fondo que no interfieran con la detección de pose.
 
 ## 9.11. Descarga de código, presets y ejemplos
 

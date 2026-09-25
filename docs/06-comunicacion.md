@@ -74,7 +74,7 @@ Un sensor de distancia controla el volumen.
 2. El puente convierte Serial → OSC.
 3. Tone.js recibe el valor y lo mapea al volumen.
 
-## 6.9. Ejemplo cámara de profundidad–visual–sonido
+## 6.9. Ejemplo webcam–visual–sonido
 
 La altura de la mano controla imagen y sonido a la vez.
 
