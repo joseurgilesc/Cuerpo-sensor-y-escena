@@ -44,7 +44,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 | --- | --- | --- |
 | Captura corporal | Kinect u Orbbec | Convertir el cuerpo en datos de articulaciones y posición. |
 | Interfaces físicas | Arduino + sensores, Makey Makey | Leer luz, presión, movimiento, distancia o contacto. |
-| Visuales generativos | openFrameworks, p5.js o Processing | Generar imagen a partir de los datos. |
+| Visuales generativos | p5.js o Processing | Generar imagen a partir de los datos. |
 | Sonido interactivo | Ableton Live | Generar y controlar sonido a partir de los datos. |
 
 **Esquema general del sistema**
@@ -61,7 +61,6 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 [![Logotipo de Ableton Live](assets/logos/abletonlive.svg){ width="140" }](https://www.ableton.com/)
 [![Logotipo de Processing](assets/logos/processingfoundation.svg){ width="120" }](https://processing.org/)
 [![Logotipo de p5.js](assets/logos/p5dotjs.svg){ width="120" }](https://p5js.org/)
-[![Logotipo de openFrameworks](assets/logos/openframeworks.png){ width="100" }](https://openframeworks.cc/)
 [![Logotipo de Orbbec](assets/logos/orbbec.png){ width="100" }](https://www.orbbec.com/)
 [![Logotipo de MIDI](assets/logos/midi.svg){ width="90" }](https://midi.org/)
 
@@ -95,7 +94,6 @@ Cuerpo-sensor-y-escena/
 ├── docs/                  # Documentación técnica (MkDocs, este sitio)
 ├── mkdocs.yml             # Configuración del sitio
 ├── arduino/               # Firmware de las interfaces físicas
-├── openframeworks/        # Aplicaciones de visuales generativos
 ├── p5js/                  # Visuales generativos en el navegador
 ├── ableton/               # Presets, racks y proyectos de Ableton Live
 ├── diagramas/             # Diagramas de conexión y arquitectura
@@ -109,7 +107,7 @@ Cuerpo-sensor-y-escena/
 El repositorio incluye, en la medida en que avanza el cronograma:
 
 - **Código base de Arduino** para leer sensores y enviar datos.
-- **Aplicaciones de visual** en openFrameworks y p5.js.
+- **Aplicaciones de visual** en p5.js.
 - **Proyectos y racks de Ableton Live** para mapeo de gestos y sensores.
 - **Presets** de mapeo reutilizables.
 - **Ejemplos integrados** (cuerpo–imagen, sensor–sonido, cuerpo–imagen–sonido).

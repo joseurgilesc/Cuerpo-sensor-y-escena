@@ -5,7 +5,7 @@
 El código se entrega en el repositorio, organizado por tipo:
 
 - Firmware de Arduino.
-- Aplicaciones de visuales (openFrameworks, p5.js).
+- Aplicaciones de visuales (p5.js).
 - Programas puente de comunicación.
 
 <!-- TODO: listar los archivos definitivos y sus rutas -->
@@ -69,7 +69,7 @@ Registro mensual del avance técnico, alineado con el cronograma (ver [1. Presen
 | --- | --- |
 | `docs/` | Documentación técnica |
 | `arduino/` | Firmware de interfaces |
-| `openframeworks/`, `p5js/` | Visuales |
+| `p5js/` | Visuales |
 | `ableton/` | Sesiones y racks |
 | `presets/`, `ejemplos/` | Presets y ejemplos |
 | `diagramas/` | Diagramas |

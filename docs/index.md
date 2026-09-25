@@ -10,7 +10,7 @@ Este sitio reúne la **documentación técnica** del proyecto «Cuerpo, sensor y
 
 - **Captura corporal** mediante cámaras de profundidad (Kinect u Orbbec).
 - **Interfaces físicas** construidas con Arduino y sensores (luz, presión, movimiento, distancia).
-- **Visuales generativos** programados en openFrameworks, p5.js o Processing.
+- **Visuales generativos** programados en p5.js o Processing.
 - **Sonido interactivo** controlado desde Ableton Live mediante MIDI, OSC o Serial.
 
 El resultado es un sistema que transforma gesto, movimiento y presencia física en **imagen y sonido expresivos**, pensado para el aula, el ensayo y la escena.

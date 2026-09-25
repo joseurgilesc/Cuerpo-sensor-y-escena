@@ -23,7 +23,6 @@ Antes de instalar, verifica que dispones de todo el hardware:
 | Software | Versión | Nota |
 | --- | --- | --- |
 | Arduino IDE | <!-- TODO --> | Para cargar el firmware |
-| openFrameworks | <!-- TODO --> | Visuales en C++ |
 | p5.js | <!-- TODO --> | Visuales en navegador |
 | Processing | <!-- TODO --> | Alternativa de visuales |
 | Ableton Live | <!-- TODO --> | Motor de sonido |
@@ -102,16 +101,7 @@ Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.)
 !!! note "Créditos de las imágenes"
     Las capturas de pantalla del Arduino IDE provienen de [Wikimedia Commons](https://commons.wikimedia.org/) y se usan bajo licencia [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es): *Arduino ide v2 blink screenshot* por 松浦知也; *Select Board Arduino Uno* y *Select port arduino uno* por Edwiyanto.
 
-## 3.5. Configuración de openFrameworks
-
-1. Descarga openFrameworks para tu sistema operativo.
-2. Descomprime en una ruta sin espacios ni caracteres especiales.
-3. Verifica que el **project generator** crea un proyecto sin errores.
-4. Instala los **addons** necesarios para OSC y para la cámara de profundidad.
-
-<!-- TODO: listar addons exactos (ofxOsc, addon de la cámara, etc.) -->
-
-## 3.6. Configuración de p5.js o Processing
+## 3.5. Configuración de p5.js o Processing
 
 **p5.js**:
 
@@ -125,14 +115,14 @@ Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.)
 2. Instala la biblioteca `oscP5` para comunicación OSC.
 3. Verifica con un ejemplo de oscP5.
 
-## 3.7. Configuración de Ableton Live
+## 3.6. Configuración de Ableton Live
 
 1. Instala Ableton Live y configura la **interfaz de audio** en **Preferencias → Audio**.
 2. Configura la **latencia** de forma que el sonido responda sin cortes (ver [8.12](08-ableton.md#812-configuracion-de-latencia-y-audio)).
 3. Habilita las **entradas MIDI** y las **salidas OSC** que vayas a usar.
 4. Crea un proyecto base con pistas preparadas para mapear.
 
-## 3.8. Configuración de puertos y dispositivos
+## 3.7. Configuración de puertos y dispositivos
 
 1. Conecta la cámara y el Arduino en **puertos USB distintos** (evita hubs sobrecargados).
 2. Anota el **nombre del puerto** que asigna el sistema a cada dispositivo.
@@ -140,7 +130,7 @@ Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.)
 
 <!-- TODO: definir el esquema de puertos OSC por defecto -->
 
-## 3.9. Prueba inicial del sistema
+## 3.8. Prueba inicial del sistema
 
 Una vez instalado todo, realiza una prueba de humo:
 
@@ -150,11 +140,11 @@ Una vez instalado todo, realiza una prueba de humo:
 4. Abre Ableton Live → comprueba que emite sonido.
 5. Envía un valor de prueba por OSC → comprueba que llega al destino.
 
-## 3.10. Lista de verificación de la instalación
+## 3.9. Lista de verificación de la instalación
 
 - [ ] Controladores de cámara instalados y cámara reconocida.
 - [ ] Arduino IDE configurado (placa y puerto correctos).
-- [ ] openFrameworks o p5.js/Processing funcionando.
+- [ ] p5.js o Processing funcionando.
 - [ ] Ableton Live con interfaz de audio configurada.
 - [ ] Puertos USB y OSC definidos y anotados.
 - [ ] Prueba inicial completada sin errores.

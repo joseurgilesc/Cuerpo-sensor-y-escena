@@ -17,7 +17,7 @@ Un prototipo mínimo viable es preferible a un sistema completo y frágil.
 - **Salida**: una forma en pantalla.
 - **Mapeo**: X→posición horizontal, Y→posición vertical, Z→escala.
 
-Ver [ejemplo en la sección 7](07-visuales.md#712-ejemplo-cuerpoimagen).
+Ver [ejemplo en la sección 7](07-visuales.md#711-ejemplo-cuerpoimagen).
 
 ## 9.3. Prototipo sensor–sonido
 
@@ -82,4 +82,4 @@ Todo el material se aloja en el repositorio:
 
 - [github.com/joseurgilesc/Cuerpo-sensor-y-escena](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena)
 
-<!-- TODO: enlazar cada carpeta (arduino/, openframeworks/, p5js/, ableton/, presets/, ejemplos/) cuando exista -->
+<!-- TODO: enlazar cada carpeta (arduino/, p5js/, ableton/, presets/, ejemplos/) cuando exista -->

@@ -35,7 +35,6 @@ Definiciones breves de los términos usados a lo largo de la documentación. Est
 ## Software y visuales
 
 - **Creative coding / programación creativa**: práctica de programar con fines expresivos y artísticos más que puramente utilitarios.
-- **openFrameworks**: entorno de programación creativa en C++ para instalaciones y visuales generativos.
 - **p5.js**: biblioteca de JavaScript para programación creativa en el navegador.
 - **Processing**: entorno de programación creativa orientado a las artes visuales.
 - **Visual generativo**: imagen o animación producida a partir de reglas y datos en lugar de dibujarse manualmente.

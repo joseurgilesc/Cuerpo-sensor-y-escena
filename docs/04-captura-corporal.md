@@ -28,7 +28,7 @@ Las cámaras de profundidad permiten que el computador «vea» el cuerpo en tres
 ## 4.4. Instalación de controladores y librerías
 
 1. Instala el **driver** del fabricante (ver [3.3](03-preparacion.md#33-instalacion-de-controladores)).
-2. Instala la **librería/SDK** de captura para tu entorno (openFrameworks o Processing).
+2. Instala la **librería/SDK** de captura para tu entorno (Processing).
 3. Verifica con un ejemplo del SDK que la cámara entrega imágenes de profundidad.
 
 <!-- TODO: nombres exactos de drivers, SDK y addons para el modelo elegido -->

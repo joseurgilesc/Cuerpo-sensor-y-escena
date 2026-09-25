@@ -20,7 +20,7 @@ CUERPO ──▶ SENSOR ──▶ DATO ──▶ MAPEO ──▶ IMAGEN + SONIDO
                  ┌────────────────────────────────────────────┐
                  │                COMPUTADOR                  │
                  │                                            │
-  Kinect/Orbbec──▶│ captura corporal      ┌─▶ visuales (oF/p5)│
+  Kinect/Orbbec──▶│ captura corporal      ┌─▶ visuales (p5)│
   (USB)           │ (articulaciones)      │                   │
                  │                        │                   │
   Arduino ──────▶│ lectura de sensores    │─▶ Ableton Live    │
@@ -53,7 +53,7 @@ Cada programa cumple un rol específico en la cadena:
 | Driver de la cámara | Entregar frames de profundidad | Hardware | Datos de captura |
 | Aplicación de captura | Detectar articulaciones y enviar coordenadas | Driver | OSC |
 | Arduino IDE (firmware) | Leer sensores y enviar valores | Sensores | Serial |
-| openFrameworks / p5.js | Generar visuales a partir de datos | OSC/Serial | Imagen |
+| p5.js | Generar visuales a partir de datos | OSC/Serial | Imagen |
 | Ableton Live | Generar y controlar sonido | MIDI/OSC | Audio |
 
 ## 2.5. Protocolos utilizados: Serial, MIDI y OSC
@@ -75,7 +75,7 @@ Ruta típica de un dato desde el cuerpo hasta la escena:
 1. **Cámara de profundidad** → frames de profundidad.
 2. **Aplicación de captura** → articulaciones con coordenadas X, Y, Z.
 3. **OSC** → mensajes como `/cuerpo/manoDerecha/x`.
-4. **Visuales** (openFrameworks/p5.js) → reciben el mensaje y modifican un parámetro.
+4. **Visuales** (p5.js) → reciben el mensaje y modifican un parámetro.
 5. **OSC/MIDI** → el mismo dato (o uno derivado) llega a Ableton Live para controlar sonido.
 
 En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → computador → OSC/MIDI → visual/sonido**.
@@ -103,7 +103,6 @@ En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → compu
 | Kinect v1 / v2 | <!-- TODO --> | Pendiente de prueba |
 | Orbbec (modelo) | <!-- TODO --> | Pendiente de prueba |
 | Arduino (placa) | <!-- TODO --> | Pendiente de prueba |
-| openFrameworks | <!-- TODO --> | Pendiente de prueba |
 | p5.js | <!-- TODO --> | Pendiente de prueba |
 | Ableton Live | <!-- TODO --> | Pendiente de prueba |
 

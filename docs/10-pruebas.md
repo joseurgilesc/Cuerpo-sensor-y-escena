@@ -66,7 +66,6 @@ Verificar que cada enlace de la cadena funciona:
 | --- | --- | --- | --- |
 | Kinect / Orbbec | <!-- TODO --> | <!-- TODO --> | |
 | Arduino | <!-- TODO --> | <!-- TODO --> | |
-| openFrameworks | <!-- TODO --> | <!-- TODO --> | |
 | p5.js | <!-- TODO --> | <!-- TODO --> | |
 | Ableton Live | <!-- TODO --> | <!-- TODO --> | |
 
