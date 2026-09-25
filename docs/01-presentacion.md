@@ -43,7 +43,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 | Bloque | Componentes | Función |
 | --- | --- | --- |
 | Captura corporal | Kinect u Orbbec | Convertir el cuerpo en datos de articulaciones y posición. |
-| Interfaces físicas | Arduino + sensores | Leer luz, presión, movimiento o distancia. |
+| Interfaces físicas | Arduino + sensores, Makey Makey | Leer luz, presión, movimiento, distancia o contacto. |
 | Visuales generativos | openFrameworks, p5.js o Processing | Generar imagen a partir de los datos. |
 | Sonido interactivo | Ableton Live | Generar y controlar sonido a partir de los datos. |
 
@@ -57,6 +57,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 **Tecnologías utilizadas**
 
 [![Logotipo de Arduino](assets/logos/arduino.svg){ width="120" }](https://www.arduino.cc/)
+[![Logotipo de Makey Makey](assets/logos/makeymakey.png){ width="140" }](https://makeymakey.com/)
 [![Logotipo de Ableton Live](assets/logos/abletonlive.svg){ width="140" }](https://www.ableton.com/)
 [![Logotipo de Processing](assets/logos/processingfoundation.svg){ width="120" }](https://processing.org/)
 [![Logotipo de p5.js](assets/logos/p5dotjs.svg){ width="120" }](https://p5js.org/)

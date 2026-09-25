@@ -8,6 +8,7 @@ Antes de instalar, verifica que dispones de todo el hardware:
 | --- | --- | --- |
 | Cámara de profundidad (Kinect u Orbbec) | 1 | Con su adaptador de corriente si lo requiere |
 | Arduino (placa) | 1 | <!-- TODO: indicar modelo --> |
+| Makey Makey | 1 | Con caimanes y cable USB |
 | Sensores (luz, presión, distancia) | <!-- TODO --> | Según la actividad |
 | Pulsadores y controles físicos | <!-- TODO --> | Según la actividad |
 | Cables USB y de prototipado | <!-- TODO --> | Incluye jumpers |

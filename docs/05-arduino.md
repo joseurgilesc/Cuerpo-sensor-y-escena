@@ -109,3 +109,19 @@ Antes de integrar, prueba **cada sensor por separado**:
 | Valores que saltan | Ruido o contacto deficiente | Filtrar, revisar conexiones |
 | Valor siempre 0 o 1023 | Cortocircuito o sensor dañado | Revisar circuito, probar otro sensor |
 | Arduino no se comunica | Puerto o placa incorrectos | Verificar puerto y placa en el IDE |
+
+## 5.15. Makey Makey como interfaz alternativa
+
+Makey Makey es una placa que convierte **objetos conductores cotidianos** (frutas, plastilina, grafito, agua, papel aluminio) en **teclas y clics** del computador. Es una alternativa rápida a Arduino para prototipar interacción por contacto sin armar circuitos de sensores.
+
+- Se conecta por **USB** y el computador la reconoce como **teclado y ratón** (HID): no requiere drivers ni programación.
+- Se conectan los objetos conductores con **caimanes (pinzas)** a sus entradas.
+- Dispara teclas o clics que luego se mapean en los visuales o en Ableton Live, igual que cualquier otra entrada.
+- Las placas basadas en el microcontrolador **ATmega32U4** pueden **reprogramarse** desde Arduino IDE para usos más avanzados.
+
+| Característica | Makey Makey | Arduino + sensores |
+| --- | --- | --- |
+| Programación | No requiere (HID) | Requiere firmware |
+| Señal de salida | Teclas y clics | Valores analógicos y digitales |
+| Puesta en marcha | Inmediata | Requiere circuito y calibración |
+| Rango expresivo | Eventos discretos | Valores continuos y discretos |

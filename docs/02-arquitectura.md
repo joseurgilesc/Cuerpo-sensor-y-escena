@@ -39,6 +39,7 @@ El hardware se organiza en dos vías de entrada complementarias:
 | --- | --- | --- |
 | Kinect u Orbbec | Posición de articulaciones (X, Y, Z) | USB |
 | Arduino + sensores | Niveles de luz, presión, distancia; pulsadores | USB |
+| Makey Makey | Contacto (teclas / clics) | USB |
 | Computador | Procesamiento y salida | — |
 | Proyector / pantalla | Salida visual | HDMI/VGA |
 | Sistema de audio / interfaz | Salida sonora | USB/audio |

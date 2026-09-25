@@ -2,7 +2,7 @@
 
 *Metodologías generativas en tiempo real para artes escénicas y musicales.*
 
-Sistema interactivo que vincula el cuerpo del intérprete con imagen y sonido generados en tiempo real, mediante captura corporal (Kinect/Orbbec), interfaces físicas (Arduino + sensores), visuales generativos (openFrameworks / p5.js / Processing) y sonido interactivo (Ableton Live).
+Sistema interactivo que vincula el cuerpo del intérprete con imagen y sonido generados en tiempo real, mediante captura corporal (Kinect/Orbbec), interfaces físicas (Arduino + sensores / Makey Makey), visuales generativos (openFrameworks / p5.js / Processing) y sonido interactivo (Ableton Live).
 
 ## Documentación técnica
 
