@@ -25,7 +25,6 @@ Definiciones breves de los términos usados a lo largo de la documentación. Est
 ## Comunicación
 
 - **Serial**: protocolo de comunicación punto a punto entre el microcontrolador y el computador a través de un puerto (USB o serie).
-- **MIDI**: protocolo estándar para comunicar instrumentos y equipos musicales; transporta eventos como notas, controladores y reloj.
 - **OSC (Open Sound Control)**: protocolo de mensajería en red que envía mensajes tipados (números, cadenas) entre programas y dispositivos, muy usado en artes escénicas.
 - **Mensaje / address**: en OSC, la dirección simbólica a la que se envía un valor (por ejemplo, `/cuerpo/manoDerecha/x`).
 - **Mapeo / mapping**: regla que asocia un dato de entrada (gesto o sensor) con un parámetro de salida (visual o sonoro).
@@ -36,15 +35,13 @@ Definiciones breves de los términos usados a lo largo de la documentación. Est
 
 - **Creative coding / programación creativa**: práctica de programar con fines expresivos y artísticos más que puramente utilitarios.
 - **p5.js**: biblioteca de JavaScript para programación creativa en el navegador.
-- **Processing**: entorno de programación creativa orientado a las artes visuales.
 - **Visual generativo**: imagen o animación producida a partir de reglas y datos en lugar de dibujarse manualmente.
 - **Partículas / sistema de partículas**: técnica visual donde muchos elementos simples se mueven según reglas para crear comportamientos complejos.
 - **Preset**: configuración guardada que reproduce un estado visual, sonoro o de mapeo determinado.
 
 ## Sonido
 
-- **Ableton Live**: software de producción e interpretación musical en vivo, usado aquí como motor de sonido interactivo.
-- **Rack**: contenedor de instrumentos o efectos en Ableton Live que puede guardarse y reutilizarse.
-- **CC (Control Change)**: mensaje MIDI que controla un parámetro continuo, como volumen o un filtro.
-- **Mapeo MIDI / OSC**: asignación de un mensaje entrante a un parámetro de Ableton Live.
+- **Tone.js**: biblioteca de JavaScript basada en la Web Audio API para sintetizar y procesar sonido en el navegador, integrada con p5.js.
+- **Web Audio API**: API del navegador para generar, procesar y controlar audio en tiempo real.
+- **Preset de sonido**: configuración guardada que reproduce un timbre y un mapeo determinados.
 - **Panorámica / pan**: posición de un sonido en el campo estéreo.

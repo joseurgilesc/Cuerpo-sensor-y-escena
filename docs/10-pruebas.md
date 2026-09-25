@@ -21,7 +21,7 @@ Verificar que cada enlace de la cadena funciona:
 - Cámara → aplicación de captura.
 - Arduino → computador (Serial).
 - Computador → visuales (OSC).
-- Computador → Ableton (MIDI/OSC).
+- Computador → Tone.js (Web Audio).
 
 ## 10.3. Pruebas de calibración
 
@@ -67,7 +67,7 @@ Verificar que cada enlace de la cadena funciona:
 | Kinect / Orbbec | <!-- TODO --> | <!-- TODO --> | |
 | Arduino | <!-- TODO --> | <!-- TODO --> | |
 | p5.js | <!-- TODO --> | <!-- TODO --> | |
-| Ableton Live | <!-- TODO --> | <!-- TODO --> | |
+| Tone.js | <!-- TODO --> | <!-- TODO --> | |
 
 ## 10.10. Registro de errores y correcciones
 

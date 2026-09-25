@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 40" width="130" height="40" role="img" aria-labelledby="titulo-tonejs">
+  <title id="titulo-tonejs">Tone.js</title>
+  <g fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="4,20 18,20 24,7 32,33 40,13 48,27 54,20 70,20"/>
+  </g>
+  <text x="80" y="27" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600" fill="#1A1A1A">Tone.js</text>
+</svg>

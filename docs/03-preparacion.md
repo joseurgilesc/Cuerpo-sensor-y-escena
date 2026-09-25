@@ -24,8 +24,7 @@ Antes de instalar, verifica que dispones de todo el hardware:
 | --- | --- | --- |
 | Arduino IDE | <!-- TODO --> | Para cargar el firmware |
 | p5.js | <!-- TODO --> | Visuales en navegador |
-| Processing | <!-- TODO --> | Alternativa de visuales |
-| Ableton Live | <!-- TODO --> | Motor de sonido |
+| Tone.js | <!-- TODO --> | Motor de sonido (Web Audio) |
 | Controladores de cámara | <!-- TODO --> | Driver Kinect u Orbbec |
 
 !!! warning "Consistencia de versiones"
@@ -101,32 +100,24 @@ Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.)
 !!! note "Créditos de las imágenes"
     Las capturas de pantalla del Arduino IDE provienen de [Wikimedia Commons](https://commons.wikimedia.org/) y se usan bajo licencia [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es): *Arduino ide v2 blink screenshot* por 松浦知也; *Select Board Arduino Uno* y *Select port arduino uno* por Edwiyanto.
 
-## 3.5. Configuración de p5.js o Processing
-
-**p5.js**:
+## 3.5. Configuración de p5.js
 
 1. Usa el editor web o un servidor local con el archivo `index.html` base.
 2. Incluye la biblioteca `p5.js` y, si se requiere, la de OSC (`p5.osc` u osc.js).
 3. Verifica que un sketch básico dibuja en pantalla.
 
-**Processing**:
+## 3.6. Configuración de Tone.js
 
-1. Descarga e instala Processing.
-2. Instala la biblioteca `oscP5` para comunicación OSC.
-3. Verifica con un ejemplo de oscP5.
-
-## 3.6. Configuración de Ableton Live
-
-1. Instala Ableton Live y configura la **interfaz de audio** en **Preferencias → Audio**.
-2. Configura la **latencia** de forma que el sonido responda sin cortes (ver [8.12](08-ableton.md#812-configuracion-de-latencia-y-audio)).
-3. Habilita las **entradas MIDI** y las **salidas OSC** que vayas a usar.
-4. Crea un proyecto base con pistas preparadas para mapear.
+1. Incluye Tone.js en el sketch (CDN o descarga local).
+2. Inicia el contexto de audio con la primera interacción del usuario (ver [8.12](08-sonido.md#812-configuracion-de-latencia-y-audio)).
+3. Crea las fuentes de sonido (sintetizadores o samples) y los efectos que usarás.
+4. Crea un sketch base con las pistas preparadas para mapear.
 
 ## 3.7. Configuración de puertos y dispositivos
 
 1. Conecta la cámara y el Arduino en **puertos USB distintos** (evita hubs sobrecargados).
 2. Anota el **nombre del puerto** que asigna el sistema a cada dispositivo.
-3. Define **puertos OSC** fijos para cada ruta (por ejemplo, cámara→visuales en un puerto, visuales→Ableton en otro).
+3. Define **puertos OSC** fijos para cada ruta (por ejemplo, cámara→visuales en un puerto).
 
 <!-- TODO: definir el esquema de puertos OSC por defecto -->
 
@@ -137,14 +128,14 @@ Una vez instalado todo, realiza una prueba de humo:
 1. Enciende el computador y abre Arduino IDE → comprueba que la placa responde.
 2. Abre la aplicación de captura → comprueba que la cámara entrega frames.
 3. Abre un sketch visual → comprueba que se dibuja.
-4. Abre Ableton Live → comprueba que emite sonido.
+4. Abre el sketch (p5.js + Tone.js) → comprueba que emite sonido.
 5. Envía un valor de prueba por OSC → comprueba que llega al destino.
 
 ## 3.9. Lista de verificación de la instalación
 
 - [ ] Controladores de cámara instalados y cámara reconocida.
 - [ ] Arduino IDE configurado (placa y puerto correctos).
-- [ ] p5.js o Processing funcionando.
-- [ ] Ableton Live con interfaz de audio configurada.
+- [ ] p5.js funcionando.
+- [ ] Tone.js emitiendo sonido.
 - [ ] Puertos USB y OSC definidos y anotados.
 - [ ] Prueba inicial completada sin errores.

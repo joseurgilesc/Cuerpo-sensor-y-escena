@@ -22,7 +22,7 @@ Diagramas del flujo de datos y de las conexiones generales (ver [sección 2](02-
 
 ## 12.4. Presets y archivos de ejemplo
 
-- Racks y sesiones de Ableton Live.
+- Presets y sketches de sonido (Tone.js).
 - Presets visuales.
 - Ejemplos integrados cuerpo–imagen–sonido.
 
@@ -69,8 +69,7 @@ Registro mensual del avance técnico, alineado con el cronograma (ver [1. Presen
 | --- | --- |
 | `docs/` | Documentación técnica |
 | `arduino/` | Firmware de interfaces |
-| `p5js/` | Visuales |
-| `ableton/` | Sesiones y racks |
+| `p5js/` | Visuales y sonido (p5.js + Tone.js) |
 | `presets/`, `ejemplos/` | Presets y ejemplos |
 | `diagramas/` | Diagramas |
 

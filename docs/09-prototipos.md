@@ -23,9 +23,9 @@ Ver [ejemplo en la sección 7](07-visuales.md#711-ejemplo-cuerpoimagen).
 
 - **Entrada**: un sensor (luz o distancia).
 - **Salida**: un parámetro sonoro (filtro o volumen).
-- **Mapeo**: valor del sensor → CC → parámetro de Ableton.
+- **Mapeo**: valor del sensor → parámetro de Tone.js.
 
-Ver [ejemplo en la sección 8](08-ableton.md#810-ejemplo-sensorsonido).
+Ver [ejemplo en la sección 8](08-sonido.md#810-ejemplo-sensorsonido).
 
 ## 9.4. Prototipo cuerpo–sonido
 
@@ -82,4 +82,4 @@ Todo el material se aloja en el repositorio:
 
 - [github.com/joseurgilesc/Cuerpo-sensor-y-escena](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena)
 
-<!-- TODO: enlazar cada carpeta (arduino/, p5js/, ableton/, presets/, ejemplos/) cuando exista -->
+<!-- TODO: enlazar cada carpeta (arduino/, p5js/, presets/, ejemplos/) cuando exista -->

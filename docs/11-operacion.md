@@ -14,7 +14,7 @@
 - [ ] Arduino conectado y con el firmware correcto.
 - [ ] Área de actuación despejada y bien iluminada.
 - [ ] Calibración cargada (o recalibrar si cambió el espacio).
-- [ ] Ableton Live y visuales abiertos y comunicados.
+- [ ] Sketch (p5.js + Tone.js) abierto y con audio activo.
 - [ ] Proyector e interfaz de audio funcionando.
 
 ## 11.3. Encendido seguro del sistema
@@ -25,7 +25,7 @@ Enciende los dispositivos en este orden:
 2. Cámara (con su fuente, si aplica).
 3. Arduino.
 4. Proyector y sistema de audio.
-5. Programas de software (captura → visuales → Ableton).
+5. Programas de software (captura → sketch con visuales y sonido).
 
 ## 11.4. Calibración previa al uso
 
@@ -75,13 +75,13 @@ Mantén siempre un **plan B**: un preset simple que funcione aunque falle parte 
 ## 11.9. Copias de seguridad y restauración
 
 - Respalda el repositorio (código, presets, proyectos) en Git.
-- Exporta copias de los racks y sesiones de Ableton.
+- Exporta copias de los presets y sketches de sonido (Tone.js).
 - Guarda las configuraciones de calibración.
 - Documenta el procedimiento de restauración.
 
 ## 11.10. Recomendaciones para futuras cohortes
 
 - Documentar cada ajuste en el [registro de errores](10-pruebas.md#1010-registro-de-errores-y-correcciones).
-- Mantener una **sesión base** de Ableton y presets visuales como punto de partida.
+- Mantener un **sketch base** (p5.js + Tone.js) y presets visuales como punto de partida.
 - Formar a un responsable del montaje por grupo.
 - Revisar esta documentación al inicio de cada período.

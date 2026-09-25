@@ -61,7 +61,7 @@ nav:
   - "5. Arduino e interfaces físicas": 05-arduino.md
   - "6. Comunicación entre hardware y software": 06-comunicacion.md
   - "7. Visuales generativos": 07-visuales.md
-  - "8. Integración sonora con Ableton Live": 08-ableton.md
+  - "8. Integración sonora con Tone.js": 08-sonido.md
   - "9. Prototipos integrados": 09-prototipos.md
   - "10. Pruebas y validación": 10-pruebas.md
   - "11. Operación y mantenimiento": 11-operacion.md

@@ -10,8 +10,8 @@ Este sitio reúne la **documentación técnica** del proyecto «Cuerpo, sensor y
 
 - **Captura corporal** mediante cámaras de profundidad (Kinect u Orbbec).
 - **Interfaces físicas** construidas con Arduino y sensores (luz, presión, movimiento, distancia).
-- **Visuales generativos** programados en p5.js o Processing.
-- **Sonido interactivo** controlado desde Ableton Live mediante MIDI, OSC o Serial.
+- **Visuales generativos** programados en p5.js.
+- **Sonido interactivo** generado con Tone.js, integrado en el mismo sketch que p5.js.
 
 El resultado es un sistema que transforma gesto, movimiento y presencia física en **imagen y sonido expresivos**, pensado para el aula, el ensayo y la escena.
 
@@ -26,9 +26,9 @@ La documentación se estructura en doce secciones que siguen el ciclo de vida de
 | 3 | Preparación del entorno | Cómo instalar y configurar todo el software necesario. |
 | 4 | Captura corporal | Cómo funciona la captura con Kinect u Orbbec. |
 | 5 | Arduino e interfaces físicas | Cómo construir y leer los sensores físicos. |
-| 6 | Comunicación hardware–software | Cómo viaja el dato por Serial, MIDI y OSC. |
+| 6 | Comunicación hardware–software | Cómo viaja el dato por Serial y OSC. |
 | 7 | Visuales generativos | Cómo convertir datos en comportamiento visual. |
-| 8 | Integración sonora | Cómo controlar Ableton Live desde el cuerpo y los sensores. |
+| 8 | Integración sonora | Cómo generar sonido con Tone.js desde el cuerpo y los sensores. |
 | 9 | Prototipos integrados | Ejemplos completos que combinan los sistemas. |
 | 10 | Pruebas y validación | Cómo verificar que el sistema funciona y es estable. |
 | 11 | Operación y mantenimiento | Cómo montar, encender, apagar y conservar el sistema. |

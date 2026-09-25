@@ -116,7 +116,7 @@ Makey Makey es una placa que convierte **objetos conductores cotidianos** (fruta
 
 - Se conecta por **USB** y el computador la reconoce como **teclado y ratón** (HID): no requiere drivers ni programación.
 - Se conectan los objetos conductores con **caimanes (pinzas)** a sus entradas.
-- Dispara teclas o clics que luego se mapean en los visuales o en Ableton Live, igual que cualquier otra entrada.
+- Dispara teclas o clics que luego se mapean en los visuales o en Tone.js, igual que cualquier otra entrada.
 - Las placas basadas en el microcontrolador **ATmega32U4** pueden **reprogramarse** desde Arduino IDE para usos más avanzados.
 
 | Característica | Makey Makey | Arduino + sensores |

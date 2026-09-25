@@ -23,8 +23,8 @@ CUERPO ──▶ SENSOR ──▶ DATO ──▶ MAPEO ──▶ IMAGEN + SONIDO
   Kinect/Orbbec──▶│ captura corporal      ┌─▶ visuales (p5)│
   (USB)           │ (articulaciones)      │                   │
                  │                        │                   │
-  Arduino ──────▶│ lectura de sensores    │─▶ Ableton Live    │
-  + sensores     │ (Serial)               │   (MIDI/OSC)      │
+  Arduino ──────▶│ lectura de sensores    │─▶ Tone.js (sonido)│
+  + sensores     │ (Serial)               │   (Web Audio)     │
   (USB)          └────────────────────────┴───────────────────┘
                         │                        │
                         ▼                        ▼
@@ -54,17 +54,16 @@ Cada programa cumple un rol específico en la cadena:
 | Aplicación de captura | Detectar articulaciones y enviar coordenadas | Driver | OSC |
 | Arduino IDE (firmware) | Leer sensores y enviar valores | Sensores | Serial |
 | p5.js | Generar visuales a partir de datos | OSC/Serial | Imagen |
-| Ableton Live | Generar y controlar sonido | MIDI/OSC | Audio |
+| Tone.js | Generar y controlar sonido | Web Audio | Audio |
 
-## 2.5. Protocolos utilizados: Serial, MIDI y OSC
+## 2.5. Protocolos utilizados: Serial y OSC
 
-Tres protocolos conviven en el sistema, cada uno para una tarea:
+Dos protocolos conviven en el sistema, cada uno para una tarea:
 
 | Protocolo | Uso típico | Ventaja |
 | --- | --- | --- |
 | **Serial** | Arduino → computador | Simple, directo, sin red |
-| **MIDI** | Computador → Ableton Live | Estándar musical, mapeo nativo |
-| **OSC** | Cámara → visuales; visuales → Ableton | Mensajes tipados, flexible, en red |
+| **OSC** | Cámara → visuales | Mensajes tipados, flexible, en red |
 
 La elección del protocolo depende de qué habla con qué (ver [sección 6](06-comunicacion.md)).
 
@@ -76,9 +75,9 @@ Ruta típica de un dato desde el cuerpo hasta la escena:
 2. **Aplicación de captura** → articulaciones con coordenadas X, Y, Z.
 3. **OSC** → mensajes como `/cuerpo/manoDerecha/x`.
 4. **Visuales** (p5.js) → reciben el mensaje y modifican un parámetro.
-5. **OSC/MIDI** → el mismo dato (o uno derivado) llega a Ableton Live para controlar sonido.
+5. **OSC** → el mismo dato (o uno derivado) controla Tone.js para generar sonido.
 
-En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → computador → OSC/MIDI → visual/sonido**.
+En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → computador → OSC → visual/sonido**.
 
 ## 2.7. Requisitos mínimos del sistema
 
@@ -104,7 +103,7 @@ En paralelo, la ruta de Arduino sigue: **sensor → Arduino → Serial → compu
 | Orbbec (modelo) | <!-- TODO --> | Pendiente de prueba |
 | Arduino (placa) | <!-- TODO --> | Pendiente de prueba |
 | p5.js | <!-- TODO --> | Pendiente de prueba |
-| Ableton Live | <!-- TODO --> | Pendiente de prueba |
+| Tone.js | <!-- TODO --> | Pendiente de prueba |
 
 !!! tip "Matriz viva"
     Esta tabla se actualiza con los resultados de la sección [10. Pruebas y validación](10-pruebas.md).
