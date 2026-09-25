@@ -23,9 +23,9 @@ El objetivo técnico es entregar un sistema **funcional, documentado y reproduci
 
 El sistema debe poder montarse, calibrarse y operarse siguiendo esta documentación, sin depender del conocimiento interno de una sola persona.
 
-## 1.3. Alcance del ingeniero electrónico
+## 1.3. Alcance del ingeniero electrónico (Darío Urgilés)
 
-El ingeniero electrónico es responsable de:
+El ingeniero electrónico **Darío Urgilés** es responsable de:
 
 - La **arquitectura** general del sistema (hardware y software).
 - La **selección, conexión y alimentación** de los dispositivos.
@@ -34,7 +34,7 @@ El ingeniero electrónico es responsable de:
 - La **documentación técnica** (este sitio) y la **entrega** de código, diagramas, presets y ejemplos.
 - El **apoyo técnico** al equipo docente en ejercicios y prototipos.
 
-El **diseño pedagógico** —contenidos, actividades, rúbricas y seguimiento— está a cargo del equipo docente.
+El **diseño pedagógico** —contenidos, actividades, rúbricas y seguimiento— está a cargo del equipo docente: **Rita Rodriguez** (técnico docente) y **José Urgilés** (docente).
 
 ## 1.4. Componentes generales del sistema
 

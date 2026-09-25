@@ -45,8 +45,8 @@ Este sitio es la **fuente técnica** del proyecto. El proceso de aprendizaje se 
 
 ## Roles
 
-- La **implementación y documentación técnica** está a cargo del ingeniero electrónico.
-- El **diseño pedagógico** está a cargo del equipo docente, con apoyo técnico del ingeniero en los ejercicios y prototipos.
+- La **implementación y documentación técnica** está a cargo del ingeniero electrónico **Darío Urgilés**.
+- El **diseño pedagógico** está a cargo del equipo docente —**Rita Rodriguez** (técnico docente) y **José Urgilés** (docente)—, con apoyo técnico del ingeniero en los ejercicios y prototipos.
 
 ## Repositorio
 
