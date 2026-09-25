@@ -85,7 +85,16 @@ Un gesto (subir el brazo) controla un filtro de sonido.
 altura de la mano  ──▶  frecuencia de corte del filtro
 ```
 
-## 4.11. Problemas frecuentes y soluciones
+## 4.11. Ejemplo interactivo: seguimiento de manos (Handpose)
+
+Un ejemplo en vivo de detección de manos con **ml5.js Handpose** desde la cámara web:
+
+<iframe src="https://editor.p5js.org/jose.urgiles-tender/full/IcLn1JGo4" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera" loading="lazy" title="Ejemplo de seguimiento de manos con ml5.js Handpose"></iframe>
+
+!!! tip "Ver el código"
+    [Abrir el código en el editor de p5.js](https://editor.p5js.org/jose.urgiles-tender/sketches/IcLn1JGo4)
+
+## 4.12. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
