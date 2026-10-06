@@ -1,8 +1,9 @@
 let handPose;
 let video;
 let hands = [];
-let playBtn, stopBtn, camBtn;
+let playBtn, stopBtn, camBtn, pointsBtn;
 let showCam = false;
+let showPoints = true;
 let particles = [];
 const NUM_PARTICLES = 400;
 
@@ -28,6 +29,10 @@ async function setup() {
   camBtn.position(190, 10);
   camBtn.mousePressed(toggleCam);
   camBtn.attribute('disabled', '');
+
+  pointsBtn = createButton('● Puntos: ON');
+  pointsBtn.position(10, 60);
+  pointsBtn.mousePressed(togglePoints);
 
   // Crea las partículas
   for (let i = 0; i < NUM_PARTICLES; i++) {
@@ -66,6 +71,11 @@ function toggleCam() {
   showCam = !showCam;
 }
 
+function togglePoints() {
+  showPoints = !showPoints;
+  pointsBtn.html(showPoints ? '● Puntos: ON' : '○ Puntos: OFF');
+}
+
 function gotHands(results) {
   hands = results;
 }
@@ -92,6 +102,8 @@ function draw() {
     image(video, ox, oy, 640 * s, 480 * s);
   }
 
+  if (showPoints) drawHandPoints(s, ox, oy);
+
   // Actualiza y dibuja las partículas
   for (let p of particles) {
     p.update(attractors);
@@ -104,6 +116,18 @@ function draw() {
   textAlign(LEFT, TOP);
   textSize(14);
   text(showCam ? 'Cámara: ON' : 'Cámara: OFF', 10, 50);
+}
+
+function drawHandPoints(s, ox, oy) {
+  noStroke();
+  fill(0, 0, 100, 90);
+  for (const hand of hands) {
+    for (const kp of hand.keypoints) {
+      if (kp && (kp.confidence === undefined || kp.confidence > 0.2)) {
+        circle(kp.x * s + ox, kp.y * s + oy, 7);
+      }
+    }
+  }
 }
 
 class Particle {
