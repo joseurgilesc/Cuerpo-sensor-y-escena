@@ -114,7 +114,27 @@ distancia entre manos ──▶ densidad visual
 !!! tip "Ver el código"
     [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose/sketch.js)
 
-## 4.13. Problemas frecuentes y soluciones
+## 4.13. Ejemplo interactivo: cuerpo, color y movimiento
+
+Este ejemplo utiliza **BodyPose** para transformar el movimiento corporal en una visualidad más expresiva y colorida.
+
+- **Muñecas** → dibujan trazos de color.
+- **Velocidad de las manos** → aumenta el tamaño de los trazos y genera explosiones de partículas.
+- **Distancia entre las manos** → genera un pulso visual central.
+- **Tecla C** → muestra u oculta la cámara.
+
+```
+posición de las manos ──▶ trazos de color
+velocidad ──▶ tamaño + explosiones
+distancia entre manos ──▶ expansión visual
+```
+
+<iframe src="../examples/bodypose-color/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; fullscreen" allowfullscreen loading="lazy" title="Ejemplo BodyPose con color y movimiento"></iframe>
+
+!!! tip "Ver el código"
+    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js)
+
+## 4.14. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
