@@ -87,12 +87,13 @@ altura de la mano  ──▶  frecuencia de corte del filtro
 
 ## 4.11. Ejemplo interactivo: seguimiento de manos (Handpose)
 
-Un ejemplo en vivo de detección de manos con **ml5.js Handpose** desde la cámara web:
+Un ejemplo de detección de manos con **ml5.js HandPose**. Las puntas de los dedos actúan como atractores de un sistema de partículas.
 
-<iframe src="https://editor.p5js.org/jose.urgiles-tender/full/IcLn1JGo4" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; fullscreen" allowfullscreen loading="lazy" title="Ejemplo de seguimiento de manos con ml5.js Handpose"></iframe>
+<a href="../examples/handpose/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/handpose/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-!!! tip "Ver el código"
-    [Abrir el código en el editor de p5.js](https://editor.p5js.org/jose.urgiles-tender/sketches/IcLn1JGo4)
+!!! info "Uso"
+    El ejemplo se abre en una nueva pestaña. Pulsa **Play** y autoriza el uso de la cámara cuando el navegador lo solicite.
 
 ## 4.12. Ejemplo interactivo: seguimiento corporal con BodyPose
 
@@ -109,10 +110,11 @@ mano derecha ──▶ emisión de partículas
 distancia entre manos ──▶ densidad visual
 ```
 
-<iframe src="../examples/bodypose/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; fullscreen" allowfullscreen loading="lazy" title="Ejemplo de seguimiento corporal con ml5.js BodyPose"></iframe>
+<a href="../examples/bodypose/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-!!! tip "Ver el código"
-    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose/sketch.js)
+!!! info "Uso"
+    El ejemplo se abre en una nueva pestaña. Autoriza el uso de la cámara cuando el navegador lo solicite.
 
 ## 4.13. Ejemplo interactivo: cuerpo, color y movimiento
 
@@ -129,10 +131,11 @@ velocidad ──▶ tamaño + explosiones
 distancia entre manos ──▶ expansión visual
 ```
 
-<iframe src="../examples/bodypose-color/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; fullscreen" allowfullscreen loading="lazy" title="Ejemplo BodyPose con color y movimiento"></iframe>
+<a href="../examples/bodypose-color/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-!!! tip "Ver el código"
-    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js)
+!!! info "Uso"
+    El ejemplo se abre en una nueva pestaña. Autoriza el uso de la cámara cuando el navegador lo solicite.
 
 ## 4.14. Ejemplo interactivo: partículas y audio con la mano derecha
 
@@ -152,10 +155,11 @@ posición de la mano ──▶ atracción de partículas
 
 El audio se mantiene deliberadamente suave para funcionar como una capa sonora complementaria y no como el elemento principal de la interacción.
 
-<iframe src="../examples/bodypose-audio/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; autoplay; fullscreen" allowfullscreen loading="lazy" title="Ejemplo BodyPose con partículas y audio mediante Tone.js"></iframe>
+<a href="../examples/bodypose-audio/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-audio/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-!!! tip "Ver el código"
-    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-audio/sketch.js)
+!!! info "Uso"
+    El ejemplo se abre en una nueva pestaña. Autoriza la cámara y pulsa **Activar audio** para iniciar Tone.js.
 
 ## 4.15. Problemas frecuentes y soluciones
 
