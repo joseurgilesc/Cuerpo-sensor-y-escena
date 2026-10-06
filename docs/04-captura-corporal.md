@@ -225,6 +225,7 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Play**: inicia la cámara y la detección.
 - **Stop**: detiene la cámara y libera el recurso.
 - **Cámara**: muestra u oculta el video cuando el ejemplo lo permite.
+- **Puntos**: activa o desactiva la visualización de los puntos detectados por HandPose o BodyPose.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
 Los lienzos usan el tamaño disponible de la ventana y reajustan su escala al cambiar la orientación del dispositivo. En teléfonos se solicita preferentemente la cámara frontal.
