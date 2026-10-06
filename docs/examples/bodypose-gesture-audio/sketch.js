@@ -1,6 +1,6 @@
 let video,bodyPose,poses=[],particles=[];
-let playBtn,stopBtn,camBtn,volumeSlider,volumeLabel;
-let running=false,showCamera=false,audioReady=false,soundOn=false;
+let playBtn,stopBtn,camBtn,pointsBtn,volumeSlider,volumeLabel;
+let running=false,showCamera=false,showPoints=true,audioReady=false,soundOn=false;
 let synth,gain,reverb;
 const SRC_W=640,SRC_H=480,NUM_PARTICLES=180;
 
@@ -12,14 +12,15 @@ async function setup(){
   playBtn=mk('▶ Play',10,startExperience);
   stopBtn=mk('■ Stop',96,stopExperience,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
+  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
 
   volumeSlider=createSlider(0,100,18,1);
-  volumeSlider.position(12,72);
+  volumeSlider.position(12,120);
   volumeSlider.style('width','160px');
   volumeSlider.input(updateVolume);
 
   volumeLabel=createDiv('Volumen: 18%');
-  volumeLabel.position(182,67);
+  volumeLabel.position(182,115);
   volumeLabel.style('color','#fff');
   volumeLabel.style('font-size','13px');
   volumeLabel.style('background','rgba(0,0,0,.55)');
@@ -29,8 +30,8 @@ async function setup(){
   for(let i=0;i<NUM_PARTICLES;i++)particles.push(new Particle());
 }
 
-function mk(t,x,f,d=false){
-  const b=createButton(t);b.position(x,10);b.mousePressed(f);
+function mk(t,x,f,d=false,y=10){
+  const b=createButton(t);b.position(x,y);b.mousePressed(f);
   if(d)b.attribute('disabled','');
   return b;
 }
@@ -72,6 +73,7 @@ function stopExperience(){
 }
 
 function toggleCam(){showCamera=!showCamera;}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
 function updateVolume(){
   const v=Number(volumeSlider.value());
   volumeLabel.html('Volumen: '+v+'%');
@@ -94,7 +96,9 @@ function draw(){
   let left=null,right=null,handsClose=false,handDistance=999;
 
   if(running&&poses.length){
-    const pose=poses[0],lw=kp(pose,'left_wrist'),rw=kp(pose,'right_wrist');
+    const pose=poses[0];
+    if(showPoints)drawPosePoints(pose);
+    const lw=kp(pose,'left_wrist'),rw=kp(pose,'right_wrist');
     if(lw&&rw&&lw.confidence>.25&&rw.confidence>.25){
       left=mp(lw);right=mp(rw);
       handDistance=dist(left.x,left.y,right.x,right.y);
@@ -110,6 +114,11 @@ function draw(){
 
   for(const p of particles){p.update(left,right,handsClose);p.show(handsClose);}
   hud(handsClose,handDistance);
+}
+
+function drawPosePoints(pose){
+  noStroke();fill(0,0,100,85);
+  for(const k of pose.keypoints){if(k.confidence>.25){const p=mp(k);circle(p.x,p.y,7);}}
 }
 
 function activateSound(avgY){
@@ -160,11 +169,11 @@ class Particle{
 }
 
 function hud(on,d){
-  colorMode(RGB,255);noStroke();fill(0,155);rect(12,112,min(355,width-24),76,10);
-  fill(255);textSize(13);text('BodyPose — gesto sonoro',24,133);
-  textSize(11);text('Junta las manos para activar el sonido',24,151);
-  text('Sepáralas para apagarlo',24,167);
-  fill(on?120:210,on?255:210,on?170:255);text(on?'SONIDO ACTIVO':'SONIDO EN ESPERA',24,184);
+  colorMode(RGB,255);noStroke();fill(0,155);rect(12,160,min(355,width-24),76,10);
+  fill(255);textSize(13);text('BodyPose — gesto sonoro',24,181);
+  textSize(11);text('Junta las manos para activar el sonido',24,199);
+  text('Sepáralas para apagarlo',24,215);
+  fill(on?120:210,on?255:210,on?170:255);text(on?'SONIDO ACTIVO':'SONIDO EN ESPERA',24,232);
   colorMode(HSB,360,100,100,100);
 }
 
