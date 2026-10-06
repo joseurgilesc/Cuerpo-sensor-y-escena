@@ -1,166 +1,18 @@
-let video;
-let bodyPose;
-let poses = [];
-let connections = [];
-let particles = [];
-let showCamera = true;
-
-const MAX_PARTICLES = 220;
-
-async function setup() {
-  createCanvas(640, 480);
-
-  video = createCapture(VIDEO);
-  video.size(640, 480);
-  video.hide();
-
-  bodyPose = await ml5.bodyPose();
-  bodyPose.detectStart(video, gotPoses);
-  connections = bodyPose.getConnections();
-
-  for (let i = 0; i < 80; i++) {
-    particles.push(new Particle(random(width), random(height)));
-  }
-}
-
-function draw() {
-  background(12);
-
-  if (showCamera) {
-    push();
-    translate(width, 0);
-    scale(-1, 1);
-    tint(255, 120);
-    image(video, 0, 0, width, height);
-    pop();
-  }
-
-  drawParticles();
-  drawBody();
-  drawInfo();
-}
-
-function drawBody() {
-  if (poses.length === 0) return;
-
-  const pose = poses[0];
-
-  push();
-  translate(width, 0);
-  scale(-1, 1);
-
-  stroke(255);
-  strokeWeight(2);
-
-  for (let i = 0; i < connections.length; i++) {
-    const a = pose.keypoints[connections[i][0]];
-    const b = pose.keypoints[connections[i][1]];
-
-    if (a.confidence > 0.2 && b.confidence > 0.2) {
-      line(a.x, a.y, b.x, b.y);
-    }
-  }
-
-  noStroke();
-  fill(255);
-  for (const kp of pose.keypoints) {
-    if (kp.confidence > 0.2) {
-      circle(kp.x, kp.y, 8);
-    }
-  }
-  pop();
-
-  const rw = keypointByName(pose, "right_wrist");
-  const lw = keypointByName(pose, "left_wrist");
-
-  if (rw && rw.confidence > 0.2) {
-    const mx = width - rw.x;
-    const my = rw.y;
-    emitParticles(mx, my, 3);
-  }
-
-  if (rw && lw && rw.confidence > 0.2 && lw.confidence > 0.2) {
-    const rx = width - rw.x;
-    const lx = width - lw.x;
-    const d = dist(rx, rw.y, lx, lw.y);
-    const target = floor(map(d, 40, 500, 40, MAX_PARTICLES, true));
-
-    while (particles.length < target) {
-      particles.push(new Particle(random(width), random(height)));
-    }
-    if (particles.length > target) {
-      particles.splice(0, particles.length - target);
-    }
-  }
-}
-
-function keypointByName(pose, name) {
-  return pose.keypoints.find(k => k.name === name);
-}
-
-function emitParticles(x, y, amount) {
-  for (let i = 0; i < amount && particles.length < MAX_PARTICLES; i++) {
-    particles.push(new Particle(x, y));
-  }
-}
-
-function drawParticles() {
-  for (const p of particles) {
-    p.update();
-    p.display();
-  }
-}
-
-class Particle {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.vx = random(-1.5, 1.5);
-    this.vy = random(-1.5, 1.5);
-    this.r = random(5, 14);
-  }
-
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-
-    if (this.x < 0 || this.x > width) this.vx *= -1;
-    if (this.y < 0 || this.y > height) this.vy *= -1;
-  }
-
-  display() {
-    noStroke();
-    fill(255, 210);
-    circle(this.x, this.y, this.r);
-  }
-}
-
-function drawInfo() {
-  noStroke();
-  fill(0, 170);
-  rect(12, 12, 270, 66, 8);
-
-  fill(255);
-  textSize(14);
-  text("BodyPose + partículas", 24, 36);
-  textSize(12);
-  text("Mano derecha: genera partículas", 24, 55);
-  text("Distancia entre manos: cantidad", 24, 70);
-
-  fill(0, 170);
-  rect(width - 154, 12, 142, 36, 8);
-  fill(255);
-  textAlign(CENTER, CENTER);
-  text("C: cámara on/off", width - 83, 30);
-  textAlign(LEFT, BASELINE);
-}
-
-function keyPressed() {
-  if (key === "c" || key === "C") {
-    showCamera = !showCamera;
-  }
-}
-
-function gotPoses(results) {
-  poses = results;
-}
+let video,bodyPose,poses=[],connections=[],particles=[],playBtn,stopBtn,camBtn;
+let showCamera=true,running=false;const SRC_W=640,SRC_H=480,MAX_PARTICLES=220;
+async function setup(){createCanvas(windowWidth,windowHeight);bodyPose=await ml5.bodyPose();playBtn=mk('▶ Play',10,startCam);stopBtn=mk('■ Stop',96,stopCam,true);camBtn=mk('👁 Cámara',182,toggleCam,true);for(let i=0;i<80;i++)particles.push(new Particle(random(width),random(height)));}
+function mk(t,x,f,d=false){const b=createButton(t);b.position(x,10);b.mousePressed(f);if(d)b.attribute('disabled','');return b;}
+function startCam(){if(running)return;video=createCapture({video:{facingMode:'user'},audio:false},()=>{bodyPose.detectStart(video,gotPoses);running=true;});video.size(SRC_W,SRC_H);video.hide();playBtn.attribute('disabled','');stopBtn.removeAttribute('disabled');camBtn.removeAttribute('disabled');}
+function stopCam(){bodyPose.detectStop();if(video){video.remove();video=null;}poses=[];running=false;showCamera=false;playBtn.removeAttribute('disabled');stopBtn.attribute('disabled','');camBtn.attribute('disabled','');}
+function toggleCam(){showCamera=!showCamera;}
+function fit(){const s=min(width/SRC_W,height/SRC_H);return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};}
+function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
+function draw(){background(12);const {s,ox,oy}=fit();if(showCamera&&video){push();translate(width,0);scale(-1,1);tint(255,120);image(video,ox,oy,SRC_W*s,SRC_H*s);pop();}for(const p of particles){p.update();p.display();}drawBody();hud();}
+function drawBody(){if(!running||!poses.length)return;const pose=poses[0];stroke(255);strokeWeight(2);for(const c of connections){const a=pose.keypoints[c[0]],b=pose.keypoints[c[1]];if(a.confidence>.2&&b.confidence>.2){const A=mp(a),B=mp(b);line(A.x,A.y,B.x,B.y);}}noStroke();fill(255);for(const k of pose.keypoints){if(k.confidence>.2){const p=mp(k);circle(p.x,p.y,8);}}
+const rw=pose.keypoints.find(k=>k.name==='right_wrist'),lw=pose.keypoints.find(k=>k.name==='left_wrist');
+if(rw&&rw.confidence>.2){const p=mp(rw);for(let i=0;i<3&&particles.length<MAX_PARTICLES;i++)particles.push(new Particle(p.x,p.y));}
+if(rw&&lw&&rw.confidence>.2&&lw.confidence>.2){const R=mp(rw),L=mp(lw),d=dist(R.x,R.y,L.x,L.y),target=floor(map(d,30,min(width,height)*.8,40,MAX_PARTICLES,true));while(particles.length<target)particles.push(new Particle(random(width),random(height)));if(particles.length>target)particles.splice(0,particles.length-target);}}
+class Particle{constructor(x,y){this.x=x;this.y=y;this.vx=random(-1.5,1.5);this.vy=random(-1.5,1.5);this.r=random(5,14);}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>width)this.vx*=-1;if(this.y<0||this.y>height)this.vy*=-1;}display(){noStroke();fill(255,210);circle(this.x,this.y,this.r);}}
+function hud(){noStroke();fill(0,170);rect(12,64,min(310,width-24),58,8);fill(255);textSize(13);text('BodyPose + partículas',24,84);textSize(11);text('Mano derecha: genera partículas',24,101);text('Distancia entre manos: cantidad',24,116);}
+function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}
+function windowResized(){resizeCanvas(windowWidth,windowHeight);}
