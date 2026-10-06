@@ -1,5 +1,5 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,clearBtn;
-let running=false,showCamera=false,paintLayer;
+let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,clearBtn;
+let running=false,showCamera=false,showPoints=true,paintLayer;
 const SRC_W=640,SRC_H=480;
 const palette={
   left_wrist:'#FF6B6B',
@@ -19,11 +19,12 @@ async function setup(){
   playBtn=mk('▶ Play',10,startCam);
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
-  clearBtn=mk('✕ Limpiar',286,clearPainting);
+  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  clearBtn=mk('✕ Limpiar',132,clearPainting,false,60);
 }
 
-function mk(t,x,f,d=false){
-  const b=createButton(t); b.position(x,10); b.mousePressed(f);
+function mk(t,x,f,d=false,y=10){
+  const b=createButton(t); b.position(x,y); b.mousePressed(f);
   if(d) b.attribute('disabled','');
   return b;
 }
@@ -51,6 +52,7 @@ function stopCam(){
 }
 
 function toggleCam(){showCamera=!showCamera;}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
 function clearPainting(){paintLayer.clear();previous={};}
 
 function fit(){
@@ -74,6 +76,7 @@ function draw(){
   if(running&&poses.length) paintPose(poses[0]);
 
   image(paintLayer,0,0);
+  if(showPoints&&running&&poses.length) drawPosePoints(poses[0]);
   drawBrushMarkers();
   hud();
 }
@@ -116,6 +119,11 @@ function paintPose(pose){
   }
 }
 
+function drawPosePoints(pose){
+  noStroke();fill(25,25,30,190);
+  for(const k of pose.keypoints){if(k.confidence>.25){const p=mp(k);circle(p.x,p.y,7);}}
+}
+
 function drawBrushMarkers(){
   for(const name of Object.keys(previous)){
     const p=previous[name];
@@ -129,16 +137,16 @@ function drawBrushMarkers(){
 function hud(){
   noStroke();
   fill(18,22,31,220);
-  rect(12,64,min(395,width-24),92,12);
+  rect(12,112,min(395,width-24),92,12);
 
   fill(255);
   textSize(13);
-  text('BodyPose — pintura corporal',24,85);
+  text('BodyPose — pintura corporal',24,133);
 
   textSize(11);
-  text('Mano izquierda: coral  |  Mano derecha: turquesa',24,104);
-  text('Pie izquierdo: amarillo  |  Pie derecho: índigo',24,121);
-  text('Muévete para dibujar; los gestos rápidos salpican',24,139);
+  text('Mano izquierda: coral  |  Mano derecha: turquesa',24,152);
+  text('Pie izquierdo: amarillo  |  Pie derecho: índigo',24,169);
+  text('Muévete para dibujar; los gestos rápidos salpican',24,187);
 }
 
 function gotPoses(r){poses=r;}
