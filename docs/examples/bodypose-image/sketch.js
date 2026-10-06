@@ -1,5 +1,5 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn;
-let running=false,showCamera=false;
+let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn;
+let running=false,showCamera=false,showPoints=true;
 const SRC_W=640,SRC_H=480;
 
 async function setup(){
@@ -8,9 +8,10 @@ async function setup(){
   playBtn=mk('▶ Play',10,startCam);
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
+  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
 }
-function mk(t,x,f,d=false){
-  const b=createButton(t); b.position(x,10); b.mousePressed(f);
+function mk(t,x,f,d=false,y=10){
+  const b=createButton(t); b.position(x,y); b.mousePressed(f);
   if(d) b.attribute('disabled','');
   return b;
 }
@@ -33,6 +34,7 @@ function stopCam(){
   camBtn.attribute('disabled','');
 }
 function toggleCam(){showCamera=!showCamera;}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
 function fit(){const s=min(width/SRC_W,height/SRC_H);return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};}
 function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
 
@@ -48,6 +50,7 @@ function draw(){
   let x=width*.5,y=height*.5,scaleFactor=1,angle=0;
   if(running&&poses.length){
     const pose=poses[0];
+    if(showPoints) drawPosePoints(pose);
     const rw=pose.keypoints.find(k=>k.name==='right_wrist');
     const rs=pose.keypoints.find(k=>k.name==='right_shoulder');
 
@@ -65,6 +68,11 @@ function draw(){
 
   drawPoster(x,y,scaleFactor,angle);
   hud();
+}
+
+function drawPosePoints(pose){
+  noStroke(); fill(255,255,255,220);
+  for(const k of pose.keypoints){if(k.confidence>.25){const p=mp(k);circle(p.x,p.y,7);}}
 }
 
 function drawPoster(x,y,s,a){
@@ -85,12 +93,12 @@ function drawPoster(x,y,s,a){
 
 function hud(){
   noStroke(); fill(11,19,43,220);
-  rect(12,64,min(360,width-24),62,10);
+  rect(12,112,min(360,width-24),62,10);
   fill(255); textSize(13);
-  text('Movimiento corporal controlando una imagen',24,85);
+  text('Movimiento corporal controlando una imagen',24,133);
   textSize(11);
-  text('Mano derecha: posición | altura: escala',24,103);
-  text('Brazo: ligera rotación del cartel',24,119);
+  text('Mano derecha: posición | altura: escala',24,151);
+  text('Brazo: ligera rotación del cartel',24,167);
 }
 
 function gotPoses(r){poses=r;}
