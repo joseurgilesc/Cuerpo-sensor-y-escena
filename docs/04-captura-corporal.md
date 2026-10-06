@@ -94,7 +94,27 @@ Un ejemplo en vivo de detección de manos con **ml5.js Handpose** desde la cáma
 !!! tip "Ver el código"
     [Abrir el código en el editor de p5.js](https://editor.p5js.org/jose.urgiles-tender/sketches/IcLn1JGo4)
 
-## 4.12. Problemas frecuentes y soluciones
+## 4.12. Ejemplo interactivo: seguimiento corporal con BodyPose
+
+Este segundo ejemplo amplía el seguimiento de manos hacia el **cuerpo completo** mediante **ml5.js BodyPose**. El sistema detecta articulaciones principales y dibuja un esqueleto sobre la imagen de cámara.
+
+Además, los datos corporales controlan un comportamiento visual:
+
+- **Mano derecha** → genera partículas.
+- **Distancia entre ambas manos** → controla la cantidad de partículas.
+- **Tecla C** → muestra u oculta la cámara.
+
+```
+mano derecha ──▶ emisión de partículas
+distancia entre manos ──▶ densidad visual
+```
+
+<iframe src="../examples/bodypose/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; fullscreen" allowfullscreen loading="lazy" title="Ejemplo de seguimiento corporal con ml5.js BodyPose"></iframe>
+
+!!! tip "Ver el código"
+    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose/sketch.js)
+
+## 4.13. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
