@@ -114,7 +114,7 @@ distancia entre manos ──▶ densidad visual
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
 !!! info "Uso"
-    El ejemplo se abre en una nueva pestaña. Autoriza el uso de la cámara cuando el navegador lo solicite.
+    El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar la cámara y **Stop** para detenerla. En teléfono, usa preferentemente la cámara frontal.
 
 ## 4.13. Ejemplo interactivo: cuerpo, color y movimiento
 
@@ -135,7 +135,7 @@ distancia entre manos ──▶ expansión visual
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
 !!! info "Uso"
-    El ejemplo se abre en una nueva pestaña. Autoriza el uso de la cámara cuando el navegador lo solicite.
+    El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar la cámara y **Stop** para detenerla. En teléfono, usa preferentemente la cámara frontal.
 
 ## 4.14. Ejemplo interactivo: partículas y audio con la mano derecha
 
@@ -144,8 +144,10 @@ Este ejemplo combina **BodyPose**, partículas y **Tone.js**. La muñeca derecha
 - **Mano derecha** → atrae y hace girar las partículas.
 - **Posición X** → controla el paneo estéreo.
 - **Posición Y** → controla la altura del sonido y la frecuencia de corte de un filtro.
-- **Botón “Activar audio”** → inicia Tone.js mediante interacción del usuario.
-- **Tecla C** → muestra u oculta la cámara.
+- **Play** → inicia la cámara y habilita Tone.js.
+- **Stop** → detiene la cámara y silencia el audio.
+- **Fader de volumen** → ajusta el nivel de la capa sonora.
+- **Cámara** → muestra u oculta la imagen de video.
 
 ```
 mano derecha X ──▶ paneo
@@ -159,9 +161,45 @@ El audio se mantiene deliberadamente suave para funcionar como una capa sonora c
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-audio/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
 !!! info "Uso"
-    El ejemplo se abre en una nueva pestaña. Autoriza la cámara y pulsa **Activar audio** para iniciar Tone.js.
+    El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar cámara y audio, ajusta el **fader de volumen** y usa **Stop** para detener la experiencia.
 
-## 4.15. Problemas frecuentes y soluciones
+## 4.15. Ejemplo interactivo: partículas y gesto sonoro
+
+Este ejemplo combina **BodyPose**, partículas y **Tone.js**, pero el sonido no está activo de forma permanente: aparece mediante un gesto corporal.
+
+- **Juntar ambas manos** → activa una textura sonora suave.
+- **Separar las manos** → libera y apaga progresivamente el sonido.
+- **Ambas muñecas** → atraen las partículas.
+- **Fader de volumen** → controla la intensidad del audio.
+- **Play / Stop** → inicia o detiene cámara y audio.
+- **Cámara** → muestra u oculta el video.
+
+```
+manos separadas ──▶ silencio
+manos juntas ──▶ sonido + concentración de partículas
+```
+
+<a href="../examples/bodypose-gesture-audio/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-gesture-audio/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+!!! info "Uso"
+    Pulsa **Play** y autoriza la cámara. Acerca ambas manos entre sí para activar el sonido; sepáralas para apagarlo. El ejemplo está diseñado para ajustarse al tamaño de pantalla de computador o teléfono.
+
+## 4.16. Compatibilidad móvil y controles
+
+Los ejemplos de esta sección se han unificado con los mismos controles básicos:
+
+- **Play**: inicia la cámara y la detección.
+- **Stop**: detiene la cámara y libera el recurso.
+- **Cámara**: muestra u oculta el video cuando el ejemplo lo permite.
+- Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
+
+Los lienzos usan el tamaño disponible de la ventana y reajustan su escala al cambiar la orientación del dispositivo. En teléfonos se solicita preferentemente la cámara frontal.
+
+!!! note "Compatibilidad"
+    El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara.
+
+## 4.17. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
