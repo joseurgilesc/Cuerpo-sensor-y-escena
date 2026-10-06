@@ -134,7 +134,30 @@ distancia entre manos ──▶ expansión visual
 !!! tip "Ver el código"
     [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js)
 
-## 4.14. Problemas frecuentes y soluciones
+## 4.14. Ejemplo interactivo: partículas y audio con la mano derecha
+
+Este ejemplo combina **BodyPose**, partículas y **Tone.js**. La muñeca derecha se convierte en el centro de atracción del sistema visual, mientras su posición controla un sonido continuo y sutil.
+
+- **Mano derecha** → atrae y hace girar las partículas.
+- **Posición X** → controla el paneo estéreo.
+- **Posición Y** → controla la altura del sonido y la frecuencia de corte de un filtro.
+- **Botón “Activar audio”** → inicia Tone.js mediante interacción del usuario.
+- **Tecla C** → muestra u oculta la cámara.
+
+```
+mano derecha X ──▶ paneo
+mano derecha Y ──▶ frecuencia + filtro
+posición de la mano ──▶ atracción de partículas
+```
+
+El audio se mantiene deliberadamente suave para funcionar como una capa sonora complementaria y no como el elemento principal de la interacción.
+
+<iframe src="../examples/bodypose-audio/" width="100%" height="500" style="border:1px solid #ddd; border-radius:8px;" allow="camera; autoplay; fullscreen" allowfullscreen loading="lazy" title="Ejemplo BodyPose con partículas y audio mediante Tone.js"></iframe>
+
+!!! tip "Ver el código"
+    [Abrir `sketch.js` en GitHub](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-audio/sketch.js)
+
+## 4.15. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
