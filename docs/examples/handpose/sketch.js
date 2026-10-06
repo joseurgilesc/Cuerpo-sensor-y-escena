@@ -36,7 +36,7 @@ async function setup() {
 }
 
 function startCam() {
-  video = createCapture(VIDEO, videoReady);
+  video = createCapture({ video: { facingMode: 'user' }, audio: false }, videoReady);
   video.size(640, 480);
   video.hide();
 
