@@ -73,6 +73,14 @@ X de la muñeca  ──▶  posición horizontal de la forma
 Y de la muñeca  ──▶  posición vertical de la forma
 ```
 
+En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generativo**: su posición mueve la composición, su altura modifica la escala y la orientación del brazo añade una ligera rotación.
+
+<a href="../examples/bodypose-image/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-image/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+!!! info "Uso"
+    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha por el encuadre para desplazar la imagen. El botón **Cámara** permite mostrar u ocultar el video y **Stop** detiene la captura.
+
 ## 4.10. Ejemplo: gesto corporal controlando un parámetro sonoro
 
 Un gesto (subir el brazo) controla un filtro de sonido.
@@ -185,7 +193,32 @@ manos juntas ──▶ sonido + concentración de partículas
 !!! info "Uso"
     Pulsa **Play** y autoriza la cámara. Acerca ambas manos entre sí para activar el sonido; sepáralas para apagarlo. El ejemplo está diseñado para ajustarse al tamaño de pantalla de computador o teléfono.
 
-## 4.16. Compatibilidad móvil y controles
+## 4.16. Ejemplo interactivo: pintura corporal con manos y pies
+
+Este ejemplo convierte cuatro puntos del cuerpo en **pinceles digitales** y deja un rastro persistente sobre el lienzo. La intención es acercar BodyPose a una lógica de **diseño gráfico y pintura generativa**.
+
+La paleta utiliza cuatro colores diferenciados:
+
+- **Mano izquierda** → coral.
+- **Mano derecha** → turquesa.
+- **Pie izquierdo** → amarillo.
+- **Pie derecho** → índigo.
+- Los movimientos rápidos generan pequeñas salpicaduras.
+- **Limpiar** borra el lienzo para comenzar una nueva composición.
+
+```
+manos + pies ──▶ pinceles
+trayectoria corporal ──▶ trazo
+velocidad ──▶ grosor + salpicadura
+```
+
+<a href="../examples/bodypose-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-paint/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+!!! info "Uso"
+    Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Cámara** y **Limpiar**.
+
+## 4.17. Compatibilidad móvil y controles
 
 Los ejemplos de esta sección se han unificado con los mismos controles básicos:
 
@@ -199,7 +232,7 @@ Los lienzos usan el tamaño disponible de la ventana y reajustan su escala al ca
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara.
 
-## 4.17. Problemas frecuentes y soluciones
+## 4.18. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
