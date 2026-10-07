@@ -34,10 +34,12 @@ function mk(t,x,f,d=false,y=10){
 
 function startCam(){
   if(running) return;
-  video=createCapture({video:{facingMode:'user'},audio:false},()=>{
+  video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
+    const dims=configureVideoElement(video,deviceProfile);
+    SRC_W=dims.width; SRC_H=dims.height;
     bodyPose.detectStart(video,gotPoses); running=true;
   });
-  video.size(SRC_W,SRC_H); video.hide();
+  video.hide();
 
   playBtn.attribute('disabled','');
   stopBtn.removeAttribute('disabled');
@@ -156,9 +158,14 @@ function gotPoses(r){poses=r;}
 
 function windowResized(){
   deviceProfile=resizeResponsiveCanvas();
-  SRC_W=deviceProfile.cameraWidth;
-  SRC_H=deviceProfile.cameraHeight;
-  if(video)video.size(SRC_W,SRC_H);
+  if(video){
+    const dims=configureVideoElement(video,deviceProfile);
+    SRC_W=dims.width;
+    SRC_H=dims.height;
+  }else{
+    SRC_W=deviceProfile.cameraWidth;
+    SRC_H=deviceProfile.cameraHeight;
+  }
   const old=paintLayer;
   paintLayer=createGraphics(windowWidth,windowHeight);
   paintLayer.image(old,0,0,windowWidth,windowHeight);
