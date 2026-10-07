@@ -11,7 +11,7 @@ async function setup(){
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Vista: OFF',182,toggleCam,true);
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
-  
+  createControlsVisibilityButton();
 }
 function mk(t,x,f,d=false,y=10){
   const b=createButton(t); b.position(x,y); b.mousePressed(f);
