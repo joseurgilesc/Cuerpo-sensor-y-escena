@@ -61,8 +61,8 @@ function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Pu
 function clearPainting(){paintLayer.clear();previous={};}
 
 function fit(){
-  const s=min(width/SRC_W,height/SRC_H);
-  return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};
+  const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);
+  return{s:f.scale,ox:f.x,oy:f.y};
 }
 function mp(k){
   const {s,ox,oy}=fit();
