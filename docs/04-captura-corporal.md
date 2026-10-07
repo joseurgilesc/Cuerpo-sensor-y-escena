@@ -301,7 +301,7 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Stop**: es el único control que realmente detiene la captura de cámara y la detección.
 - **Vista cámara**: muestra u oculta **solo la imagen de video en el canvas**. La cámara y la detección continúan funcionando en segundo plano.
 - **Esqueleto**: activa o desactiva conjuntamente los **puntos (keypoints)** y las **líneas de conexión** del esqueleto detectado por HandPose o BodyPose.
-- **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
+- **Modo amplio**: en móvil evita el fullscreen nativo del navegador y expande el canvas sobre todo el **viewport visible**, reduciendo errores y pantallazos blancos.
 - **Modo escena móvil**: al pulsar **Play**, los controles y textos de ayuda se ocultan automáticamente para dejar libre el canvas. En el ejemplo táctil, este modo se activa al comenzar a dibujar.
 - **Recuperar controles**: toca la **esquina superior derecha**; los controles reaparecen durante unos segundos y luego vuelven a ocultarse.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
@@ -315,7 +315,7 @@ El **canvas** se calcula a partir del área real disponible del navegador y se r
 La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
-    El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El **modo escena móvil** intenta entrar en pantalla completa desde la interacción del usuario. Si el navegador o sistema operativo no admite fullscreen de documento, los controles igualmente se ocultan y el canvas ocupa toda el área visible disponible.
+    El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. En móvil ya no se usa el **Fullscreen API** para el modo escena: el canvas se fija al viewport visible y se reajusta con `visualViewport`, lo que evita el pantallazo blanco observado en algunos navegadores. La barra propia del navegador puede seguir visible, pero el ejemplo utiliza toda el área útil disponible.
 
 ## 4.19. Problemas frecuentes y soluciones
 
