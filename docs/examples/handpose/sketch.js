@@ -34,7 +34,7 @@ async function setup() {
   camBtn.mousePressed(toggleCam);
   camBtn.attribute('disabled', '');
 
-  pointsBtn = createButton('● Puntos: ON');
+  pointsBtn = createButton('● Esqueleto: ON');
   pointsBtn.position(10, 60);
   pointsBtn.mousePressed(togglePoints);
 
@@ -81,7 +81,7 @@ function toggleCam() {
 
 function togglePoints() {
   showPoints = !showPoints;
-  pointsBtn.html(showPoints ? '● Puntos: ON' : '○ Puntos: OFF');
+  pointsBtn.html(showPoints ? '● Esqueleto: ON' : '○ Esqueleto: OFF');
 }
 
 function gotHands(results) {
@@ -111,7 +111,9 @@ function draw() {
     image(video, ox, oy, SRC_W * s, SRC_H * s);
   }
 
-  if (showPoints) drawHandPoints(s, ox, oy);
+  if (showPoints) {
+    drawHandSkeletonOverlay(hands, kp => ({ x: kp.x * s + ox, y: kp.y * s + oy }));
+  }
 
   // Actualiza y dibuja las partículas
   for (let p of particles) {
