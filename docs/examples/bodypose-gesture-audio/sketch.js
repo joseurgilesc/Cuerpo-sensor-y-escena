@@ -41,6 +41,7 @@ function mk(t,x,f,d=false,y=10){
 
 async function startExperience(){
   if(running)return;
+  enterMobileSceneMode();
   await Tone.start();
   if(!audioReady)setupAudio();
 
@@ -69,6 +70,7 @@ function setupAudio(){
 }
 
 function stopExperience(){
+  leaveMobileSceneMode();
   bodyPose.detectStop();
   if(video){video.remove();video=null;}
   poses=[];running=false;showCamera=false;
@@ -175,7 +177,7 @@ class Particle{
   show(on){noStroke();fill(on?45:195,on?80:55,100,on?80:50);circle(this.x,this.y,on?this.r*1.35:this.r);}
 }
 
-function hud(on,d){
+function hud(on,d){if(isMobileSceneModeActive())return;
   colorMode(RGB,255);noStroke();fill(0,155);rect(12,160,min(355,width-24),76,10);
   fill(255);textSize(13);text('BodyPose — gesto sonoro',24,181);
   textSize(11);text('Junta las manos para activar el sonido',24,199);
