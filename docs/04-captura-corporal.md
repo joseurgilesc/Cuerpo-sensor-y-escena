@@ -260,14 +260,14 @@ La paleta utiliza cuatro colores diferenciados:
 - **Ambiental** → acordes lentos y resonantes.
 - **Pulso** → bajo y percusión con mayor sensación rítmica.
 - **Arpegio** → secuencia melódica más activa.
-- **Manos juntas** → dispara un acorde brillante como acento musical.
-- **Ambos brazos arriba** → genera un pequeño ascenso melódico y acelera temporalmente la música.
-- **Brazos abiertos** → aumenta la reverberación y dispara un acorde más amplio.
+- **Manos juntas** → dispara una **campana/acorde brillante** claramente separada de la música de fondo.
+- **Ambos brazos arriba** → dispara un **ascenso melódico rápido**.
+- **Brazos abiertos** → dispara un **impacto grave + acorde amplio**.
 - **Volumen** → controla el nivel general de la música.
 - **Silencio** → detiene únicamente la música.
 - **Limpiar** → borra el lienzo para comenzar una nueva composición.
 
-La visual también escucha el audio: cuando aumenta la energía sonora, los trazos se vuelven más gruesos, crecen las salpicaduras y aparecen pulsaciones gráficas en el centro del canvas. A la vez, algunos gestos corporales funcionan como **gestos musicales**: no solo pintan, sino que alteran armonía, tempo y espacio sonoro.
+La visual también escucha el audio: cuando aumenta la energía sonora, los trazos se vuelven más gruesos, crecen las salpicaduras y aparecen pulsaciones gráficas en el centro del canvas. Los gestos corporales funcionan además como **disparadores musicales**. Cuando se reconoce uno, la música de fondo baja brevemente para que el sonido generado por el gesto quede en primer plano y aparece un rótulo visual indicando el evento sonoro.
 
 ```
 manos + pies ──▶ pinceles
@@ -277,9 +277,9 @@ velocidad ──▶ grosor + salpicadura
 música ──▶ energía visual
 energía sonora ──▶ grosor + pulso + salpicaduras
 
-manos juntas ──▶ acorde
-brazos arriba ──▶ ascenso melódico + más tempo
-brazos abiertos ──▶ más espacio / reverberación
+manos juntas ──▶ CAMPANA / ACORDE
+brazos arriba ──▶ ASCENSO MELÓDICO
+brazos abiertos ──▶ IMPACTO GRAVE + ACORDE
 ```
 
 <a href="../examples/bodypose-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
@@ -291,7 +291,7 @@ brazos abiertos ──▶ más espacio / reverberación
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** para iniciar BodyPose y habilitar el audio. El ejemplo comienza con la escena **Ambiental**; puedes cambiar en cualquier momento a **Pulso** o **Arpegio**, ajustar el volumen o usar **Silencio**. Prueba juntar las manos, levantar ambos brazos por encima de los hombros y abrir los brazos lateralmente para modificar la música. Sitúa el cuerpo completo dentro del encuadre para que BodyPose detecte manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa.
+    Pulsa **Play** para iniciar BodyPose y habilitar el audio. El ejemplo comienza con la escena **Ambiental**; puedes cambiar en cualquier momento a **Pulso** o **Arpegio**, ajustar el volumen o usar **Silencio**. Prueba juntar las manos, levantar ambos brazos por encima de los hombros y abrir los brazos lateralmente. Cada gesto dispara un sonido distinto y muestra en pantalla el nombre del evento sonoro. Sitúa el cuerpo completo dentro del encuadre para que BodyPose detecte manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa.
 
 ## 4.18. Compatibilidad móvil y controles
 
