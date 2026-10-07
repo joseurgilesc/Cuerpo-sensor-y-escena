@@ -289,10 +289,11 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 
 El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara toma como referencia la **proporción real entregada por el dispositivo** y nunca se estira.
 
-- En **pantalla vertical**, la cámara usa un encuadre tipo **cover**: llena el canvas y recorta únicamente los laterales que sobren.
-- En **pantalla horizontal**, utiliza un encuadre tipo **contain** para conservar el fotograma completo.
+- En **pantalla vertical**, se solicita preferentemente una captura cercana a **3:4**. Si el navegador entrega realmente una señal vertical, se aprovecha directamente.
+- Si el dispositivo devuelve una señal horizontal, se usa **contain** para conservar el fotograma completo y evitar un recorte que produzca sensación de zoom.
+- En **pantalla horizontal**, también se conserva el fotograma completo.
 
-La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen aunque exista recorte lateral. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
+La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El modo **pantalla completa** puede estar limitado por el navegador o sistema operativo; si no está disponible, el canvas continúa ajustándose al área visible de la ventana.
