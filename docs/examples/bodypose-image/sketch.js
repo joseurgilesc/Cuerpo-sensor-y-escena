@@ -20,6 +20,10 @@ function mk(t,x,f,d=false,y=10){
 }
 function startCam(){
   if(running) return;
+  showCamera=true;
+  showPoints=true;
+  camBtn.html('👁 Vista: ON');
+  pointsBtn.html('● Esqueleto: ON');
   enterMobileSceneMode();
   video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
     const dims=configureVideoElement(video,deviceProfile);
