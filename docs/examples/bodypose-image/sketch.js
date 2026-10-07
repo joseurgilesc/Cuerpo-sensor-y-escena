@@ -20,6 +20,7 @@ function mk(t,x,f,d=false,y=10){
 }
 function startCam(){
   if(running) return;
+  enterMobileSceneMode();
   video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
     const dims=configureVideoElement(video,deviceProfile);
     SRC_W=dims.width; SRC_H=dims.height;
@@ -31,6 +32,7 @@ function startCam(){
   camBtn.removeAttribute('disabled');
 }
 function stopCam(){
+  leaveMobileSceneMode();
   bodyPose.detectStop();
   if(video){video.remove();video=null;}
   poses=[]; running=false; showCamera=false;
@@ -97,7 +99,7 @@ function drawPoster(x,y,s,a){
   pop();
 }
 
-function hud(){
+function hud(){if(isMobileSceneModeActive())return;
   noStroke(); fill(11,19,43,220);
   rect(12,112,min(360,width-24),62,10);
   fill(255); textSize(13);
