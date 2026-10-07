@@ -1,6 +1,6 @@
-let video,bodyPose,poses=[],connections=[],trails=[],bursts=[],prevRW=null,prevLW=null,playBtn,stopBtn,camBtn,pointsBtn;
-let showCamera=false,showPoints=true,running=false;const SRC_W=640,SRC_H=480;
-async function setup(){createCanvas(windowWidth,windowHeight);colorMode(HSB,360,100,100,100);bodyPose=await ml5.bodyPose();playBtn=mk('▶ Play',10,startCam);stopBtn=mk('■ Stop',96,stopCam,true);camBtn=mk('👁 Cámara',182,toggleCam,true);pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);}
+let video,bodyPose,poses=[],connections=[],trails=[],bursts=[],prevRW=null,prevLW=null,playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn;
+let showCamera=false,showPoints=true,running=false,deviceProfile;let SRC_W=640,SRC_H=480;
+async function setup(){deviceProfile=setupResponsiveCanvas();SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;colorMode(HSB,360,100,100,100);bodyPose=await ml5.bodyPose();playBtn=mk('▶ Play',10,startCam);stopBtn=mk('■ Stop',96,stopCam,true);camBtn=mk('👁 Cámara',182,toggleCam,true);pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);fullscreenBtn=createFullscreenControl(150,60);}
 function mk(t,x,f,d=false,y=10){const b=createButton(t);b.position(x,y);b.mousePressed(f);if(d)b.attribute('disabled','');return b;}
 function startCam(){if(running)return;video=createCapture({video:{facingMode:'user'},audio:false},()=>{bodyPose.detectStart(video,gotPoses);running=true;});video.size(SRC_W,SRC_H);video.hide();playBtn.attribute('disabled','');stopBtn.removeAttribute('disabled');camBtn.removeAttribute('disabled');}
 function stopCam(){bodyPose.detectStop();if(video){video.remove();video=null;}poses=[];trails=[];bursts=[];prevRW=prevLW=null;running=false;showCamera=false;playBtn.removeAttribute('disabled');stopBtn.attribute('disabled','');camBtn.attribute('disabled','');}
@@ -14,4 +14,4 @@ function updateTrails(){for(let i=trails.length-1;i>=0;i--){trails[i].update();t
 function burst(x,y,h,n){for(let i=0;i<n;i++)bursts.push({x,y,vx:random(-4,4),vy:random(-4,4),h:(h+random(-35,35)+360)%360,life:100,size:random(5,16)});}
 function updateBursts(){for(let i=bursts.length-1;i>=0;i--){const p=bursts[i];p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy*=.985;p.life-=2.2;noStroke();fill(p.h,85,100,p.life);circle(p.x,p.y,p.size);if(p.life<=0)bursts.splice(i,1);}if(bursts.length>500)bursts.splice(0,bursts.length-500);}
 function hud(){colorMode(RGB,255);noStroke();fill(0,150);rect(12,112,min(330,width-24),72,10);fill(255);textSize(13);text('BodyPose — color y movimiento',24,132);textSize(11);text('Muñecas: trazos de color',24,150);text('Movimiento rápido: explosiones',24,166);text('Brazos abiertos: pulso central',24,181);colorMode(HSB,360,100,100,100);}
-function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}function windowResized(){resizeCanvas(windowWidth,windowHeight);}
+function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}function windowResized(){deviceProfile=resizeResponsiveCanvas();SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;if(video)video.size(SRC_W,SRC_H);}
