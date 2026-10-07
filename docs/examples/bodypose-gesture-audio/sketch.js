@@ -1,5 +1,5 @@
 let video,bodyPose,poses=[],connections=[],particles=[];
-let playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,volumeSlider,volumeLabel;
+let playBtn,stopBtn,camBtn,pointsBtn,volumeSlider,volumeLabel;
 let running=false,showCamera=false,showPoints=true,audioReady=false,soundOn=false;
 let synth,gain,reverb;
 let SRC_W=640,SRC_H=480,deviceProfile;const NUM_PARTICLES=180;
@@ -15,7 +15,7 @@ async function setup(){
   stopBtn=mk('■ Stop',96,stopExperience,true);
   camBtn=mk('👁 Vista: OFF',182,toggleCam,true);
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
-  fullscreenBtn=createFullscreenControl(150,60);
+  
 
   volumeSlider=createSlider(0,100,18,1);
   volumeSlider.position(12,120);
@@ -45,7 +45,7 @@ async function startExperience(){
   showPoints=true;
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
-  enterMobileSceneMode();
+  
   await Tone.start();
   if(!audioReady)setupAudio();
 
@@ -74,7 +74,7 @@ function setupAudio(){
 }
 
 function stopExperience(){
-  leaveMobileSceneMode();
+  
   bodyPose.detectStop();
   if(video){video.remove();video=null;}
   poses=[];running=false;showCamera=false;
@@ -181,7 +181,7 @@ class Particle{
   show(on){noStroke();fill(on?45:195,on?80:55,100,on?80:50);circle(this.x,this.y,on?this.r*1.35:this.r);}
 }
 
-function hud(on,d){if(isMobileSceneModeActive())return;
+function hud(on,d){
   colorMode(RGB,255);noStroke();fill(0,155);rect(12,160,min(355,width-24),76,10);
   fill(255);textSize(13);text('BodyPose — gesto sonoro',24,181);
   textSize(11);text('Junta las manos para activar el sonido',24,199);
