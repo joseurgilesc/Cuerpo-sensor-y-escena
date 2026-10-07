@@ -21,11 +21,10 @@ function getDeviceProfile() {
     density = 1;
   }
 
-  // En móvil/tablet vertical solicitamos una relación 3:4, que suele ser
-  // más compatible con cámaras frontales que la relación extrema de la pantalla.
+  // Solicitamos una relación cercana a la pantalla real.
+  // En vertical esto favorece una captura más alta y reduce el recorte lateral.
   const screenAspect = w / h;
-  const portraitTouch = touch && h > w;
-  const aspect = portraitTouch ? 0.75 : screenAspect;
+  const aspect = screenAspect;
   let cameraWidth;
   let cameraHeight;
 
@@ -139,16 +138,14 @@ function fitCover(containerW, containerH, mediaW, mediaH) {
   };
 }
 
-// En vertical intentamos conservar un encuadre natural sin "zoom" excesivo.
-// Si la cámara realmente entrega formato vertical, ocupa el canvas.
-// Si el navegador devuelve una señal horizontal (común en móviles),
-// se conserva el fotograma completo con "contain" en vez de recortarlo.
+// En pantalla vertical la cámara llena todo el canvas.
+// Se usa "cover": mantiene la proporción y recorta únicamente lo necesario
+// en los laterales o extremos. En horizontal conservamos el fotograma completo.
 function fitCameraToCanvas(containerW, containerH, mediaW, mediaH) {
   const canvasPortrait = containerH > containerW;
-  const mediaPortrait = mediaH > mediaW;
 
-  if (canvasPortrait && mediaPortrait) {
-    return fitContain(containerW, containerH, mediaW, mediaH);
+  if (canvasPortrait) {
+    return fitCover(containerW, containerH, mediaW, mediaH);
   }
 
   return fitContain(containerW, containerH, mediaW, mediaH);
