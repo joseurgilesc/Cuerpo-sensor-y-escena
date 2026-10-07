@@ -1,4 +1,4 @@
-let video,bodyPose,poses=[],particles=[];
+let video,bodyPose,poses=[],connections=[],particles=[];
 let playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,volumeSlider,volumeLabel;
 let running=false,showCamera=false,showPoints=true,audioReady=false,soundOn=false;
 let synth,gain,reverb;
@@ -14,7 +14,7 @@ async function setup(){
   playBtn=mk('▶ Play',10,startExperience);
   stopBtn=mk('■ Stop',96,stopExperience,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
-  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
   fullscreenBtn=createFullscreenControl(150,60);
 
   volumeSlider=createSlider(0,100,18,1);
@@ -79,7 +79,7 @@ function stopExperience(){
 }
 
 function toggleCam(){showCamera=!showCamera;}
-function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 function updateVolume(){
   const v=Number(volumeSlider.value());
   volumeLabel.html('Volumen: '+v+'%');
@@ -103,7 +103,7 @@ function draw(){
 
   if(running&&poses.length){
     const pose=poses[0];
-    if(showPoints)drawPosePoints(pose);
+    if(showPoints)drawBodySkeletonOverlay(pose,connections,mp);
     const lw=kp(pose,'left_wrist'),rw=kp(pose,'right_wrist');
     if(lw&&rw&&lw.confidence>.25&&rw.confidence>.25){
       left=mp(lw);right=mp(rw);
@@ -183,5 +183,5 @@ function hud(on,d){
   colorMode(HSB,360,100,100,100);
 }
 
-function gotPoses(r){poses=r;}
+function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}
 function windowResized(){deviceProfile=resizeResponsiveCanvas();if(video){const dims=configureVideoElement(video,deviceProfile);SRC_W=dims.width;SRC_H=dims.height;}else{SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;}}
