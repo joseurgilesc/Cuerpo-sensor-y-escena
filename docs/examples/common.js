@@ -235,3 +235,50 @@ function drawHandSkeletonOverlay(hands, mapPoint, lineColor = '#FFFFFFAA', point
   }
   pop();
 }
+
+
+// Botón manual para ocultar/mostrar controles sin alterar canvas ni cámara.
+let exampleControlsHidden = false;
+
+function createControlsVisibilityButton() {
+  const button = createButton('Ocultar controles');
+  button.elt.dataset.controlsToggle = 'true';
+
+  Object.assign(button.elt.style, {
+    position: 'fixed',
+    right: '12px',
+    bottom: '16px',
+    zIndex: '10000',
+    minWidth: 'auto',
+    opacity: '0.9'
+  });
+
+  button.mousePressed(() => toggleExampleControls(button));
+  return button;
+}
+
+function toggleExampleControls(toggleButton) {
+  exampleControlsHidden = !exampleControlsHidden;
+
+  const controls = document.querySelectorAll(
+    'body > button, body > input, body > select, body > textarea, body > label, body > div'
+  );
+
+  controls.forEach(el => {
+    if (el === toggleButton.elt) return;
+
+    if (exampleControlsHidden) {
+      if (!Object.prototype.hasOwnProperty.call(el.dataset, 'controlsDisplay')) {
+        el.dataset.controlsDisplay = el.style.display || '';
+      }
+      el.style.display = 'none';
+    } else if (Object.prototype.hasOwnProperty.call(el.dataset, 'controlsDisplay')) {
+      el.style.display = el.dataset.controlsDisplay;
+      delete el.dataset.controlsDisplay;
+    }
+  });
+
+  toggleButton.html(
+    exampleControlsHidden ? 'Mostrar controles' : 'Ocultar controles'
+  );
+}
