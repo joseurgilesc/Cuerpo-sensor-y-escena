@@ -1,4 +1,4 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn;
+let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
 
@@ -10,7 +10,7 @@ async function setup(){
   playBtn=mk('▶ Play',10,startCam);
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
-  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
   fullscreenBtn=createFullscreenControl(150,60);
 }
 function mk(t,x,f,d=false,y=10){
@@ -39,7 +39,7 @@ function stopCam(){
   camBtn.attribute('disabled','');
 }
 function toggleCam(){showCamera=!showCamera;}
-function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
 function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
 
@@ -55,7 +55,7 @@ function draw(){
   let x=width*.5,y=height*.5,scaleFactor=1,angle=0;
   if(running&&poses.length){
     const pose=poses[0];
-    if(showPoints) drawPosePoints(pose);
+    if(showPoints) drawBodySkeletonOverlay(pose,connections,mp,'#202020AA','#202020FF');
     const rw=pose.keypoints.find(k=>k.name==='right_wrist');
     const rs=pose.keypoints.find(k=>k.name==='right_shoulder');
 
@@ -106,5 +106,5 @@ function hud(){
   text('Brazo: ligera rotación del cartel',24,167);
 }
 
-function gotPoses(r){poses=r;}
+function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}
 function windowResized(){deviceProfile=resizeResponsiveCanvas();if(video){const dims=configureVideoElement(video,deviceProfile);SRC_W=dims.width;SRC_H=dims.height;}else{SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;}}
