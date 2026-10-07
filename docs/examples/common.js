@@ -146,3 +146,28 @@ async function toggleFullscreenSafe() {
     window.dispatchEvent(new Event('resize'));
   }, 180);
 }
+
+
+function fitCover(containerW, containerH, mediaW, mediaH) {
+  const safeW = Math.max(1, mediaW);
+  const safeH = Math.max(1, mediaH);
+  const scale = Math.max(containerW / safeW, containerH / safeH);
+
+  return {
+    scale,
+    width: safeW * scale,
+    height: safeH * scale,
+    x: (containerW - safeW * scale) / 2,
+    y: (containerH - safeH * scale) / 2
+  };
+}
+
+// En pantallas verticales usamos "cover": la cámara ocupa un encuadre vertical
+// y se recortan los laterales si la señal llega en formato horizontal.
+// En horizontal usamos "contain" para conservar el fotograma completo.
+function fitCameraToCanvas(containerW, containerH, mediaW, mediaH) {
+  const portrait = containerH > containerW;
+  return portrait
+    ? fitCover(containerW, containerH, mediaW, mediaH)
+    : fitContain(containerW, containerH, mediaW, mediaH);
+}
