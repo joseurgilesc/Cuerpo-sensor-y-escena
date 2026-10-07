@@ -63,6 +63,8 @@ async function setup(){
   volumeLabel.style('border-radius','7px');
   volumeLabel.style('background','rgba(30,25,22,.75)');
   volumeLabel.style('color','#fff');
+
+  createControlsVisibilityButton();
 }
 
 function mk(t,x,f,d=false,y=10){
