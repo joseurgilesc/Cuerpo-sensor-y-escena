@@ -86,7 +86,7 @@ function updateVolume(){
   if(audioReady&&soundOn)gain.gain.rampTo((v/100)*.12,.12);
 }
 
-function fit(){const s=min(width/SRC_W,height/SRC_H);return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};}
+function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
 function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
 function kp(p,n){return p.keypoints.find(k=>k.name===n);}
 
