@@ -47,6 +47,10 @@ async function setup() {
 }
 
 function startCam() {
+  showCam = true;
+  showPoints = true;
+  camBtn.html('👁 Vista: ON');
+  pointsBtn.html('● Esqueleto: ON');
   enterMobileSceneMode();
   video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
   video.hide();
