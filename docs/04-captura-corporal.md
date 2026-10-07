@@ -260,11 +260,14 @@ La paleta utiliza cuatro colores diferenciados:
 - **Ambiental** → acordes lentos y resonantes.
 - **Pulso** → bajo y percusión con mayor sensación rítmica.
 - **Arpegio** → secuencia melódica más activa.
+- **Manos juntas** → dispara un acorde brillante como acento musical.
+- **Ambos brazos arriba** → genera un pequeño ascenso melódico y acelera temporalmente la música.
+- **Brazos abiertos** → aumenta la reverberación y dispara un acorde más amplio.
 - **Volumen** → controla el nivel general de la música.
 - **Silencio** → detiene únicamente la música.
 - **Limpiar** → borra el lienzo para comenzar una nueva composición.
 
-La visual también escucha el audio: cuando aumenta la energía sonora, los trazos se vuelven más gruesos, crecen las salpicaduras y aparecen pulsaciones gráficas en el centro del canvas.
+La visual también escucha el audio: cuando aumenta la energía sonora, los trazos se vuelven más gruesos, crecen las salpicaduras y aparecen pulsaciones gráficas en el centro del canvas. A la vez, algunos gestos corporales funcionan como **gestos musicales**: no solo pintan, sino que alteran armonía, tempo y espacio sonoro.
 
 ```
 manos + pies ──▶ pinceles
@@ -273,6 +276,10 @@ velocidad ──▶ grosor + salpicadura
 
 música ──▶ energía visual
 energía sonora ──▶ grosor + pulso + salpicaduras
+
+manos juntas ──▶ acorde
+brazos arriba ──▶ ascenso melódico + más tempo
+brazos abiertos ──▶ más espacio / reverberación
 ```
 
 <a href="../examples/bodypose-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
@@ -284,7 +291,7 @@ energía sonora ──▶ grosor + pulso + salpicaduras
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** para iniciar BodyPose y habilitar el audio. El ejemplo comienza con la escena **Ambiental**; puedes cambiar en cualquier momento a **Pulso** o **Arpegio**, ajustar el volumen o usar **Silencio**. Sitúa el cuerpo completo dentro del encuadre para que BodyPose detecte manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa.
+    Pulsa **Play** para iniciar BodyPose y habilitar el audio. El ejemplo comienza con la escena **Ambiental**; puedes cambiar en cualquier momento a **Pulso** o **Arpegio**, ajustar el volumen o usar **Silencio**. Prueba juntar las manos, levantar ambos brazos por encima de los hombros y abrir los brazos lateralmente para modificar la música. Sitúa el cuerpo completo dentro del encuadre para que BodyPose detecte manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa.
 
 ## 4.18. Compatibilidad móvil y controles
 
