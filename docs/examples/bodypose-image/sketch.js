@@ -47,32 +47,89 @@ function stopCam(){
 }
 function toggleCam(){showCamera=!showCamera;camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');}
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
-function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
-function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
+// Encuadre propio del 4.10: prioriza ver más cuerpo y evita el zoom fuerte.
+function fitCamera410(){
+  const contain=fitContain(width,height,SRC_W,SRC_H);
+  const cover=fitCover(width,height,SRC_W,SRC_H);
+  const portrait=height>width;
+
+  if(portrait && SRC_W>SRC_H){
+    const s=min(cover.scale,contain.scale*1.12);
+    return{
+      s,
+      ox:(width-SRC_W*s)/2,
+      oy:(height-SRC_H*s)/2
+    };
+  }
+
+  const f=portrait?cover:contain;
+  return{s:f.scale,ox:f.x,oy:f.y};
+}
+
+// Coordenadas para dibujar el esqueleto exactamente sobre la cámara principal.
+function mpCamera(k){
+  const {s,ox,oy}=fitCamera410();
+  return{x:width-(k.x*s+ox),y:k.y*s+oy};
+}
+
+// Coordenadas independientes para usar toda la pantalla como espacio interactivo.
+function mpStage(k){
+  return{
+    x:width-(k.x/max(1,SRC_W))*width,
+    y:(k.y/max(1,SRC_H))*height
+  };
+}
+
+function drawCameraBackdrop(){
+  if(!video)return;
+
+  const f=fitCover(width,height,SRC_W,SRC_H);
+
+  push();
+  translate(width,0);
+  scale(-1,1);
+  tint(255,32);
+
+  drawingContext.save();
+  drawingContext.filter='blur(20px)';
+  image(video,f.x,f.y,SRC_W*f.scale,SRC_H*f.scale);
+  drawingContext.restore();
+
+  pop();
+}
 
 function draw(){
   background(245,242,235);
-  const {s,ox,oy}=fit();
+  const {s,ox,oy}=fitCamera410();
 
   if(showCamera&&video){
-    push(); tint(255,75); translate(width,0); scale(-1,1);
-    image(video,ox,oy,SRC_W*s,SRC_H*s); pop();
+    // Fondo suave para aprovechar toda la pantalla sin forzar el encuadre principal.
+    drawCameraBackdrop();
+
+    // Cámara principal con aumento limitado.
+    push();
+    tint(255,118);
+    translate(width,0);
+    scale(-1,1);
+    image(video,ox,oy,SRC_W*s,SRC_H*s);
+    pop();
   }
 
   let x=width*.5,y=height*.5,scaleFactor=1,angle=0;
   if(running&&poses.length){
     const pose=poses[0];
-    if(showPoints) drawBodySkeletonOverlay(pose,connections,mp,'#202020AA','#202020FF');
+    if(showPoints) drawBodySkeletonOverlay(pose,connections,mpCamera,'#202020AA','#202020FF');
     const rw=pose.keypoints.find(k=>k.name==='right_wrist');
     const rs=pose.keypoints.find(k=>k.name==='right_shoulder');
 
     if(rw&&rw.confidence>.25){
-      const p=mp(rw);
-      x=p.x; y=p.y;
+      const p=mpStage(rw);
+      x=p.x;
+      y=p.y;
       scaleFactor=map(y,height,0,.65,1.35,true);
 
       if(rs&&rs.confidence>.25){
-        const q=mp(rs);
+        const q=mpStage(rs);
         angle=atan2(y-q.y,x-q.x)*.25;
       }
     }
@@ -84,7 +141,12 @@ function draw(){
 
 function drawPosePoints(pose){
   noStroke(); fill(255,255,255,220);
-  for(const k of pose.keypoints){if(k.confidence>.25){const p=mp(k);circle(p.x,p.y,7);}}
+  for(const k of pose.keypoints){
+    if(k.confidence>.25){
+      const p=mpCamera(k);
+      circle(p.x,p.y,7);
+    }
+  }
 }
 
 function drawPoster(x,y,s,a){
