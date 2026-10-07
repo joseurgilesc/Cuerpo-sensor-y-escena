@@ -39,6 +39,8 @@ async function setup() {
   pointsBtn.mousePressed(togglePoints);
 
   
+  createControlsVisibilityButton();
+
   // Crea las partículas
   for (let i = 0; i < NUM_PARTICLES; i++) {
     particles.push(new Particle());
