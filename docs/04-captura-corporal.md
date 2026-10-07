@@ -80,6 +80,11 @@ Perlin Noise ──▶ variación orgánica
 <a href="../examples/pointer-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/pointer-paint/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fpointer-paint%2F" alt="QR pointer-paint" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
+
 !!! info "Uso"
     Funciona sin cámara. En computador se pinta arrastrando el mouse; en móvil o tablet, arrastrando el dedo sobre la pantalla.
 
@@ -100,6 +105,11 @@ En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generat
 
 <a href="../examples/bodypose-image/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-image/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-image%2F" alt="QR bodypose-image" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
 
 !!! info "Uso"
     Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha por el encuadre para desplazar la imagen. El botón **Cámara** permite mostrar u ocultar el video y **Stop** detiene la captura.
@@ -122,6 +132,11 @@ Un ejemplo de detección de manos con **ml5.js HandPose**. Las puntas de los ded
 
 <a href="../examples/handpose/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/handpose/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fhandpose%2F" alt="QR handpose" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
 
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** y autoriza el uso de la cámara cuando el navegador lo solicite.
@@ -165,6 +180,11 @@ distancia entre manos ──▶ expansión visual
 <a href="../examples/bodypose-color/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-color/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-color%2F" alt="QR bodypose-color" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
+
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar la cámara y **Stop** para detenerla. En teléfono, usa preferentemente la cámara frontal.
 
@@ -191,6 +211,11 @@ El audio se mantiene deliberadamente suave para funcionar como una capa sonora c
 <a href="../examples/bodypose-audio/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-audio/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-audio%2F" alt="QR bodypose-audio" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
+
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar cámara y audio, ajusta el **fader de volumen** y usa **Stop** para detener la experiencia.
 
@@ -212,6 +237,11 @@ manos juntas ──▶ sonido + concentración de partículas
 
 <a href="../examples/bodypose-gesture-audio/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-gesture-audio/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-gesture-audio%2F" alt="QR bodypose-gesture-audio" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
 
 !!! info "Uso"
     Pulsa **Play** y autoriza la cámara. Acerca ambas manos entre sí para activar el sonido; sepáralas para apagarlo. El ejemplo está diseñado para ajustarse al tamaño de pantalla de computador o teléfono.
@@ -238,6 +268,11 @@ velocidad ──▶ grosor + salpicadura
 <a href="../examples/bodypose-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-paint/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-paint%2F" alt="QR bodypose-paint" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
+
 !!! info "Uso"
     Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Cámara** y **Limpiar**.
 
@@ -252,7 +287,9 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
-El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. Además, la resolución de captura se adapta al dispositivo para equilibrar calidad y rendimiento: aproximadamente **480×360 en móvil, 640×480 en tablet y 960×720 en escritorio**. En teléfonos se solicita preferentemente la cámara frontal.
+El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara solicita una relación de aspecto cercana a la del dispositivo, pero el sistema toma como referencia la **proporción real entregada por la cámara** y la encaja dentro del canvas sin deformarla. Si sobra espacio, se conserva como margen en lugar de estirar la imagen.
+
+La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En móviles se usa una captura más ligera, mientras que tablet y escritorio pueden trabajar con una resolución mayor. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El modo **pantalla completa** puede estar limitado por el navegador o sistema operativo; si no está disponible, el canvas continúa ajustándose al área visible de la ventana.
