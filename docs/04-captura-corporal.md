@@ -283,7 +283,7 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Play**: inicia la cámara y la detección.
 - **Stop**: detiene la cámara y libera el recurso.
 - **Cámara**: muestra u oculta el video cuando el ejemplo lo permite.
-- **Puntos**: activa o desactiva la visualización de los puntos detectados por HandPose o BodyPose.
+- **Esqueleto**: activa o desactiva conjuntamente los **puntos (keypoints)** y las **líneas de conexión** del esqueleto detectado por HandPose o BodyPose.
 - **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
@@ -292,7 +292,7 @@ El **canvas** se calcula a partir del área real disponible del navegador y se r
 - En **pantalla vertical**, la cámara usa un encuadre tipo **cover**: llena el canvas y recorta únicamente los laterales que sobren.
 - En **pantalla horizontal**, utiliza un encuadre tipo **contain** para conservar el fotograma completo.
 
-La misma transformación se aplica a los puntos de HandPose y BodyPose, por lo que los keypoints continúan alineados con la imagen aunque exista recorte lateral. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
+La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen aunque exista recorte lateral. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El modo **pantalla completa** puede estar limitado por el navegador o sistema operativo; si no está disponible, el canvas continúa ajustándose al área visible de la ventana.
