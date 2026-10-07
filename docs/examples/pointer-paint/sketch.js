@@ -16,7 +16,6 @@ function setup(){
   pointerBtn.position(108,10);
   pointerBtn.mousePressed(togglePointer);
 
-  fullscreenBtn=createFullscreenControl(10,60);
 }
 
 function draw(){
