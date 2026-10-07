@@ -1,14 +1,17 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn;
-let running=false,showCamera=false,showPoints=true;
-const SRC_W=640,SRC_H=480;
+let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn;
+let running=false,showCamera=false,showPoints=true,deviceProfile;
+let SRC_W=640,SRC_H=480;
 
 async function setup(){
-  createCanvas(windowWidth,windowHeight);
+  deviceProfile=setupResponsiveCanvas();
+  SRC_W=deviceProfile.cameraWidth;
+  SRC_H=deviceProfile.cameraHeight;
   bodyPose=await ml5.bodyPose();
   playBtn=mk('▶ Play',10,startCam);
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
   pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  fullscreenBtn=createFullscreenControl(150,60);
 }
 function mk(t,x,f,d=false,y=10){
   const b=createButton(t); b.position(x,y); b.mousePressed(f);
@@ -102,4 +105,4 @@ function hud(){
 }
 
 function gotPoses(r){poses=r;}
-function windowResized(){resizeCanvas(windowWidth,windowHeight);}
+function windowResized(){deviceProfile=resizeResponsiveCanvas();SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;if(video)video.size(SRC_W,SRC_H);}
