@@ -47,6 +47,7 @@ async function setup() {
 }
 
 function startCam() {
+  enterMobileSceneMode();
   video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
   video.hide();
 
@@ -63,6 +64,7 @@ function videoReady() {
 }
 
 function stopCam() {
+  leaveMobileSceneMode();
   handPose.detectStop();
   if (video) {
     video.remove();
@@ -123,12 +125,14 @@ function draw() {
     p.show();
   }
 
-  // Estado de la cámara
-  fill(255);
-  noStroke();
-  textAlign(LEFT, TOP);
-  textSize(14);
-  text(showCam ? 'Vista cámara: ON' : 'Vista cámara: OFF', 10, 50);
+  // Estado de la cámara: se oculta en modo escena móvil.
+  if (!isMobileSceneModeActive()) {
+    fill(255);
+    noStroke();
+    textAlign(LEFT, TOP);
+    textSize(14);
+    text(showCam ? 'Vista cámara: ON' : 'Vista cámara: OFF', 10, 50);
+  }
 }
 
 function drawHandPoints(s, ox, oy) {
