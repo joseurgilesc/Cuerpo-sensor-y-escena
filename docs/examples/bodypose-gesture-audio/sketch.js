@@ -30,6 +30,8 @@ async function setup(){
   volumeLabel.style('padding','4px 7px');
   volumeLabel.style('border-radius','7px');
 
+  createControlsVisibilityButton();
+
   for(let i=0;i<NUM_PARTICLES;i++)particles.push(new Particle());
 }
 
