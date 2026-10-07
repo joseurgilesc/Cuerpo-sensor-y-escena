@@ -13,7 +13,7 @@ async function setup(){
 
   playBtn=mk('▶ Play',10,startExperience);
   stopBtn=mk('■ Stop',96,stopExperience,true);
-  camBtn=mk('👁 Cámara',182,toggleCam,true);
+  camBtn=mk('👁 Vista: OFF',182,toggleCam,true);
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
   fullscreenBtn=createFullscreenControl(150,60);
 
@@ -72,13 +72,14 @@ function stopExperience(){
   bodyPose.detectStop();
   if(video){video.remove();video=null;}
   poses=[];running=false;showCamera=false;
+  camBtn.html('👁 Vista: OFF');
   releaseSound();
   playBtn.removeAttribute('disabled');
   stopBtn.attribute('disabled','');
   camBtn.attribute('disabled','');
 }
 
-function toggleCam(){showCamera=!showCamera;}
+function toggleCam(){showCamera=!showCamera;camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');}
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 function updateVolume(){
   const v=Number(volumeSlider.value());
