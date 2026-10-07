@@ -75,6 +75,7 @@ function mk(t,x,f,d=false,y=10){
 
 async function startCam(){
   if(running)return;
+  enterMobileSceneMode();
 
   if(typeof Tone!=='undefined'){
     try{
@@ -103,6 +104,7 @@ async function startCam(){
 }
 
 function stopCam(){
+  leaveMobileSceneMode();
   bodyPose.detectStop();
 
   if(video){
@@ -661,7 +663,7 @@ function drawBrushMarkers(){
   }
 }
 
-function hud(){
+function hud(){if(isMobileSceneModeActive())return;
   noStroke();
   fill(18,22,31,220);
   rect(12,270,min(420,width-24),122,12);
