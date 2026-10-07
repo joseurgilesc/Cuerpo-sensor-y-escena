@@ -138,14 +138,31 @@ function fitCover(containerW, containerH, mediaW, mediaH) {
   };
 }
 
-// En pantalla vertical la cámara llena todo el canvas.
-// Se usa "cover": mantiene la proporción y recorta únicamente lo necesario
-// en los laterales o extremos. En horizontal conservamos el fotograma completo.
+// Ajuste inteligente de cámara.
+// - Si canvas y cámara son verticales, "cover" aprovecha toda la pantalla.
+// - Si el canvas es vertical pero la cámara llega horizontal, limitamos el
+//   aumento a 1.35x sobre "contain" para evitar un zoom/crop excesivo.
+// - En horizontal conservamos el fotograma completo.
 function fitCameraToCanvas(containerW, containerH, mediaW, mediaH) {
   const canvasPortrait = containerH > containerW;
+  const mediaPortrait = mediaH > mediaW;
 
-  if (canvasPortrait) {
+  if (canvasPortrait && mediaPortrait) {
     return fitCover(containerW, containerH, mediaW, mediaH);
+  }
+
+  if (canvasPortrait && !mediaPortrait) {
+    const contain = fitContain(containerW, containerH, mediaW, mediaH);
+    const cover = fitCover(containerW, containerH, mediaW, mediaH);
+    const scale = Math.min(cover.scale, contain.scale * 1.35);
+
+    return {
+      scale,
+      width: mediaW * scale,
+      height: mediaH * scale,
+      x: (containerW - mediaW * scale) / 2,
+      y: (containerH - mediaH * scale) / 2
+    };
   }
 
   return fitContain(containerW, containerH, mediaW, mediaH);

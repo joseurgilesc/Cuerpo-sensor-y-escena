@@ -304,8 +304,9 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 
 El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara toma como referencia la **proporción real entregada por el dispositivo** y nunca se estira.
 
-- En **pantalla vertical**, se solicita una relación cercana a la proporción real del teléfono y la cámara se dibuja con **cover** para ocupar todo el alto y ancho del canvas.
-- Si la proporción entregada por la cámara no coincide exactamente con la pantalla, puede existir un **recorte lateral moderado**, pero no quedan franjas negras.
+- Si el teléfono entrega una **señal de cámara vertical**, se utiliza **cover** para aprovechar la pantalla.
+- Si el teléfono entrega una **señal horizontal** aunque la pantalla esté vertical, la ampliación se limita aproximadamente a **1,35× sobre contain**. Esto evita el zoom excesivo y permite ver una porción mayor del cuerpo.
+- En ese segundo caso pueden quedar zonas del canvas fuera del video; esas áreas forman parte del fondo visual del ejemplo en lugar de recortar agresivamente la cámara.
 - En **pantalla horizontal**, se conserva el fotograma completo con **contain**.
 
 La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
