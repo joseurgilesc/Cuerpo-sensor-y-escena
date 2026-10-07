@@ -1,5 +1,5 @@
 let video,bodyPose,poses=[],connections=[];
-let playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,clearBtn;
+let playBtn,stopBtn,camBtn,pointsBtn,clearBtn;
 let ambientBtn,pulseBtn,arpBtn,silenceBtn,volumeSlider,volumeLabel;
 let running=false,showCamera=false,showPoints=true,paintLayer,deviceProfile;
 let SRC_W=640,SRC_H=480;
@@ -43,7 +43,7 @@ async function setup(){
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
   clearBtn=mk('✕ Limpiar',146,clearPainting,false,60);
 
-  fullscreenBtn=createFullscreenControl(10,110);
+  
 
   ambientBtn=mk('♪ Ambiental',10,()=>startPreset('ambient'),true,160);
   pulseBtn=mk('♪ Pulso',112,()=>startPreset('pulse'),true,160);
@@ -81,7 +81,7 @@ async function startCam(){
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
 
-  enterMobileSceneMode();
+  
 
   if(typeof Tone!=='undefined'){
     try{
@@ -110,7 +110,7 @@ async function startCam(){
 }
 
 function stopCam(){
-  leaveMobileSceneMode();
+  
   bodyPose.detectStop();
 
   if(video){
@@ -669,7 +669,7 @@ function drawBrushMarkers(){
   }
 }
 
-function hud(){if(isMobileSceneModeActive())return;
+function hud(){
   noStroke();
   fill(18,22,31,220);
   rect(12,270,min(420,width-24),122,12);
