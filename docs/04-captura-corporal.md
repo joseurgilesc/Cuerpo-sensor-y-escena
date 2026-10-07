@@ -287,9 +287,12 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
-El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara solicita una relación de aspecto cercana a la del dispositivo, pero el sistema toma como referencia la **proporción real entregada por la cámara** y la encaja dentro del canvas sin deformarla. Si sobra espacio, se conserva como margen en lugar de estirar la imagen.
+El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara toma como referencia la **proporción real entregada por el dispositivo** y nunca se estira.
 
-La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En móviles se usa una captura más ligera, mientras que tablet y escritorio pueden trabajar con una resolución mayor. En teléfonos se solicita preferentemente la cámara frontal.
+- En **pantalla vertical**, la cámara usa un encuadre tipo **cover**: llena el canvas y recorta únicamente los laterales que sobren.
+- En **pantalla horizontal**, utiliza un encuadre tipo **contain** para conservar el fotograma completo.
+
+La misma transformación se aplica a los puntos de HandPose y BodyPose, por lo que los keypoints continúan alineados con la imagen aunque exista recorte lateral. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El modo **pantalla completa** puede estar limitado por el navegador o sistema operativo; si no está disponible, el canvas continúa ajustándose al área visible de la ventana.
