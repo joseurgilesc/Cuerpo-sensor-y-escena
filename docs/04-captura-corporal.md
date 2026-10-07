@@ -248,7 +248,7 @@ manos juntas ──▶ sonido + concentración de partículas
 
 ## 4.17. Ejemplo interactivo: pintura corporal con manos y pies
 
-Este ejemplo convierte cuatro puntos del cuerpo en **pinceles digitales** y deja un rastro persistente sobre el lienzo. La intención es acercar BodyPose a una lógica de **diseño gráfico y pintura generativa**.
+Este ejemplo convierte cuatro puntos del cuerpo en **pinceles digitales** y combina la pintura corporal con **música generativa en Tone.js**. El movimiento crea el trazo y, al mismo tiempo, la energía de la música modifica la respuesta visual.
 
 La paleta utiliza cuatro colores diferenciados:
 
@@ -257,12 +257,22 @@ La paleta utiliza cuatro colores diferenciados:
 - **Pie izquierdo** → amarillo.
 - **Pie derecho** → índigo.
 - Los movimientos rápidos generan pequeñas salpicaduras.
-- **Limpiar** borra el lienzo para comenzar una nueva composición.
+- **Ambiental** → acordes lentos y resonantes.
+- **Pulso** → bajo y percusión con mayor sensación rítmica.
+- **Arpegio** → secuencia melódica más activa.
+- **Volumen** → controla el nivel general de la música.
+- **Silencio** → detiene únicamente la música.
+- **Limpiar** → borra el lienzo para comenzar una nueva composición.
+
+La visual también escucha el audio: cuando aumenta la energía sonora, los trazos se vuelven más gruesos, crecen las salpicaduras y aparecen pulsaciones gráficas en el centro del canvas.
 
 ```
 manos + pies ──▶ pinceles
 trayectoria corporal ──▶ trazo
 velocidad ──▶ grosor + salpicadura
+
+música ──▶ energía visual
+energía sonora ──▶ grosor + pulso + salpicaduras
 ```
 
 <a href="../examples/bodypose-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
@@ -274,7 +284,7 @@ velocidad ──▶ grosor + salpicadura
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Vista cámara**, **Esqueleto**, **Pantalla completa** y **Limpiar**.
+    Pulsa **Play** para iniciar BodyPose y habilitar el audio. El ejemplo comienza con la escena **Ambiental**; puedes cambiar en cualquier momento a **Pulso** o **Arpegio**, ajustar el volumen o usar **Silencio**. Sitúa el cuerpo completo dentro del encuadre para que BodyPose detecte manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa.
 
 ## 4.18. Compatibilidad móvil y controles
 
