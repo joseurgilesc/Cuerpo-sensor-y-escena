@@ -1,6 +1,6 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,clearBtn;
-let running=false,showCamera=false,showPoints=true,paintLayer;
-const SRC_W=640,SRC_H=480;
+let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,clearBtn;
+let running=false,showCamera=false,showPoints=true,paintLayer,deviceProfile;
+let SRC_W=640,SRC_H=480;
 const palette={
   left_wrist:'#FF6B6B',
   right_wrist:'#4ECDC4',
@@ -10,7 +10,9 @@ const palette={
 let previous={};
 
 async function setup(){
-  createCanvas(windowWidth,windowHeight);
+  deviceProfile=setupResponsiveCanvas();
+  SRC_W=deviceProfile.cameraWidth;
+  SRC_H=deviceProfile.cameraHeight;
   paintLayer=createGraphics(windowWidth,windowHeight);
   paintLayer.clear();
 
@@ -21,6 +23,7 @@ async function setup(){
   camBtn=mk('👁 Cámara',182,toggleCam,true);
   pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
   clearBtn=mk('✕ Limpiar',132,clearPainting,false,60);
+  fullscreenBtn=createFullscreenControl(10,110);
 }
 
 function mk(t,x,f,d=false,y=10){
@@ -152,7 +155,10 @@ function hud(){
 function gotPoses(r){poses=r;}
 
 function windowResized(){
-  resizeCanvas(windowWidth,windowHeight);
+  deviceProfile=resizeResponsiveCanvas();
+  SRC_W=deviceProfile.cameraWidth;
+  SRC_H=deviceProfile.cameraHeight;
+  if(video)video.size(SRC_W,SRC_H);
   const old=paintLayer;
   paintLayer=createGraphics(windowWidth,windowHeight);
   paintLayer.image(old,0,0,windowWidth,windowHeight);
