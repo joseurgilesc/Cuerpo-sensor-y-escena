@@ -1,11 +1,13 @@
 let video,bodyPose,poses=[],particles=[];
-let playBtn,stopBtn,camBtn,pointsBtn,volumeSlider,volumeLabel;
+let playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,volumeSlider,volumeLabel;
 let running=false,showCamera=false,showPoints=true,audioReady=false,soundOn=false;
 let synth,gain,reverb;
-const SRC_W=640,SRC_H=480,NUM_PARTICLES=180;
+let SRC_W=640,SRC_H=480,deviceProfile;const NUM_PARTICLES=180;
 
 async function setup(){
-  createCanvas(windowWidth,windowHeight);
+  deviceProfile=setupResponsiveCanvas();
+  SRC_W=deviceProfile.cameraWidth;
+  SRC_H=deviceProfile.cameraHeight;
   colorMode(HSB,360,100,100,100);
   bodyPose=await ml5.bodyPose();
 
@@ -13,6 +15,7 @@ async function setup(){
   stopBtn=mk('■ Stop',96,stopExperience,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
   pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  fullscreenBtn=createFullscreenControl(150,60);
 
   volumeSlider=createSlider(0,100,18,1);
   volumeSlider.position(12,120);
@@ -178,4 +181,4 @@ function hud(on,d){
 }
 
 function gotPoses(r){poses=r;}
-function windowResized(){resizeCanvas(windowWidth,windowHeight);}
+function windowResized(){deviceProfile=resizeResponsiveCanvas();SRC_W=deviceProfile.cameraWidth;SRC_H=deviceProfile.cameraHeight;if(video)video.size(SRC_W,SRC_H);}
