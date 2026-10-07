@@ -60,7 +60,30 @@ Divide el encuadre en **zonas** para que cada zona dispare una respuesta distint
 - **Zonas laterales**: modifican un parámetro (por ejemplo, panorámica).
 - **Zona cercana/lejana**: modifica intensidad o volumen (por tamaño estimado).
 
-## 4.9. Ejemplo: movimiento corporal controlando una imagen
+## 4.9. Ejemplo inicial: pintura táctil con mouse o dedo
+
+Antes de trabajar con cámara y detección corporal, este ejemplo introduce la interacción de forma directa mediante **mouse, dedo o lápiz táctil**. El gesto deja un trazo pictórico con una paleta cálida y pequeñas variaciones producidas por **ruido Perlin**.
+
+- **Mouse / dedo** → posición del pincel.
+- **Velocidad del gesto** → grosor y cantidad de salpicaduras.
+- **Perlin Noise** → irregularidad orgánica del trazo.
+- **Punto ON/OFF** → muestra u oculta el indicador del puntero.
+- **Limpiar** → borra la composición.
+- **Pantalla completa** → amplía el lienzo al área disponible del dispositivo.
+
+```
+posición ──▶ trazo
+velocidad ──▶ grosor + salpicaduras
+Perlin Noise ──▶ variación orgánica
+```
+
+<a href="../examples/pointer-paint/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/pointer-paint/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+!!! info "Uso"
+    Funciona sin cámara. En computador se pinta arrastrando el mouse; en móvil o tablet, arrastrando el dedo sobre la pantalla.
+
+## 4.10. Ejemplo: movimiento corporal controlando una imagen
 
 Un prototipo básico: la **mano derecha** controla la posición de una forma en pantalla.
 
@@ -81,7 +104,7 @@ En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generat
 !!! info "Uso"
     Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha por el encuadre para desplazar la imagen. El botón **Cámara** permite mostrar u ocultar el video y **Stop** detiene la captura.
 
-## 4.10. Ejemplo: gesto corporal controlando un parámetro sonoro
+## 4.11. Ejemplo: gesto corporal controlando un parámetro sonoro
 
 Un gesto (subir el brazo) controla un filtro de sonido.
 
@@ -93,7 +116,7 @@ Un gesto (subir el brazo) controla un filtro de sonido.
 altura de la mano  ──▶  frecuencia de corte del filtro
 ```
 
-## 4.11. Ejemplo interactivo: seguimiento de manos (Handpose)
+## 4.12. Ejemplo interactivo: seguimiento de manos (Handpose)
 
 Un ejemplo de detección de manos con **ml5.js HandPose**. Las puntas de los dedos actúan como atractores de un sistema de partículas.
 
@@ -103,7 +126,7 @@ Un ejemplo de detección de manos con **ml5.js HandPose**. Las puntas de los ded
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** y autoriza el uso de la cámara cuando el navegador lo solicite.
 
-## 4.12. Ejemplo interactivo: seguimiento corporal con BodyPose
+## 4.13. Ejemplo interactivo: seguimiento corporal con BodyPose
 
 Este segundo ejemplo amplía el seguimiento de manos hacia el **cuerpo completo** mediante **ml5.js BodyPose**. El sistema detecta articulaciones principales y dibuja un esqueleto sobre la imagen de cámara.
 
@@ -124,7 +147,7 @@ distancia entre manos ──▶ densidad visual
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar la cámara y **Stop** para detenerla. En teléfono, usa preferentemente la cámara frontal.
 
-## 4.13. Ejemplo interactivo: cuerpo, color y movimiento
+## 4.14. Ejemplo interactivo: cuerpo, color y movimiento
 
 Este ejemplo utiliza **BodyPose** para transformar el movimiento corporal en una visualidad más expresiva y colorida.
 
@@ -145,7 +168,7 @@ distancia entre manos ──▶ expansión visual
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar la cámara y **Stop** para detenerla. En teléfono, usa preferentemente la cámara frontal.
 
-## 4.14. Ejemplo interactivo: partículas y audio con la mano derecha
+## 4.15. Ejemplo interactivo: partículas y audio con la mano derecha
 
 Este ejemplo combina **BodyPose**, partículas y **Tone.js**. La muñeca derecha se convierte en el centro de atracción del sistema visual, mientras su posición controla un sonido continuo y sutil.
 
@@ -171,7 +194,7 @@ El audio se mantiene deliberadamente suave para funcionar como una capa sonora c
 !!! info "Uso"
     El ejemplo se abre en una nueva pestaña. Pulsa **Play** para iniciar cámara y audio, ajusta el **fader de volumen** y usa **Stop** para detener la experiencia.
 
-## 4.15. Ejemplo interactivo: partículas y gesto sonoro
+## 4.16. Ejemplo interactivo: partículas y gesto sonoro
 
 Este ejemplo combina **BodyPose**, partículas y **Tone.js**, pero el sonido no está activo de forma permanente: aparece mediante un gesto corporal.
 
@@ -193,7 +216,7 @@ manos juntas ──▶ sonido + concentración de partículas
 !!! info "Uso"
     Pulsa **Play** y autoriza la cámara. Acerca ambas manos entre sí para activar el sonido; sepáralas para apagarlo. El ejemplo está diseñado para ajustarse al tamaño de pantalla de computador o teléfono.
 
-## 4.16. Ejemplo interactivo: pintura corporal con manos y pies
+## 4.17. Ejemplo interactivo: pintura corporal con manos y pies
 
 Este ejemplo convierte cuatro puntos del cuerpo en **pinceles digitales** y deja un rastro persistente sobre el lienzo. La intención es acercar BodyPose a una lógica de **diseño gráfico y pintura generativa**.
 
@@ -218,7 +241,7 @@ velocidad ──▶ grosor + salpicadura
 !!! info "Uso"
     Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Cámara** y **Limpiar**.
 
-## 4.17. Compatibilidad móvil y controles
+## 4.18. Compatibilidad móvil y controles
 
 Los ejemplos de esta sección se han unificado con los mismos controles básicos:
 
@@ -226,14 +249,15 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Stop**: detiene la cámara y libera el recurso.
 - **Cámara**: muestra u oculta el video cuando el ejemplo lo permite.
 - **Puntos**: activa o desactiva la visualización de los puntos detectados por HandPose o BodyPose.
+- **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
-Los lienzos usan el tamaño disponible de la ventana y reajustan su escala al cambiar la orientación del dispositivo. En teléfonos se solicita preferentemente la cámara frontal.
+El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. Además, la resolución de captura se adapta al dispositivo para equilibrar calidad y rendimiento: aproximadamente **480×360 en móvil, 640×480 en tablet y 960×720 en escritorio**. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
-    El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara.
+    El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. El modo **pantalla completa** puede estar limitado por el navegador o sistema operativo; si no está disponible, el canvas continúa ajustándose al área visible de la ventana.
 
-## 4.18. Problemas frecuentes y soluciones
+## 4.19. Problemas frecuentes y soluciones
 
 | Problema | Causa probable | Solución |
 | --- | --- | --- |
