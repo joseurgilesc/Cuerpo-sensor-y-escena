@@ -171,3 +171,71 @@ function fitCameraToCanvas(containerW, containerH, mediaW, mediaH) {
     ? fitCover(containerW, containerH, mediaW, mediaH)
     : fitContain(containerW, containerH, mediaW, mediaH);
 }
+
+
+const HAND_SKELETON_CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [5,9],[9,10],[10,11],[11,12],
+  [9,13],[13,14],[14,15],[15,16],
+  [13,17],[17,18],[18,19],[19,20],
+  [17,0]
+];
+
+function drawBodySkeletonOverlay(pose, connections, mapPoint, lineColor = '#FFFFFFAA', pointColor = '#FFFFFFFF') {
+  if (!pose || !pose.keypoints || !connections || !connections.length) return;
+
+  push();
+  stroke(lineColor);
+  strokeWeight(2);
+
+  for (const pair of connections) {
+    const a = pose.keypoints[pair[0]];
+    const b = pose.keypoints[pair[1]];
+    if (a && b && a.confidence > 0.25 && b.confidence > 0.25) {
+      const A = mapPoint(a);
+      const B = mapPoint(b);
+      line(A.x, A.y, B.x, B.y);
+    }
+  }
+
+  noStroke();
+  fill(pointColor);
+  for (const kp of pose.keypoints) {
+    if (kp && kp.confidence > 0.25) {
+      const p = mapPoint(kp);
+      circle(p.x, p.y, 7);
+    }
+  }
+  pop();
+}
+
+function drawHandSkeletonOverlay(hands, mapPoint, lineColor = '#FFFFFFAA', pointColor = '#FFFFFFFF') {
+  if (!hands || !hands.length) return;
+
+  push();
+  stroke(lineColor);
+  strokeWeight(2);
+
+  for (const hand of hands) {
+    for (const pair of HAND_SKELETON_CONNECTIONS) {
+      const a = hand.keypoints[pair[0]];
+      const b = hand.keypoints[pair[1]];
+      if (a && b) {
+        const A = mapPoint(a);
+        const B = mapPoint(b);
+        line(A.x, A.y, B.x, B.y);
+      }
+    }
+
+    noStroke();
+    fill(pointColor);
+    for (const kp of hand.keypoints) {
+      if (kp) {
+        const p = mapPoint(kp);
+        circle(p.x, p.y, 7);
+      }
+    }
+  }
+  pop();
+}
