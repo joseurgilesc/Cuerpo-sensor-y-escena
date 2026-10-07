@@ -1,7 +1,12 @@
 // Utilidades compartidas para los ejemplos interactivos.
 function getDeviceProfile() {
-  const w = Math.max(320, window.innerWidth || document.documentElement.clientWidth || 640);
-  const h = Math.max(320, window.innerHeight || document.documentElement.clientHeight || 480);
+  const vv = window.visualViewport;
+  const w = Math.max(1, Math.round(
+    (vv && vv.width) || window.innerWidth || document.documentElement.clientWidth || 640
+  ));
+  const h = Math.max(1, Math.round(
+    (vv && vv.height) || window.innerHeight || document.documentElement.clientHeight || 480
+  ));
   const shortSide = Math.min(w, h);
   const touch = (navigator.maxTouchPoints || 0) > 0 ||
     (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
@@ -126,13 +131,27 @@ function fitContain(containerW, containerH, mediaW, mediaH) {
 }
 
 function createFullscreenControl(x = 132, y = 60) {
-  const button = createButton('⛶ Pantalla completa');
+  const mobile = isMobileSceneDevice(getDeviceProfile());
+  const button = createButton(mobile ? '▣ Modo amplio' : '⛶ Pantalla completa');
   button.position(x, y);
   button.mousePressed(toggleFullscreenSafe);
   return button;
 }
 
 async function toggleFullscreenSafe() {
+  const profile = getDeviceProfile();
+
+  // En móvil evitamos Fullscreen API porque algunos navegadores producen
+  // un pantallazo blanco al reconstruir el viewport.
+  if (isMobileSceneDevice(profile)) {
+    if (sceneModeActive) {
+      await leaveMobileSceneMode();
+    } else {
+      enterMobileSceneMode();
+    }
+    return;
+  }
+
   try {
     if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
       await document.documentElement.requestFullscreen();
@@ -141,9 +160,7 @@ async function toggleFullscreenSafe() {
     } else if (typeof fullscreen === 'function') {
       fullscreen(!fullscreen());
     }
-  } catch (err) {
-    // Algunos navegadores móviles no permiten fullscreen para documentos HTML.
-  }
+  } catch (err) {}
 
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
@@ -293,18 +310,56 @@ function setSceneControlsVisible(visible) {
   }
 }
 
-async function requestSceneFullscreen() {
-  try {
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      await document.documentElement.requestFullscreen();
+function ensureImmersiveStyles() {
+  if (document.getElementById('scene-immersive-style')) return;
+
+  const style = document.createElement('style');
+  style.id = 'scene-immersive-style';
+  style.textContent = `
+    html.scene-immersive,
+    body.scene-immersive {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      background: #000 !important;
     }
-  } catch (err) {
-    // iOS/Safari y algunos navegadores pueden no permitir fullscreen de documento.
-  }
+
+    body.scene-immersive canvas,
+    body.scene-immersive .p5Canvas {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      z-index: 1 !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function applyImmersiveLayout() {
+  ensureImmersiveStyles();
+  document.documentElement.classList.add('scene-immersive');
+  document.body.classList.add('scene-immersive');
+
+  // Recalcula el canvas con el viewport realmente visible.
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 40);
+}
+
+function removeImmersiveLayout() {
+  document.documentElement.classList.remove('scene-immersive');
+  document.body.classList.remove('scene-immersive');
 
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
-  }, 180);
+  }, 40);
 }
 
 function showSceneHint() {
@@ -366,9 +421,7 @@ function enterMobileSceneMode() {
   if (!isMobileSceneDevice(profile)) return;
 
   sceneModeActive = true;
-
-  // Debe llamarse directamente desde una interacción del usuario.
-  requestSceneFullscreen();
+  applyImmersiveLayout();
 
   showSceneHint();
   hideSceneControlsSoon(520);
@@ -378,16 +431,7 @@ async function leaveMobileSceneMode() {
   sceneModeActive = false;
   clearTimeout(sceneHideTimer);
   setSceneControlsVisible(true);
-
-  try {
-    if (document.fullscreenElement && document.exitFullscreen) {
-      await document.exitFullscreen();
-    }
-  } catch (err) {}
-
-  setTimeout(() => {
-    window.dispatchEvent(new Event('resize'));
-  }, 150);
+  removeImmersiveLayout();
 }
 
 if (!window.__sceneModeRecoveryInstalled) {
@@ -409,4 +453,17 @@ if (!window.__sceneModeRecoveryInstalled) {
 
     showSceneControlsTemporarily(6500);
   }, true);
+}
+
+
+if (!window.__sceneVisualViewportInstalled && window.visualViewport) {
+  window.__sceneVisualViewportInstalled = true;
+
+  const refreshSceneViewport = () => {
+    if (!sceneModeActive) return;
+    window.dispatchEvent(new Event('resize'));
+  };
+
+  window.visualViewport.addEventListener('resize', refreshSceneViewport);
+  window.visualViewport.addEventListener('scroll', refreshSceneViewport);
 }
