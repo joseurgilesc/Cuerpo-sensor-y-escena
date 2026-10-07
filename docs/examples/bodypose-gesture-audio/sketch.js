@@ -41,6 +41,10 @@ function mk(t,x,f,d=false,y=10){
 
 async function startExperience(){
   if(running)return;
+  showCamera=true;
+  showPoints=true;
+  camBtn.html('👁 Vista: ON');
+  pointsBtn.html('● Esqueleto: ON');
   enterMobileSceneMode();
   await Tone.start();
   if(!audioReady)setupAudio();
