@@ -1,4 +1,4 @@
-let video,bodyPose,poses=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,clearBtn;
+let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn,clearBtn;
 let running=false,showCamera=false,showPoints=true,paintLayer,deviceProfile;
 let SRC_W=640,SRC_H=480;
 const palette={
@@ -21,7 +21,7 @@ async function setup(){
   playBtn=mk('▶ Play',10,startCam);
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Cámara',182,toggleCam,true);
-  pointsBtn=mk('● Puntos: ON',10,togglePoints,false,60);
+  pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
   clearBtn=mk('✕ Limpiar',132,clearPainting,false,60);
   fullscreenBtn=createFullscreenControl(10,110);
 }
@@ -57,7 +57,7 @@ function stopCam(){
 }
 
 function toggleCam(){showCamera=!showCamera;}
-function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
+function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 function clearPainting(){paintLayer.clear();previous={};}
 
 function fit(){
@@ -81,7 +81,7 @@ function draw(){
   if(running&&poses.length) paintPose(poses[0]);
 
   image(paintLayer,0,0);
-  if(showPoints&&running&&poses.length) drawPosePoints(poses[0]);
+  if(showPoints&&running&&poses.length) drawBodySkeletonOverlay(poses[0],connections,mp,'#202020AA','#202020FF');
   drawBrushMarkers();
   hud();
 }
@@ -154,7 +154,7 @@ function hud(){
   text('Muévete para dibujar; los gestos rápidos salpican',24,187);
 }
 
-function gotPoses(r){poses=r;}
+function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}
 
 function windowResized(){
   deviceProfile=resizeResponsiveCanvas();
