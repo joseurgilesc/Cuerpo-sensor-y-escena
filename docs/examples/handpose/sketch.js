@@ -47,8 +47,7 @@ async function setup() {
 }
 
 function startCam() {
-  video = createCapture({ video: { facingMode: 'user' }, audio: false }, videoReady);
-  video.size(SRC_W, SRC_H);
+  video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
   video.hide();
 
   playBtn.attribute('disabled', '');
@@ -57,6 +56,9 @@ function startCam() {
 }
 
 function videoReady() {
+  const dims = configureVideoElement(video, deviceProfile);
+  SRC_W = dims.width;
+  SRC_H = dims.height;
   handPose.detectStart(video, gotHands);
 }
 
@@ -174,7 +176,12 @@ class Particle {
 
 function windowResized() {
   deviceProfile = resizeResponsiveCanvas();
-  SRC_W = deviceProfile.cameraWidth;
-  SRC_H = deviceProfile.cameraHeight;
-  if (video) video.size(SRC_W, SRC_H);
+  if (video) {
+    const dims = configureVideoElement(video, deviceProfile);
+    SRC_W = dims.width;
+    SRC_H = dims.height;
+  } else {
+    SRC_W = deviceProfile.cameraWidth;
+    SRC_H = deviceProfile.cameraHeight;
+  }
 }
