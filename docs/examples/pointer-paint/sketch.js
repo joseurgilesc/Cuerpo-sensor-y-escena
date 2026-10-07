@@ -16,6 +16,7 @@ function setup(){
   pointerBtn.position(108,10);
   pointerBtn.mousePressed(togglePointer);
 
+  createControlsVisibilityButton();
 }
 
 function draw(){
