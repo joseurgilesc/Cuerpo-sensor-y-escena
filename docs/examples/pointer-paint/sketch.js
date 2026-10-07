@@ -81,17 +81,17 @@ function continueStroke(x,y){
 }
 function endStroke(){lastX=null;lastY=null;}
 
-function mousePressed(){beginStroke(mouseX,mouseY);}
+function mousePressed(){enterMobileSceneMode();beginStroke(mouseX,mouseY);}
 function mouseDragged(){continueStroke(mouseX,mouseY);return false;}
 function mouseReleased(){endStroke();}
-function touchStarted(){if(touches.length){beginStroke(touches[0].x,touches[0].y);}return false;}
+function touchStarted(){enterMobileSceneMode();if(touches.length){beginStroke(touches[0].x,touches[0].y);}return false;}
 function touchMoved(){if(touches.length)continueStroke(touches[0].x,touches[0].y);return false;}
 function touchEnded(){endStroke();return false;}
 
 function clearPainting(){paintLayer.clear();}
 function togglePointer(){showPointer=!showPointer;pointerBtn.html(showPointer?'● Punto: ON':'○ Punto: OFF');}
 
-function drawHUD(){
+function drawHUD(){if(isMobileSceneModeActive())return;
   noStroke();fill(45,34,28,195);rect(12,112,min(380,width-24),74,12);
   fill(255);textSize(13);text('Pintura táctil con Perlin Noise',24,133);
   textSize(11);text('Mouse o dedo: pinta | velocidad: grosor y salpicadura',24,151);
