@@ -40,7 +40,7 @@ function stopCam(){
 }
 function toggleCam(){showCamera=!showCamera;}
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
-function fit(){const s=min(width/SRC_W,height/SRC_H);return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};}
+function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
 function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
 
 function draw(){
