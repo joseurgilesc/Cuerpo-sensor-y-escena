@@ -112,7 +112,7 @@ En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generat
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha por el encuadre para desplazar la imagen. El botón **Cámara** permite mostrar u ocultar el video y **Stop** detiene la captura.
+    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha por el encuadre para desplazar la imagen. El botón **Vista cámara** muestra u oculta únicamente el video y **Stop** detiene la captura.
 
 ## 4.11. Ejemplo: gesto corporal controlando un parámetro sonoro
 
@@ -149,7 +149,7 @@ Además, los datos corporales controlan un comportamiento visual:
 
 - **Mano derecha** → genera partículas.
 - **Distancia entre ambas manos** → controla la cantidad de partículas.
-- **Tecla C** → muestra u oculta la cámara.
+- **Vista cámara** → muestra u oculta únicamente la imagen de video; la detección continúa activa.
 
 ```
 mano derecha ──▶ emisión de partículas
@@ -169,7 +169,7 @@ Este ejemplo utiliza **BodyPose** para transformar el movimiento corporal en una
 - **Muñecas** → dibujan trazos de color.
 - **Velocidad de las manos** → aumenta el tamaño de los trazos y genera explosiones de partículas.
 - **Distancia entre las manos** → genera un pulso visual central.
-- **Tecla C** → muestra u oculta la cámara.
+- **Vista cámara** → muestra u oculta únicamente la imagen de video; la detección continúa activa.
 
 ```
 posición de las manos ──▶ trazos de color
@@ -198,7 +198,7 @@ Este ejemplo combina **BodyPose**, partículas y **Tone.js**. La muñeca derecha
 - **Play** → inicia la cámara y habilita Tone.js.
 - **Stop** → detiene la cámara y silencia el audio.
 - **Fader de volumen** → ajusta el nivel de la capa sonora.
-- **Cámara** → muestra u oculta la imagen de video.
+- **Vista cámara** → muestra u oculta únicamente la imagen de video; BodyPose sigue funcionando.
 
 ```
 mano derecha X ──▶ paneo
@@ -228,7 +228,7 @@ Este ejemplo combina **BodyPose**, partículas y **Tone.js**, pero el sonido no 
 - **Ambas muñecas** → atraen las partículas.
 - **Fader de volumen** → controla la intensidad del audio.
 - **Play / Stop** → inicia o detiene cámara y audio.
-- **Cámara** → muestra u oculta el video.
+- **Vista cámara** → muestra u oculta únicamente la imagen de video; BodyPose sigue funcionando.
 
 ```
 manos separadas ──▶ silencio
@@ -274,15 +274,15 @@ velocidad ──▶ grosor + salpicadura
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Cámara** y **Limpiar**.
+    Pulsa **Play** y sitúa el cuerpo completo dentro del encuadre para que BodyPose pueda detectar manos y tobillos. Para trabajar con los pies, conviene alejarse de la cámara hasta que se vea la figura completa. El ejemplo incluye **Play**, **Stop**, **Vista cámara**, **Esqueleto**, **Pantalla completa** y **Limpiar**.
 
 ## 4.18. Compatibilidad móvil y controles
 
 Los ejemplos de esta sección se han unificado con los mismos controles básicos:
 
 - **Play**: inicia la cámara y la detección.
-- **Stop**: detiene la cámara y libera el recurso.
-- **Cámara**: muestra u oculta el video cuando el ejemplo lo permite.
+- **Stop**: es el único control que realmente detiene la captura de cámara y la detección.
+- **Vista cámara**: muestra u oculta **solo la imagen de video en el canvas**. La cámara y la detección continúan funcionando en segundo plano.
 - **Esqueleto**: activa o desactiva conjuntamente los **puntos (keypoints)** y las **líneas de conexión** del esqueleto detectado por HandPose o BodyPose.
 - **Pantalla completa**: intenta llevar el ejemplo al modo fullscreen cuando el navegador lo permite.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
