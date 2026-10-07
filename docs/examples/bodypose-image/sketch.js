@@ -1,4 +1,4 @@
-let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn,fullscreenBtn;
+let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
 
@@ -11,7 +11,7 @@ async function setup(){
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Vista: OFF',182,toggleCam,true);
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
-  fullscreenBtn=createFullscreenControl(150,60);
+  
 }
 function mk(t,x,f,d=false,y=10){
   const b=createButton(t); b.position(x,y); b.mousePressed(f);
@@ -24,7 +24,7 @@ function startCam(){
   showPoints=true;
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
-  enterMobileSceneMode();
+  
   video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
     const dims=configureVideoElement(video,deviceProfile);
     SRC_W=dims.width; SRC_H=dims.height;
@@ -36,7 +36,7 @@ function startCam(){
   camBtn.removeAttribute('disabled');
 }
 function stopCam(){
-  leaveMobileSceneMode();
+  
   bodyPose.detectStop();
   if(video){video.remove();video=null;}
   poses=[]; running=false; showCamera=false;
@@ -103,7 +103,7 @@ function drawPoster(x,y,s,a){
   pop();
 }
 
-function hud(){if(isMobileSceneModeActive())return;
+function hud(){
   noStroke(); fill(11,19,43,220);
   rect(12,112,min(360,width-24),62,10);
   fill(255); textSize(13);
