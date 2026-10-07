@@ -5,10 +5,15 @@ let running=false,showCamera=false,showPoints=true,paintLayer,deviceProfile;
 let SRC_W=640,SRC_H=480;
 
 let audioReady=false,currentPreset='ambient',audioEnergy=0;
-let master,analyser,reverb,delay,padSynth,bassSynth,leadSynth,kickSynth;
+let master,analyser,musicGain,gestureGain,reverb,delay,gestureReverb;
+let padSynth,bassSynth,leadSynth,kickSynth,chimeSynth,riseSynth,impactSynth;
 let activeEvents=[];
 let gestureName='Sin gesto';
 let gestureVisual=0;
+let gestureEventText='';
+let gestureEventLife=0;
+let gestureEventColor='#FF8F5C';
+const musicBaseGain=.34;
 let gestureState={handsTogether:false,armsUp:false,armsOpen:false};
 let presetBpm={ambient:72,pulse:96,arp:108};
 
@@ -109,6 +114,8 @@ function stopCam(){
   previous={};
   gestureState={handsTogether:false,armsUp:false,armsOpen:false};
   gestureName='Sin gesto';
+  gestureEventLife=0;
+  gestureEventText='';
   running=false;
   showCamera=false;
   camBtn.html('👁 Vista: OFF');
@@ -141,8 +148,13 @@ function setupAudio(){
   analyser=new Tone.Analyser('fft',64);
   master.connect(analyser);
 
-  reverb=new Tone.Reverb({decay:4.2,wet:.38}).connect(master);
-  delay=new Tone.FeedbackDelay({delayTime:'8n',feedback:.24,wet:.32}).connect(master);
+  // La música de fondo queda deliberadamente más baja que los sonidos gestuales.
+  musicGain=new Tone.Gain(musicBaseGain).connect(master);
+  gestureGain=new Tone.Gain(.95).connect(master);
+
+  reverb=new Tone.Reverb({decay:4.2,wet:.38}).connect(musicGain);
+  delay=new Tone.FeedbackDelay({delayTime:'8n',feedback:.24,wet:.32}).connect(musicGain);
+  gestureReverb=new Tone.Reverb({decay:3.4,wet:.46}).connect(gestureGain);
 
   padSynth=new Tone.PolySynth(Tone.Synth,{
     oscillator:{type:'triangle8'},
@@ -154,7 +166,7 @@ function setupAudio(){
     filter:{Q:2,type:'lowpass',rolloff:-12},
     envelope:{attack:.02,decay:.2,sustain:.35,release:.45},
     filterEnvelope:{attack:.01,decay:.18,sustain:.15,release:.35,baseFrequency:90,octaves:2.3}
-  }).connect(master);
+  }).connect(musicGain);
 
   leadSynth=new Tone.FMSynth({
     harmonicity:1.5,
@@ -167,12 +179,35 @@ function setupAudio(){
     pitchDecay:.05,
     octaves:5,
     envelope:{attack:.001,decay:.22,sustain:0,release:.1}
-  }).connect(master);
+  }).connect(musicGain);
+
+  // Instrumentos reservados para los gestos.
+  chimeSynth=new Tone.PolySynth(Tone.FMSynth,{
+    harmonicity:2.4,
+    modulationIndex:7,
+    oscillator:{type:'sine'},
+    envelope:{attack:.008,decay:.45,sustain:.08,release:1.8},
+    modulation:{type:'sine'},
+    modulationEnvelope:{attack:.005,decay:.28,sustain:.04,release:.8}
+  }).connect(gestureReverb);
+
+  riseSynth=new Tone.FMSynth({
+    harmonicity:1.8,
+    modulationIndex:5,
+    oscillator:{type:'sine'},
+    envelope:{attack:.01,decay:.16,sustain:.14,release:.65},
+    modulation:{type:'triangle'}
+  }).connect(gestureGain);
+
+  impactSynth=new Tone.MembraneSynth({
+    pitchDecay:.12,
+    octaves:7,
+    envelope:{attack:.001,decay:.65,sustain:0,release:.45}
+  }).connect(gestureGain);
 
   audioReady=true;
   updateVolume();
 }
-
 function startPreset(name){
   if(!audioReady)return;
 
@@ -317,7 +352,9 @@ function draw(){
 
   drawAudioPulse();
   drawGestureVisual();
+  drawGestureEvent();
   gestureVisual*=.92;
+  gestureEventLife=max(0,gestureEventLife-1);
 
   if(running&&poses.length){
     updateSoundGestures(poses[0]);
@@ -400,15 +437,12 @@ function updateSoundGestures(pose){
   const armsOpen=handDistance>bodyScale*2.45 &&
     abs(lw.y-rw.y)<bodyScale*1.15;
 
-  if(handsTogether&&!gestureState.handsTogether){
-    triggerHandsTogether();
-  }
-
+  // Un solo evento sonoro por entrada de gesto para que la relación sea clara.
   if(armsUp&&!gestureState.armsUp){
     triggerArmsUp();
-  }
-
-  if(armsOpen&&!gestureState.armsOpen){
+  }else if(handsTogether&&!gestureState.handsTogether){
+    triggerHandsTogether();
+  }else if(armsOpen&&!gestureState.armsOpen){
     triggerArmsOpen();
   }
 
@@ -441,28 +475,73 @@ function updateSoundGestures(pose){
   }
 }
 
+function duckBackground(duration=650){
+  if(!audioReady||!musicGain)return;
+  musicGain.gain.rampTo(.08,.025);
+  setTimeout(()=>{
+    if(audioReady&&musicGain)musicGain.gain.rampTo(musicBaseGain,.32);
+  },duration);
+}
+
+function showGestureEvent(text,color){
+  gestureEventText=text;
+  gestureEventColor=color;
+  gestureEventLife=52;
+  gestureVisual=1;
+}
+
 function triggerHandsTogether(){
   if(!audioReady)return;
+
+  duckBackground(720);
+
   const now=Tone.now();
-  padSynth.triggerAttackRelease(['C4','G4','C5','E5'],'2n',now,.7);
-  gestureVisual=1;
+  chimeSynth.triggerAttackRelease(
+    ['C5','E5','G5','B5'],
+    '2n',
+    now,
+    .95
+  );
+
+  showGestureEvent('SONIDO: CAMPANA / ACORDE','#FFD166');
 }
 
 function triggerArmsUp(){
   if(!audioReady)return;
+
+  duckBackground(900);
+
   const now=Tone.now();
-  const notes=['C5','E5','G5','B5','C6'];
+  const notes=['C5','E5','G5','B5','C6','E6'];
+
   notes.forEach((note,i)=>{
-    leadSynth.triggerAttackRelease(note,'16n',now+i*.11,.5);
+    riseSynth.triggerAttackRelease(
+      note,
+      '16n',
+      now+i*.105,
+      .88
+    );
   });
-  gestureVisual=1;
+
+  showGestureEvent('SONIDO: ASCENSO','#FF6B6B');
 }
 
 function triggerArmsOpen(){
   if(!audioReady)return;
+
+  duckBackground(1000);
+
   const now=Tone.now();
-  padSynth.triggerAttackRelease(['F3','C4','G4','E5'],'1m',now,.5);
-  gestureVisual=.85;
+
+  impactSynth.triggerAttackRelease('C2','4n',now,.95);
+  chimeSynth.triggerAttackRelease(
+    ['C4','G4','D5','A5'],
+    '1m',
+    now+.04,
+    .82
+  );
+
+  showGestureEvent('SONIDO: IMPACTO + ACORDE','#4ECDC4');
 }
 
 function resetGestureModulation(){
@@ -486,6 +565,37 @@ function drawGestureVisual(){
   const r=min(width,height)*(.20+gestureVisual*.24);
   circle(width*.5,height*.5,r);
   circle(width*.5,height*.5,r*1.35);
+
+  pop();
+}
+
+function drawGestureEvent(){
+  if(gestureEventLife<=0)return;
+
+  const a=constrain(map(gestureEventLife,0,52,0,255),0,255);
+  const progress=1-gestureEventLife/52;
+
+  push();
+
+  noStroke();
+  fill(18,22,31,a*.78);
+  rectMode(CENTER);
+  rect(width*.5,height*.34,min(width*.88,440),76,14);
+
+  textAlign(CENTER,CENTER);
+  textStyle(BOLD);
+  textSize(width<420?18:24);
+  fill(gestureEventColor);
+  text(gestureEventText,width*.5,height*.34);
+
+  noFill();
+  stroke(gestureEventColor);
+  strokeWeight(3);
+  circle(
+    width*.5,
+    height*.5,
+    min(width,height)*(.22+progress*.58)
+  );
 
   pop();
 }
@@ -563,7 +673,7 @@ function hud(){
   textSize(11);
   text('Manos y pies: pinceles digitales',24,309);
   text('Ambiental / Pulso / Arpegio: cambia la escena musical',24,326);
-  text('La energía del audio modifica trazo, pulso y salpicaduras',24,343);
+  text('Cada gesto dispara un sonido claramente diferente',24,343);
   text('Gesto: '+gestureName,24,360);
   text('Música: '+currentPreset+'  |  energía: '+nf(audioEnergy,1,2),24,377);
 }
