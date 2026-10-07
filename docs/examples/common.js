@@ -247,3 +247,166 @@ function drawHandSkeletonOverlay(hands, mapPoint, lineColor = '#FFFFFFAA', point
   }
   pop();
 }
+
+
+// ─────────────────────────────────────────────────────────────
+// Modo escena móvil: fullscreen + interfaz oculta
+// ─────────────────────────────────────────────────────────────
+let sceneModeActive = false;
+let sceneControlsVisible = true;
+let sceneHideTimer = null;
+
+function isMobileSceneDevice(profile = getDeviceProfile()) {
+  return profile.type === 'mobile' || profile.type === 'tablet';
+}
+
+function isMobileSceneModeActive() {
+  return sceneModeActive;
+}
+
+function getSceneUiElements() {
+  return Array.from(document.body.children).filter(el => {
+    const tag = el.tagName;
+    if (tag === 'CANVAS' || tag === 'SCRIPT' || tag === 'VIDEO') return false;
+    if (el.dataset && el.dataset.sceneExempt === 'true') return false;
+    return true;
+  });
+}
+
+function setSceneControlsVisible(visible) {
+  sceneControlsVisible = visible;
+
+  for (const el of getSceneUiElements()) {
+    if (visible) {
+      if (el.dataset && Object.prototype.hasOwnProperty.call(el.dataset, 'sceneDisplay')) {
+        el.style.display = el.dataset.sceneDisplay;
+        delete el.dataset.sceneDisplay;
+      } else {
+        el.style.display = '';
+      }
+    } else {
+      if (el.dataset && !Object.prototype.hasOwnProperty.call(el.dataset, 'sceneDisplay')) {
+        el.dataset.sceneDisplay = el.style.display || '';
+      }
+      el.style.display = 'none';
+    }
+  }
+}
+
+async function requestSceneFullscreen() {
+  try {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch (err) {
+    // iOS/Safari y algunos navegadores pueden no permitir fullscreen de documento.
+  }
+
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 180);
+}
+
+function showSceneHint() {
+  let hint = document.getElementById('scene-mode-hint');
+
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'scene-mode-hint';
+    hint.dataset.sceneExempt = 'true';
+    hint.textContent = 'Toca la esquina superior derecha para mostrar controles';
+    Object.assign(hint.style, {
+      position: 'fixed',
+      right: '12px',
+      top: '12px',
+      zIndex: '99999',
+      maxWidth: '250px',
+      padding: '8px 10px',
+      borderRadius: '10px',
+      background: 'rgba(0,0,0,.58)',
+      color: '#fff',
+      font: '12px system-ui, sans-serif',
+      pointerEvents: 'none',
+      opacity: '0',
+      transition: 'opacity .25s ease'
+    });
+    document.body.appendChild(hint);
+  }
+
+  hint.style.display = 'block';
+  requestAnimationFrame(() => { hint.style.opacity = '1'; });
+
+  setTimeout(() => {
+    hint.style.opacity = '0';
+    setTimeout(() => { hint.style.display = 'none'; }, 280);
+  }, 2200);
+}
+
+function hideSceneControlsSoon(delay = 420) {
+  clearTimeout(sceneHideTimer);
+  sceneHideTimer = setTimeout(() => {
+    if (!sceneModeActive) return;
+    setSceneControlsVisible(false);
+  }, delay);
+}
+
+function showSceneControlsTemporarily(duration = 6000) {
+  if (!sceneModeActive) return;
+
+  setSceneControlsVisible(true);
+  clearTimeout(sceneHideTimer);
+
+  sceneHideTimer = setTimeout(() => {
+    if (sceneModeActive) setSceneControlsVisible(false);
+  }, duration);
+}
+
+function enterMobileSceneMode() {
+  const profile = getDeviceProfile();
+  if (!isMobileSceneDevice(profile)) return;
+
+  sceneModeActive = true;
+
+  // Debe llamarse directamente desde una interacción del usuario.
+  requestSceneFullscreen();
+
+  showSceneHint();
+  hideSceneControlsSoon(520);
+}
+
+async function leaveMobileSceneMode() {
+  sceneModeActive = false;
+  clearTimeout(sceneHideTimer);
+  setSceneControlsVisible(true);
+
+  try {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      await document.exitFullscreen();
+    }
+  } catch (err) {}
+
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 150);
+}
+
+if (!window.__sceneModeRecoveryInstalled) {
+  window.__sceneModeRecoveryInstalled = true;
+
+  document.addEventListener('pointerdown', event => {
+    if (!sceneModeActive || sceneControlsVisible) return;
+
+    const hotspot = 78;
+    const inTopRight =
+      event.clientX >= window.innerWidth - hotspot &&
+      event.clientY <= hotspot;
+
+    if (!inTopRight) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+    showSceneControlsTemporarily(6500);
+  }, true);
+}
