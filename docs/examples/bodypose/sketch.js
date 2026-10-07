@@ -5,7 +5,7 @@ function mk(t,x,f,d=false,y=10){const b=createButton(t);b.position(x,y);b.mouseP
 function startCam(){if(running)return;video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{const dims=configureVideoElement(video,deviceProfile);SRC_W=dims.width;SRC_H=dims.height;bodyPose.detectStart(video,gotPoses);running=true;});video.hide();playBtn.attribute('disabled','');stopBtn.removeAttribute('disabled');camBtn.removeAttribute('disabled');}
 function stopCam(){bodyPose.detectStop();if(video){video.remove();video=null;}poses=[];running=false;showCamera=false;playBtn.removeAttribute('disabled');stopBtn.attribute('disabled','');camBtn.attribute('disabled','');}
 function toggleCam(){showCamera=!showCamera;}function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Puntos: ON':'○ Puntos: OFF');}
-function fit(){const s=min(width/SRC_W,height/SRC_H);return{s,ox:(width-SRC_W*s)/2,oy:(height-SRC_H*s)/2};}
+function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
 function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
 function draw(){background(12);const {s,ox,oy}=fit();if(showCamera&&video){push();translate(width,0);scale(-1,1);tint(255,120);image(video,ox,oy,SRC_W*s,SRC_H*s);pop();}for(const p of particles){p.update();p.display();}drawBody();hud();}
 function drawBody(){if(!running||!poses.length)return;const pose=poses[0];stroke(255);strokeWeight(2);for(const c of connections){const a=pose.keypoints[c[0]],b=pose.keypoints[c[1]];if(a.confidence>.2&&b.confidence>.2){const A=mp(a),B=mp(b);line(A.x,A.y,B.x,B.y);}}if(showPoints){noStroke();fill(255);for(const k of pose.keypoints){if(k.confidence>.2){const p=mp(k);circle(p.x,p.y,8);}}}
