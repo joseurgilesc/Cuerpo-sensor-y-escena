@@ -300,6 +300,7 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 - **Stop**: es el único control que realmente detiene la captura de cámara y la detección.
 - **Vista cámara**: muestra u oculta **solo la imagen de video en el canvas**. La cámara y la detección continúan funcionando en segundo plano.
 - **Esqueleto**: activa o desactiva conjuntamente los **puntos (keypoints)** y las **líneas de conexión** del esqueleto detectado por HandPose o BodyPose.
+- **Ocultar controles**: botón manual en la esquina inferior derecha. Oculta todos los botones, sliders y etiquetas sin modificar la cámara ni el tamaño del canvas. El mismo botón cambia a **Mostrar controles** para recuperarlos.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
 El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara toma como referencia la **proporción real entregada por el dispositivo** y nunca se estira.
