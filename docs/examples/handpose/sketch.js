@@ -1,14 +1,18 @@
 let handPose;
 let video;
 let hands = [];
-let playBtn, stopBtn, camBtn, pointsBtn;
+let playBtn, stopBtn, camBtn, pointsBtn, fullscreenBtn;
+let deviceProfile;
+let SRC_W = 640, SRC_H = 480;
 let showCam = false;
 let showPoints = true;
 let particles = [];
 const NUM_PARTICLES = 400;
 
 async function setup() {
-  createCanvas(windowWidth, windowHeight);
+  deviceProfile = setupResponsiveCanvas();
+  SRC_W = deviceProfile.cameraWidth;
+  SRC_H = deviceProfile.cameraHeight;
   colorMode(HSB, 360, 100, 100, 100);
 
   handPose = await ml5.handPose();
@@ -34,6 +38,8 @@ async function setup() {
   pointsBtn.position(10, 60);
   pointsBtn.mousePressed(togglePoints);
 
+  fullscreenBtn = createFullscreenControl(150, 60);
+
   // Crea las partículas
   for (let i = 0; i < NUM_PARTICLES; i++) {
     particles.push(new Particle());
@@ -42,7 +48,7 @@ async function setup() {
 
 function startCam() {
   video = createCapture({ video: { facingMode: 'user' }, audio: false }, videoReady);
-  video.size(640, 480);
+  video.size(SRC_W, SRC_H);
   video.hide();
 
   playBtn.attribute('disabled', '');
@@ -84,9 +90,9 @@ function draw() {
   background(0, 25); // estela suave de las partículas
 
   // Mapeo "contain" (sin zoom)
-  let s = min(width / 640, height / 480);
-  let ox = (width - 640 * s) / 2;
-  let oy = (height - 480 * s) / 2;
+  let s = min(width / SRC_W, height / SRC_H);
+  let ox = (width - SRC_W * s) / 2;
+  let oy = (height - SRC_H * s) / 2;
 
   // Puntas de los dedos (índices 4, 8, 12, 16, 20) como atractores
   let attractors = [];
@@ -99,7 +105,7 @@ function draw() {
 
   // Dibuja la cámara solo si está activada
   if (showCam && video) {
-    image(video, ox, oy, 640 * s, 480 * s);
+    image(video, ox, oy, SRC_W * s, SRC_H * s);
   }
 
   if (showPoints) drawHandPoints(s, ox, oy);
@@ -167,5 +173,8 @@ class Particle {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  deviceProfile = resizeResponsiveCanvas();
+  SRC_W = deviceProfile.cameraWidth;
+  SRC_H = deviceProfile.cameraHeight;
+  if (video) video.size(SRC_W, SRC_H);
 }
