@@ -28,8 +28,8 @@ async function setup() {
   stopBtn.mousePressed(stopCam);
   stopBtn.attribute('disabled', '');
 
-  // Botón mostrar/ocultar cámara
-  camBtn = createButton('👁 Cámara');
+  // Botón mostrar/ocultar solo la vista de cámara
+  camBtn = createButton('👁 Vista: OFF');
   camBtn.position(190, 10);
   camBtn.mousePressed(toggleCam);
   camBtn.attribute('disabled', '');
@@ -70,6 +70,7 @@ function stopCam() {
   }
   hands = [];
   showCam = false;
+  camBtn.html('👁 Vista: OFF');
   playBtn.removeAttribute('disabled');
   stopBtn.attribute('disabled', '');
   camBtn.attribute('disabled', '');
@@ -77,6 +78,7 @@ function stopCam() {
 
 function toggleCam() {
   showCam = !showCam;
+  camBtn.html(showCam ? '👁 Vista: ON' : '👁 Vista: OFF');
 }
 
 function togglePoints() {
@@ -106,7 +108,7 @@ function draw() {
     }
   }
 
-  // Dibuja la cámara solo si está activada
+  // Dibuja la vista de cámara solo si está activada
   if (showCam && video) {
     image(video, ox, oy, SRC_W * s, SRC_H * s);
   }
@@ -126,7 +128,7 @@ function draw() {
   noStroke();
   textAlign(LEFT, TOP);
   textSize(14);
-  text(showCam ? 'Cámara: ON' : 'Cámara: OFF', 10, 50);
+  text(showCam ? 'Vista cámara: ON' : 'Vista cámara: OFF', 10, 50);
 }
 
 function drawHandPoints(s, ox, oy) {
