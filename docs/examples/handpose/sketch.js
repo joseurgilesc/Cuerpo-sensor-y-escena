@@ -92,9 +92,10 @@ function draw() {
   background(0, 25); // estela suave de las partículas
 
   // Mapeo "contain" (sin zoom)
-  let s = min(width / SRC_W, height / SRC_H);
-  let ox = (width - SRC_W * s) / 2;
-  let oy = (height - SRC_H * s) / 2;
+  const cameraFit = fitCameraToCanvas(width, height, SRC_W, SRC_H);
+  let s = cameraFit.scale;
+  let ox = cameraFit.x;
+  let oy = cameraFit.y;
 
   // Puntas de los dedos (índices 4, 8, 12, 16, 20) como atractores
   let attractors = [];
