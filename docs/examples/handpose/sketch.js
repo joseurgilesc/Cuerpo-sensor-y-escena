@@ -1,7 +1,7 @@
 let handPose;
 let video;
 let hands = [];
-let playBtn, stopBtn, camBtn, pointsBtn, fullscreenBtn;
+let playBtn, stopBtn, camBtn, pointsBtn;
 let deviceProfile;
 let SRC_W = 640, SRC_H = 480;
 let showCam = false;
@@ -38,8 +38,7 @@ async function setup() {
   pointsBtn.position(10, 60);
   pointsBtn.mousePressed(togglePoints);
 
-  fullscreenBtn = createFullscreenControl(150, 60);
-
+  
   // Crea las partículas
   for (let i = 0; i < NUM_PARTICLES; i++) {
     particles.push(new Particle());
@@ -51,7 +50,7 @@ function startCam() {
   showPoints = true;
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
-  enterMobileSceneMode();
+  
   video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
   video.hide();
 
@@ -68,7 +67,7 @@ function videoReady() {
 }
 
 function stopCam() {
-  leaveMobileSceneMode();
+  
   handPose.detectStop();
   if (video) {
     video.remove();
@@ -130,13 +129,11 @@ function draw() {
   }
 
   // Estado de la cámara: se oculta en modo escena móvil.
-  if (!isMobileSceneModeActive()) {
-    fill(255);
-    noStroke();
-    textAlign(LEFT, TOP);
-    textSize(14);
-    text(showCam ? 'Vista cámara: ON' : 'Vista cámara: OFF', 10, 50);
-  }
+  fill(255);
+  noStroke();
+  textAlign(LEFT, TOP);
+  textSize(14);
+  text(showCam ? 'Vista cámara: ON' : 'Vista cámara: OFF', 10, 50);
 }
 
 function drawHandPoints(s, ox, oy) {
