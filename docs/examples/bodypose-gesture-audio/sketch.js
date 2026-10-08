@@ -58,7 +58,7 @@ async function startExperience(){
     bodyPose.detectStart(video,gotPoses);
     running=true;
   });
-  video.hide();
+  keepVideoCaptureActive(video);
 
   playBtn.attribute('disabled','');
   stopBtn.removeAttribute('disabled');
