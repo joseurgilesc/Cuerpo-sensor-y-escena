@@ -100,7 +100,7 @@ X de la muñeca  ──▶  posición horizontal de la forma
 Y de la muñeca  ──▶  posición vertical de la forma
 ```
 
-En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generativo**: su posición mueve la composición, su altura modifica la escala y la orientación del brazo añade una ligera rotación. En móvil, el cartel usa **toda la pantalla como espacio interactivo**, mientras la cámara mantiene un encuadre más abierto para evitar un zoom excesivo.
+En el ejemplo interactivo, la mano derecha controla un **círculo semitransparente**. La posición de la muñeca mueve el círculo por toda la pantalla y la altura de la mano modifica suavemente su tamaño. La cámara mantiene un encuadre abierto para evitar un zoom excesivo.
 
 <a href="../examples/bodypose-image/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-image/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
@@ -111,7 +111,7 @@ En el ejemplo interactivo, la mano derecha controla un **cartel gráfico generat
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha para desplazar el cartel por toda la pantalla. **Vista cámara** oculta únicamente las capas de video; BodyPose continúa detectando en segundo plano y el cartel sigue respondiendo. **Stop** sí detiene la captura y la detección.
+    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha para desplazar el círculo por toda la pantalla. **Vista cámara** oculta únicamente la imagen de video en el canvas: la cámara y BodyPose continúan funcionando en segundo plano, por lo que el círculo sigue respondiendo. **Stop** sí detiene la captura y la detección.
 
 ## 4.11. Ejemplo: gesto corporal controlando un parámetro sonoro
 
