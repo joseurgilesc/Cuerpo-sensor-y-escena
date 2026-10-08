@@ -51,10 +51,17 @@ async function startExperience(){
   await Tone.start();
   if(!audioReady)setupAudio();
 
-  video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
-    const dims=configureVideoElement(video,deviceProfile);
+  video=createCapture(getNaturalCameraConstraints(deviceProfile),async()=>{
+    let dims=configureVideoElement(video,deviceProfile);
     SRC_W=dims.width;
     SRC_H=dims.height;
+
+    await setMinimumCameraZoom(video);
+
+    dims=configureVideoElement(video,deviceProfile);
+    SRC_W=dims.width;
+    SRC_H=dims.height;
+
     bodyPose.detectStart(video,gotPoses);
     running=true;
   });
@@ -87,7 +94,7 @@ function stopExperience(){
   camBtn.attribute('disabled','');
 }
 
-function toggleCam(){showCamera=!showCamera;camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');}
+function toggleCam(){showCamera=!showCamera;camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');if(video)keepVideoCaptureActive(video);}
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 function updateVolume(){
   const v=Number(volumeSlider.value());
@@ -95,17 +102,18 @@ function updateVolume(){
   if(audioReady&&soundOn)gain.gain.rampTo((v/100)*.12,.12);
 }
 
-function fit(){const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);return{s:f.scale,ox:f.x,oy:f.y};}
-function mp(k){const {s,ox,oy}=fit();return{x:width-(k.x*s+ox),y:k.y*s+oy};}
+function fit(){return fitCameraCoverCrop(width,height,SRC_W,SRC_H);}
+function mp(k){return mapPointToCameraCrop(k,fit(),true);}
 function kp(p,n){return p.keypoints.find(k=>k.name===n);}
 
 function draw(){
+  pumpHiddenVideoFrame(video);
   background(210,45,7,22);
-  const {s,ox,oy}=fit();
+  const f=fit();
 
   if(showCamera&&video){
     push();tint(255,28);translate(width,0);scale(-1,1);
-    image(video,ox,oy,SRC_W*s,SRC_H*s);pop();
+    image(video,f.dx,f.dy,f.dw,f.dh,f.sx,f.sy,f.sw,f.sh);pop();
   }
 
   let left=null,right=null,handsClose=false,handDistance=999;
