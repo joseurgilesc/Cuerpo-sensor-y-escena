@@ -1,6 +1,7 @@
 let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
+const EXAMPLE_VERSION='V5';
 
 async function setup(){
   deviceProfile=setupResponsiveCanvas();
@@ -11,12 +12,33 @@ async function setup(){
   stopBtn=mk('■ Stop',96,stopCam,true);
   camBtn=mk('👁 Vista: OFF',182,toggleCam,true);
   pointsBtn=mk('● Esqueleto: ON',10,togglePoints,false,60);
+  createVersionBadge();
   createControlsVisibilityButton();
 }
 function mk(t,x,f,d=false,y=10){
   const b=createButton(t); b.position(x,y); b.mousePressed(f);
   if(d) b.attribute('disabled','');
   return b;
+}
+
+function createVersionBadge(){
+  const badge=createDiv(EXAMPLE_VERSION);
+  badge.elt.dataset.persistentUi='true';
+  Object.assign(badge.elt.style,{
+    position:'fixed',
+    left:'14px',
+    bottom:'16px',
+    zIndex:'10001',
+    padding:'5px 9px',
+    borderRadius:'8px',
+    background:'rgba(11,19,43,.82)',
+    color:'#fff',
+    fontFamily:'system-ui,sans-serif',
+    fontSize:'13px',
+    fontWeight:'700',
+    letterSpacing:'.04em',
+    pointerEvents:'none'
+  });
 }
 function startCam(){
   if(running) return;
@@ -45,7 +67,13 @@ function stopCam(){
   stopBtn.attribute('disabled','');
   camBtn.attribute('disabled','');
 }
-function toggleCam(){showCamera=!showCamera;camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');}
+function toggleCam(){
+  showCamera=!showCamera;
+  camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');
+
+  // Vista solo afecta el dibujo. La captura y BodyPose permanecen activos.
+  if(video) keepVideoCaptureActive(video);
+}
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
 // Encuadre propio del 4.10: prioriza ver más cuerpo y evita el zoom fuerte.
 function fitCamera410(){
@@ -98,7 +126,18 @@ function drawCameraBackdrop(){
   pop();
 }
 
+function drawVideoHeartbeat(){
+  if(!video || !video.elt || video.elt.readyState<2) return;
+
+  // Fuerza al navegador a entregar un fotograma nuevo incluso con Vista OFF.
+  // Se dibuja antes del background, por lo que nunca queda visible.
+  push();
+  image(video,0,0,2,2);
+  pop();
+}
+
 function draw(){
+  drawVideoHeartbeat();
   background(245,242,235);
   const {s,ox,oy}=fitCamera410();
 
