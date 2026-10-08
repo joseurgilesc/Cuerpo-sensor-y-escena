@@ -30,7 +30,7 @@ function startCam(){
     SRC_W=dims.width; SRC_H=dims.height;
     bodyPose.detectStart(video,gotPoses); running=true;
   });
-  video.hide();
+  keepVideoCaptureActive(video);
   playBtn.attribute('disabled','');
   stopBtn.removeAttribute('disabled');
   camBtn.removeAttribute('disabled');
