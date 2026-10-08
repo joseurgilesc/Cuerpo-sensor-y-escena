@@ -10,7 +10,57 @@ El proyecto funciona como un laboratorio transversal en el que confluyen tres as
 - **Innovación con Nuevos Medios**: código, sensores, arquitectura del sistema y experimentación tecnológica.
 - **Danza y Nuevas Tecnologías**: gesto, espacio, dramaturgia corporal y respuesta del sistema interactivo.
 
-## 1.2. Objetivo de la implementación
+## 1.2. Artes, nuevos medios e inteligencia artificial
+
+Las artes y los nuevos medios han evolucionado junto con la tecnología: fotografía, video, sonido digital, programación, sensores e interacción. La **inteligencia artificial** amplía este proceso al facilitar la generación, modificación y exploración de imágenes, sonidos, textos y código.
+
+```
+ARTE → TECNOLOGÍA → INTERACCIÓN → IA → NUEVAS FORMAS DE CREACIÓN
+```
+
+### Ventajas
+
+- Prototipar ideas con rapidez.
+- Aprender, corregir y modificar código.
+- Generar variaciones y hacer **remix**.
+- Combinar imagen, sonido, texto e interacción.
+- Dedicar más tiempo a decisiones conceptuales y artísticas.
+
+### Estética y poética
+
+La tecnología responde a **qué podemos hacer**; la estética, a **cómo queremos que se perciba**; y la poética, a **qué queremos sugerir o significar**.
+
+```
+gesto → dato → imagen / sonido → experiencia
+```
+
+Por ejemplo, abrir los brazos puede expandir una visual y abrir un filtro sonoro: una acción técnica puede convertirse en una relación expresiva.
+
+### Trabajar con IA
+
+Conviene trabajar por iteraciones:
+
+```
+idea → prompt → prueba → modificación → remix
+```
+
+**Prompt inicial:**
+
+> Crea un sketch sencillo en p5.js con partículas que sigan el mouse. Usa código simple y comentado.
+
+Después se puede pedir:
+
+> Haz un remix cambiando únicamente color, velocidad y forma de movimiento.
+
+Para probar el código:
+
+```
+ChatGPT → copiar código → editor.p5js.org → sketch.js → ▶ Play
+```
+
+La IA se utiliza como apoyo para **probar, comprender y transformar** ideas; las decisiones estéticas y poéticas siguen siendo responsabilidad del artista.
+
+## 1.3. Objetivo de la implementación
 
 El objetivo técnico es entregar un sistema **funcional, documentado y reproducible** que permita:
 
@@ -23,7 +73,7 @@ El objetivo técnico es entregar un sistema **funcional, documentado y reproduci
 
 El sistema debe poder montarse, calibrarse y operarse siguiendo esta documentación, sin depender del conocimiento interno de una sola persona.
 
-## 1.3. Alcance del ingeniero electrónico (Darío Urgilés)
+## 1.4. Alcance del ingeniero electrónico (Darío Urgilés)
 
 El ingeniero electrónico **Darío Urgilés** es responsable de:
 
@@ -36,7 +86,7 @@ El ingeniero electrónico **Darío Urgilés** es responsable de:
 
 El **diseño pedagógico** —contenidos, actividades, rúbricas y seguimiento— está a cargo del equipo docente: **Rita Rodriguez** (técnico docente) y **José Urgilés** (docente).
 
-## 1.4. Componentes generales del sistema
+## 1.5. Componentes generales del sistema
 
 El sistema se compone de cuatro bloques que se detallan en la sección [2. Arquitectura general](02-arquitectura.md):
 
@@ -65,7 +115,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 !!! info "Marcas y logotipos"
     Los logotipos y marcas pertenecen a sus respectivos propietarios y se utilizan aquí únicamente para identificar las tecnologías del sistema.
 
-## 1.5. Público beneficiario y contextos de uso
+## 1.6. Público beneficiario y contextos de uso
 
 **Público**: estudiantes y docentes de artes escénicas y musicales, con o sin experiencia previa en programación o electrónica.
 
@@ -75,11 +125,11 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 - **Ensayo**: espacio de exploración y ajuste de la interacción.
 - **Escena**: presentación pública del prototipo en condiciones reales.
 
-## 1.6. Glosario técnico
+## 1.7. Glosario técnico
 
 Los términos técnicos usados en esta documentación están definidos en el [Glosario técnico](glosario.md).
 
-## 1.7. Organización del repositorio
+## 1.8. Organización del repositorio
 
 El repositorio [github.com/joseurgilesc/Cuerpo-sensor-y-escena](https://github.com/joseurgilesc/Cuerpo-sensor-y-escena) organiza el proyecto de la siguiente manera:
 
@@ -97,7 +147,7 @@ Cuerpo-sensor-y-escena/
 └── .github/workflows/     # Publicación del sitio en GitHub Pages
 ```
 
-## 1.8. Código, ejemplos y presets disponibles
+## 1.9. Código, ejemplos y presets disponibles
 
 El repositorio incluye, en la medida en que avanza el cronograma:
 
