@@ -111,7 +111,7 @@ En el ejemplo interactivo, la mano derecha controla un **círculo semitransparen
 </div>
 
 !!! info "Uso"
-    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha para desplazar el círculo por toda la pantalla. **Vista cámara** oculta únicamente la imagen de video en el canvas: la cámara y BodyPose continúan funcionando en segundo plano, por lo que el círculo sigue respondiendo. **Stop** sí detiene la captura y la detección. La versión visible en la esquina inferior izquierda permite comprobar qué revisión está cargada; la revisión actual es **V6**. En esta revisión, el video principal se muestra completo y sin zoom; una copia suavizada de la misma cámara ocupa el fondo para llenar toda la pantalla sin deformar el encuadre principal.
+    Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha para desplazar el círculo por toda la pantalla. **Vista cámara** oculta únicamente la imagen de video en el canvas: la cámara y BodyPose continúan funcionando en segundo plano, por lo que el círculo sigue respondiendo. **Stop** sí detiene la captura y la detección. La versión visible en la esquina inferior izquierda permite comprobar qué revisión está cargada; la revisión actual es **V7**. En esta revisión, la cámara se muestra como una sola imagen a pantalla completa. En vertical se aplica un recorte central moderado para llenar el canvas sin el acercamiento extremo de un `cover` convencional.
 
 ## 4.11. Ejemplo: gesto corporal controlando un parámetro sonoro
 
