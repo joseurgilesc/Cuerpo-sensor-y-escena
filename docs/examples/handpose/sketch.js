@@ -39,6 +39,7 @@ async function setup() {
   pointsBtn.mousePressed(togglePoints);
 
   
+  createExampleVersionBadge('V8');
   createControlsVisibilityButton();
 
   // Crea las partículas
