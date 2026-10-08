@@ -95,10 +95,17 @@ async function startCam(){
     }
   }
 
-  video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
-    const dims=configureVideoElement(video,deviceProfile);
+  video=createCapture(getNaturalCameraConstraints(deviceProfile),async()=>{
+    let dims=configureVideoElement(video,deviceProfile);
     SRC_W=dims.width;
     SRC_H=dims.height;
+
+    await setMinimumCameraZoom(video);
+
+    dims=configureVideoElement(video,deviceProfile);
+    SRC_W=dims.width;
+    SRC_H=dims.height;
+
     bodyPose.detectStart(video,gotPoses);
     running=true;
   });
@@ -141,6 +148,7 @@ function stopCam(){
 function toggleCam(){
   showCamera=!showCamera;
   camBtn.html(showCamera?'👁 Vista: ON':'👁 Vista: OFF');
+  if(video)keepVideoCaptureActive(video);
 }
 
 function togglePoints(){
@@ -330,16 +338,15 @@ function updateVolume(){
 }
 
 function fit(){
-  const f=fitCameraToCanvas(width,height,SRC_W,SRC_H);
-  return{s:f.scale,ox:f.x,oy:f.y};
+  return fitCameraCoverCrop(width,height,SRC_W,SRC_H);
 }
 
 function mp(k){
-  const {s,ox,oy}=fit();
-  return{x:width-(k.x*s+ox),y:k.y*s+oy};
+  return mapPointToCameraCrop(k,fit(),true);
 }
 
 function draw(){
+  pumpHiddenVideoFrame(video);
   updateAudioEnergy();
 
   const warmPulse=audioEnergy;
@@ -349,14 +356,14 @@ function draw(){
     232-warmPulse*22
   );
 
-  const {s,ox,oy}=fit();
+  const f=fit();
 
   if(showCamera&&video){
     push();
     tint(255,55);
     translate(width,0);
     scale(-1,1);
-    image(video,ox,oy,SRC_W*s,SRC_H*s);
+    image(video,f.dx,f.dy,f.dw,f.dh,f.sx,f.sy,f.sw,f.sh);
     pop();
   }
 
