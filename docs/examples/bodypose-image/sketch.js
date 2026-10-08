@@ -1,7 +1,7 @@
 let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
-const EXAMPLE_VERSION='V7';
+const EXAMPLE_VERSION='V8';
 
 async function setup(){
   deviceProfile=setupResponsiveCanvas();
@@ -40,6 +40,41 @@ function createVersionBadge(){
     pointerEvents:'none'
   });
 }
+// V8: pedimos una relación de cámara estándar de retrato (9:16), que es
+// mucho más habitual en teléfonos que intentar forzar exactamente la relación
+// de toda la ventana del navegador.
+function getCameraConstraints410(){
+  return{
+    video:{
+      facingMode:{ideal:'user'},
+      width:{ideal:720},
+      height:{ideal:1280},
+      aspectRatio:{ideal:9/16}
+    },
+    audio:false
+  };
+}
+
+// Si el navegador expone control de zoom, usamos el mínimo disponible para
+// conseguir el campo de visión más abierto posible, parecido a la app Cámara.
+async function setMinimumCameraZoom(){
+  try{
+    const stream=video&&video.elt&&video.elt.srcObject;
+    const track=stream&&stream.getVideoTracks?stream.getVideoTracks()[0]:null;
+    if(!track||!track.getCapabilities)return;
+
+    const caps=track.getCapabilities();
+    if(!caps||!caps.zoom)return;
+
+    const minZoom=Number(caps.zoom.min);
+    if(!Number.isFinite(minZoom))return;
+
+    await track.applyConstraints({advanced:[{zoom:minZoom}]});
+  }catch(err){
+    // El control de zoom no está disponible en todos los teléfonos/navegadores.
+  }
+}
+
 function startCam(){
   if(running) return;
   showCamera=true;
@@ -47,10 +82,18 @@ function startCam(){
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
   
-  video=createCapture(getResponsiveCameraConstraints(deviceProfile),()=>{
+  video=createCapture(getCameraConstraints410(),async ()=>{
     const dims=configureVideoElement(video,deviceProfile);
     SRC_W=dims.width; SRC_H=dims.height;
-    bodyPose.detectStart(video,gotPoses); running=true;
+
+    await setMinimumCameraZoom();
+
+    // Volvemos a leer las dimensiones por si el navegador ajustó el stream.
+    const refreshed=configureVideoElement(video,deviceProfile);
+    SRC_W=refreshed.width; SRC_H=refreshed.height;
+
+    bodyPose.detectStart(video,gotPoses);
+    running=true;
   });
   keepVideoCaptureActive(video);
   playBtn.attribute('disabled','');
@@ -75,33 +118,32 @@ function toggleCam(){
   if(video) keepVideoCaptureActive(video);
 }
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
-// V7: encuadre a pantalla completa con recorte moderado.
-// En móvil vertical recortamos una zona central más ancha que la proporción
-// final de la pantalla. Así evitamos el zoom extremo de un cover puro.
+// V8: pantalla completa SIN deformar la imagen.
+// El rectángulo recortado del video tiene exactamente la misma proporción que
+// el canvas. Por eso al dibujarlo a pantalla completa la cara mantiene su
+// relación ancho/alto natural.
 function fitCamera410(){
-  const portrait=height>width;
+  const canvasAspect=width/max(1,height);
+  const sourceAspect=SRC_W/max(1,SRC_H);
 
-  if(!portrait){
-    return{
-      sx:0, sy:0, sw:SRC_W, sh:SRC_H,
-      dx:0, dy:0, dw:width, dh:height
-    };
+  let sx=0;
+  let sy=0;
+  let sw=SRC_W;
+  let sh=SRC_H;
+
+  if(sourceAspect>canvasAspect){
+    // La cámara es más ancha que la pantalla: recortamos solo los laterales.
+    sw=SRC_H*canvasAspect;
+    sx=(SRC_W-sw)/2;
+  }else if(sourceAspect<canvasAspect){
+    // La cámara es más alta que la pantalla: recortamos arriba y abajo.
+    sh=SRC_W/canvasAspect;
+    sy=(SRC_H-sh)/2;
   }
 
-  // Mantener aprox. 72% del ancho original de una cámara horizontal 4:3.
-  // Esto da una vista más abierta que un cover 9:16 convencional.
-  const keepWidth=SRC_W*0.72;
-  const sx=(SRC_W-keepWidth)/2;
-
   return{
-    sx,
-    sy:0,
-    sw:keepWidth,
-    sh:SRC_H,
-    dx:0,
-    dy:0,
-    dw:width,
-    dh:height
+    sx,sy,sw,sh,
+    dx:0,dy:0,dw:width,dh:height
   };
 }
 
@@ -131,8 +173,8 @@ function drawFullScreenCamera(){
   scale(-1,1);
   tint(255,210);
 
-  // p5 image con rectángulo de origen: recorte central moderado,
-  // dibujado como una sola imagen que llena todo el canvas.
+  // El recorte fuente y el canvas tienen la misma relación de aspecto:
+  // ocupa toda la pantalla sin estirar ni achatar la imagen.
   image(
     video,
     f.dx,f.dy,f.dw,f.dh,
