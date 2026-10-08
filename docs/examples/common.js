@@ -91,19 +91,18 @@ function keepVideoCaptureActive(video) {
   elt.playsInline = true;
   elt.autoplay = true;
 
-  // Mantener el <video> técnicamente visible dentro del viewport evita que
-  // algunos navegadores móviles suspendan sus fotogramas. Es solo 1x1 px y
-  // prácticamente transparente: la vista grande sigue dependiendo
-  // exclusivamente de showCamera + image(video, ...).
+  // Mantener el <video> realmente renderizado dentro del viewport evita que
+  // algunos navegadores móviles congelen sus fotogramas. Es solo 2x2 px.
+  // La vista grande sigue dependiendo exclusivamente de showCamera.
   Object.assign(elt.style, {
     position: 'fixed',
-    left: '0px',
-    top: '0px',
-    width: '1px',
-    height: '1px',
-    opacity: '0.01',
+    left: '1px',
+    top: '1px',
+    width: '2px',
+    height: '2px',
+    opacity: '1',
     pointerEvents: 'none',
-    zIndex: '-1',
+    zIndex: '1',
     display: 'block',
     visibility: 'visible'
   });
@@ -310,6 +309,7 @@ function toggleExampleControls(toggleButton) {
 
   controls.forEach(el => {
     if (el === toggleButton.elt) return;
+    if (el.dataset && el.dataset.persistentUi === 'true') return;
 
     if (exampleControlsHidden) {
       if (!Object.prototype.hasOwnProperty.call(el.dataset, 'controlsDisplay')) {
