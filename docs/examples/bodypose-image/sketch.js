@@ -1,7 +1,7 @@
 let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
-const EXAMPLE_VERSION='V6';
+const EXAMPLE_VERSION='V7';
 
 async function setup(){
   deviceProfile=setupResponsiveCanvas();
@@ -75,48 +75,69 @@ function toggleCam(){
   if(video) keepVideoCaptureActive(video);
 }
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
-// V6: la cámara principal conserva siempre el fotograma completo.
-// No usa cover, por lo tanto no recorta ni produce sensación de zoom.
+// V7: encuadre a pantalla completa con recorte moderado.
+// En móvil vertical recortamos una zona central más ancha que la proporción
+// final de la pantalla. Así evitamos el zoom extremo de un cover puro.
 function fitCamera410(){
-  const f=fitContain(width,height,SRC_W,SRC_H);
-  return{s:f.scale,ox:f.x,oy:f.y};
+  const portrait=height>width;
+
+  if(!portrait){
+    return{
+      sx:0, sy:0, sw:SRC_W, sh:SRC_H,
+      dx:0, dy:0, dw:width, dh:height
+    };
+  }
+
+  // Mantener aprox. 72% del ancho original de una cámara horizontal 4:3.
+  // Esto da una vista más abierta que un cover 9:16 convencional.
+  const keepWidth=SRC_W*0.72;
+  const sx=(SRC_W-keepWidth)/2;
+
+  return{
+    sx,
+    sy:0,
+    sw:keepWidth,
+    sh:SRC_H,
+    dx:0,
+    dy:0,
+    dw:width,
+    dh:height
+  };
 }
 
 // Coordenadas para dibujar el esqueleto exactamente sobre la cámara principal.
 function mpCamera(k){
-  const {s,ox,oy}=fitCamera410();
-  return{x:width-(k.x*s+ox),y:k.y*s+oy};
+  const f=fitCamera410();
+  const nx=(k.x-f.sx)/max(1,f.sw);
+  const ny=(k.y-f.sy)/max(1,f.sh);
+  return{
+    x:width-nx*f.dw,
+    y:ny*f.dh
+  };
 }
 
 // Coordenadas independientes para usar toda la pantalla como espacio interactivo.
 function mpStage(k){
-  return{
-    x:width-(k.x/max(1,SRC_W))*width,
-    y:(k.y/max(1,SRC_H))*height
-  };
+  return mpCamera(k);
 }
 
-function drawCameraBackdrop(){
+function drawFullScreenCamera(){
   if(!video)return;
 
-  // Esta copia llena toda la pantalla. Puede recortar sus bordes porque funciona
-  // únicamente como fondo; el video principal permanece completo y sin zoom.
-  const f=fitCover(width,height,SRC_W,SRC_H);
+  const f=fitCamera410();
 
   push();
   translate(width,0);
   scale(-1,1);
+  tint(255,210);
 
-  drawingContext.save();
-  drawingContext.filter='blur(24px)';
-  image(video,f.x,f.y,SRC_W*f.scale,SRC_H*f.scale);
-  drawingContext.restore();
-
-  // Suaviza el fondo para que el fotograma principal siga siendo legible.
-  noStroke();
-  fill(245,242,235,105);
-  rect(0,0,width,height);
-
+  // p5 image con rectángulo de origen: recorte central moderado,
+  // dibujado como una sola imagen que llena todo el canvas.
+  image(
+    video,
+    f.dx,f.dy,f.dw,f.dh,
+    f.sx,f.sy,f.sw,f.sh
+  );
   pop();
 }
 
@@ -133,18 +154,8 @@ function drawVideoHeartbeat(){
 function draw(){
   drawVideoHeartbeat();
   background(245,242,235);
-  const {s,ox,oy}=fitCamera410();
-
   if(showCamera&&video){
-    // El fondo llena la pantalla; la cámara principal conserva todo el encuadre.
-    drawCameraBackdrop();
-
-    push();
-    tint(255,205);
-    translate(width,0);
-    scale(-1,1);
-    image(video,ox,oy,SRC_W*s,SRC_H*s);
-    pop();
+    drawFullScreenCamera();
   }
 
   let x=width*.5;
