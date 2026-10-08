@@ -418,3 +418,29 @@ function toggleExampleControls(toggleButton) {
     exampleControlsHidden ? 'Mostrar controles' : 'Ocultar controles'
   );
 }
+
+
+// Etiqueta de versión visible y persistente para cada ejemplo.
+// Cada ejemplo parte de V8 y, desde ahora, incrementa su versión de forma independiente.
+function createExampleVersionBadge(version='V8') {
+  const badge = createDiv(version);
+  badge.elt.dataset.persistentUi = 'true';
+
+  Object.assign(badge.elt.style, {
+    position: 'fixed',
+    left: '14px',
+    bottom: '16px',
+    zIndex: '10001',
+    padding: '5px 9px',
+    borderRadius: '8px',
+    background: 'rgba(11,19,43,.82)',
+    color: '#fff',
+    fontFamily: 'system-ui,sans-serif',
+    fontSize: '13px',
+    fontWeight: '700',
+    letterSpacing: '.04em',
+    pointerEvents: 'none'
+  });
+
+  return badge;
+}
