@@ -113,17 +113,32 @@ En el ejemplo interactivo, la mano derecha controla un **círculo semitransparen
 !!! info "Uso"
     Pulsa **Play** para iniciar BodyPose. Mueve la mano derecha para desplazar el círculo por toda la pantalla. **Vista cámara** oculta únicamente la imagen de video en el canvas: la cámara y BodyPose continúan funcionando en segundo plano, por lo que el círculo sigue respondiendo. **Stop** sí detiene la captura y la detección. La versión visible en la esquina inferior izquierda permite comprobar qué revisión está cargada; la revisión actual es **V8**. En esta revisión, la cámara ocupa toda la pantalla manteniendo su proporción original: el video nunca se estira ni se achata. El sistema solicita una captura 9:16 cuando el teléfono la admite y, si el navegador expone control de zoom, selecciona el nivel mínimo para obtener el campo de visión más abierto posible. Cuando es necesario llenar la pantalla, el ajuste se realiza recortando bordes y no deformando la imagen.
 
-## 4.11. Ejemplo: gesto corporal controlando un parámetro sonoro
+## 4.11. Ejemplo interactivo: gesto corporal controlando un parámetro sonoro
 
-Un gesto (subir el brazo) controla un filtro de sonido.
+En este ejemplo, la **altura de la mano derecha** controla en tiempo real la frecuencia de corte de un filtro de audio.
 
-1. Lee la altura (Y) de la muñeca.
-2. Normaliza Y al rango del filtro.
-3. Envía el valor a Tone.js.
+1. BodyPose detecta la muñeca derecha.
+2. La coordenada Y se normaliza según la altura del canvas.
+3. Esa posición controla la frecuencia de corte de un filtro `lowpass` en Tone.js.
+4. Al subir la mano, el filtro se abre; al bajarla, se cierra.
 
 ```
-altura de la mano  ──▶  frecuencia de corte del filtro
+mano derecha arriba ──▶ filtro más abierto
+mano derecha abajo ──▶ filtro más cerrado
 ```
+
+La cámara utiliza el mismo sistema de encuadre de la **V8**: proporción natural, recorte sin deformación, zoom mínimo disponible y detección activa aunque **Vista** esté en OFF.
+
+<a href="../examples/bodypose-sound-param/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo interactivo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/bodypose-sound-param/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+<div style="margin-top:0.8rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fjoseurgilesc.github.io%2FCuerpo-sensor-y-escena%2Fexamples%2Fbodypose-sound-param%2F" alt="QR bodypose-sound-param" width="150" height="150" loading="lazy">
+  <small>Escanea el código QR para abrir este ejemplo directamente en un móvil o tablet.</small>
+</div>
+
+!!! info "Uso"
+    Pulsa **Play** para iniciar cámara y audio. Mueve la mano derecha verticalmente y observa el valor del filtro en Hz. **Vista** oculta únicamente la imagen de cámara; BodyPose y el audio continúan funcionando. La versión visible en pantalla es **V8**.
 
 ## 4.12. Ejemplo interactivo: seguimiento de manos (Handpose)
 
