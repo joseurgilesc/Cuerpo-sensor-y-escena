@@ -75,6 +75,98 @@ function getResponsiveCameraConstraints(profile = getDeviceProfile()) {
 }
 
 
+// Cámara natural para los ejemplos corporales/manos.
+// En vertical se solicita 9:16; en horizontal 16:9. El navegador puede
+// entregar otra relación, por eso el dibujo final siempre corrige la proporción.
+function getNaturalCameraConstraints(profile = getDeviceProfile()) {
+  const portrait = profile.canvasHeight > profile.canvasWidth;
+
+  return {
+    video: {
+      facingMode: { ideal: 'user' },
+      width: { ideal: portrait ? 720 : 1280 },
+      height: { ideal: portrait ? 1280 : 720 },
+      aspectRatio: { ideal: portrait ? 9 / 16 : 16 / 9 }
+    },
+    audio: false
+  };
+}
+
+// Cuando el navegador permite controlar el zoom digital/óptico, usamos el
+// valor mínimo para obtener el campo de visión más abierto posible.
+async function setMinimumCameraZoom(video) {
+  try {
+    const stream = video && video.elt && video.elt.srcObject;
+    const track = stream && stream.getVideoTracks ? stream.getVideoTracks()[0] : null;
+    if (!track || !track.getCapabilities) return;
+
+    const caps = track.getCapabilities();
+    if (!caps || !caps.zoom) return;
+
+    const minZoom = Number(caps.zoom.min);
+    if (!Number.isFinite(minZoom)) return;
+
+    await track.applyConstraints({ advanced: [{ zoom: minZoom }] });
+  } catch (err) {
+    // No todos los navegadores/teléfonos exponen control de zoom.
+  }
+}
+
+// Calcula un recorte tipo cover SIN deformación.
+// El rectángulo fuente conserva exactamente la relación de aspecto del canvas,
+// por lo que la imagen llena la pantalla sin estirarse ni achatarse.
+function fitCameraCoverCrop(containerW, containerH, mediaW, mediaH) {
+  const safeContainerW = Math.max(1, containerW);
+  const safeContainerH = Math.max(1, containerH);
+  const safeMediaW = Math.max(1, mediaW);
+  const safeMediaH = Math.max(1, mediaH);
+
+  const canvasAspect = safeContainerW / safeContainerH;
+  const sourceAspect = safeMediaW / safeMediaH;
+
+  let sx = 0;
+  let sy = 0;
+  let sw = safeMediaW;
+  let sh = safeMediaH;
+
+  if (sourceAspect > canvasAspect) {
+    sw = safeMediaH * canvasAspect;
+    sx = (safeMediaW - sw) / 2;
+  } else if (sourceAspect < canvasAspect) {
+    sh = safeMediaW / canvasAspect;
+    sy = (safeMediaH - sh) / 2;
+  }
+
+  return {
+    sx, sy, sw, sh,
+    dx: 0, dy: 0,
+    dw: safeContainerW,
+    dh: safeContainerH
+  };
+}
+
+// Mapea un keypoint al mismo recorte usado por la cámara.
+function mapPointToCameraCrop(k, crop, mirrored = true) {
+  const nx = (k.x - crop.sx) / Math.max(1, crop.sw);
+  const ny = (k.y - crop.sy) / Math.max(1, crop.sh);
+
+  return {
+    x: mirrored ? crop.dw - nx * crop.dw : nx * crop.dw,
+    y: ny * crop.dh
+  };
+}
+
+// Fuerza al navegador a seguir entregando fotogramas aunque Vista esté OFF.
+// Debe llamarse antes de pintar el fondo del frame.
+function pumpHiddenVideoFrame(video) {
+  if (!video || !video.elt || video.elt.readyState < 2) return;
+
+  push();
+  image(video, 0, 0, 2, 2);
+  pop();
+}
+
+
 // Mantiene el elemento <video> activo para ml5 aunque no se muestre como
 // elemento HTML. Evitamos display:none porque algunos navegadores móviles
 // pueden reducir o pausar la actualización de un video completamente oculto.
