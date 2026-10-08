@@ -74,6 +74,36 @@ function getResponsiveCameraConstraints(profile = getDeviceProfile()) {
   };
 }
 
+
+// Mantiene el elemento <video> activo para ml5 aunque no se muestre como
+// elemento HTML. Evitamos display:none porque algunos navegadores móviles
+// pueden reducir o pausar la actualización de un video completamente oculto.
+// La opción "Vista" de cada ejemplo solo controla si image(video, ...) se
+// dibuja en el canvas; no modifica el stream ni la detección.
+function keepVideoCaptureActive(video) {
+  if (!video || !video.elt) return;
+
+  const elt = video.elt;
+  elt.setAttribute('playsinline', '');
+  elt.setAttribute('aria-hidden', 'true');
+  elt.muted = true;
+
+  Object.assign(elt.style, {
+    position: 'fixed',
+    left: '-10000px',
+    top: '0',
+    opacity: '0.001',
+    pointerEvents: 'none',
+    zIndex: '-1',
+    display: 'block'
+  });
+
+  const playPromise = elt.play && elt.play();
+  if (playPromise && typeof playPromise.catch === 'function') {
+    playPromise.catch(() => {});
+  }
+}
+
 // Conserva la proporción real que entrega la cámara y limita la resolución
 // para que BodyPose / HandPose no procese más píxeles de los necesarios.
 function configureVideoElement(video, profile = getDeviceProfile()) {
