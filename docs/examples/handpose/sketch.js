@@ -54,7 +54,7 @@ function startCam() {
   pointsBtn.html('● Esqueleto: ON');
   
   video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
-  video.hide();
+  keepVideoCaptureActive(video);
 
   playBtn.attribute('disabled', '');
   stopBtn.removeAttribute('disabled');
