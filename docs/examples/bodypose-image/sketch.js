@@ -115,27 +115,43 @@ function draw(){
     pop();
   }
 
-  let x=width*.5,y=height*.5,scaleFactor=1,angle=0;
+  let x=width*.5;
+  let y=height*.5;
+  let circleSize=min(width,height)*.22;
+
   if(running&&poses.length){
     const pose=poses[0];
-    if(showPoints) drawBodySkeletonOverlay(pose,connections,mpCamera,'#202020AA','#202020FF');
+
+    if(showPoints){
+      drawBodySkeletonOverlay(
+        pose,
+        connections,
+        mpCamera,
+        '#202020AA',
+        '#202020FF'
+      );
+    }
+
     const rw=pose.keypoints.find(k=>k.name==='right_wrist');
-    const rs=pose.keypoints.find(k=>k.name==='right_shoulder');
 
     if(rw&&rw.confidence>.25){
       const p=mpStage(rw);
       x=p.x;
       y=p.y;
-      scaleFactor=map(y,height,0,.65,1.35,true);
 
-      if(rs&&rs.confidence>.25){
-        const q=mpStage(rs);
-        angle=atan2(y-q.y,x-q.x)*.25;
-      }
+      // La altura de la mano modifica suavemente el tamaño del círculo.
+      circleSize=map(
+        y,
+        height,
+        0,
+        min(width,height)*.14,
+        min(width,height)*.34,
+        true
+      );
     }
   }
 
-  drawPoster(x,y,scaleFactor,angle);
+  drawInteractiveCircle(x,y,circleSize);
   hud();
 }
 
@@ -149,19 +165,19 @@ function drawPosePoints(pose){
   }
 }
 
-function drawPoster(x,y,s,a){
+function drawInteractiveCircle(x,y,size){
   push();
-  translate(x,y); rotate(a); scale(s);
-  rectMode(CENTER); noStroke();
 
-  fill('#0B132B'); rect(0,0,220,150,18);
-  fill('#5BC0BE'); circle(-62,-28,54);
-  fill('#FDE74C'); rect(38,-22,70,28,8);
-  fill('#FF6B6B'); triangle(-28,52,22,10,68,58);
-  fill('#FFFFFF'); rect(-8,42,54,16,8);
+  noStroke();
 
-  fill('#0B132B'); textAlign(CENTER,CENTER); textSize(12);
-  text('CUERPO / IMAGEN',35,-22);
+  // Halo exterior sutil.
+  fill(91,192,190,38);
+  circle(x,y,size*1.35);
+
+  // Círculo principal semitransparente.
+  fill(91,192,190,125);
+  circle(x,y,size);
+
   pop();
 }
 
@@ -169,10 +185,10 @@ function hud(){
   noStroke(); fill(11,19,43,220);
   rect(12,112,min(360,width-24),62,10);
   fill(255); textSize(13);
-  text('Movimiento corporal controlando una imagen',24,133);
+  text('Movimiento corporal controlando un círculo',24,133);
   textSize(11);
-  text('Mano derecha: posición | altura: escala',24,151);
-  text('Brazo: ligera rotación del cartel',24,167);
+  text('Mano derecha: posición',24,151);
+  text('Altura de la mano: tamaño del círculo',24,167);
 }
 
 function gotPoses(r){poses=r;if(!connections.length)connections=bodyPose.getConnections();}
