@@ -298,20 +298,20 @@ Los ejemplos de esta sección se han unificado con los mismos controles básicos
 
 - **Play**: inicia la cámara y la detección.
 - **Stop**: es el único control que realmente detiene la captura de cámara y la detección.
-- **Vista cámara**: muestra u oculta **solo la imagen de video en el canvas**. La cámara y la detección continúan funcionando en segundo plano.
+- **Vista cámara**: muestra u oculta **solo la imagen de video en el canvas**. La cámara y la detección continúan funcionando en segundo plano mientras **Play** esté activo; solo **Stop** detiene la captura.
 - **Esqueleto**: activa o desactiva conjuntamente los **puntos (keypoints)** y las **líneas de conexión** del esqueleto detectado por HandPose o BodyPose.
-- **Vista**: muestra u oculta únicamente la imagen de la cámara en el canvas. La captura y la detección permanecen activas mientras **Play** esté en ejecución; solo **Stop** detiene la cámara.
 - **Ocultar controles**: botón manual en la esquina inferior derecha. Oculta todos los botones, sliders y etiquetas sin modificar la cámara ni el tamaño del canvas. El mismo botón cambia a **Mostrar controles** para recuperarlos.
 - Los ejemplos con Tone.js incluyen control de volumen y requieren una interacción inicial del usuario para habilitar audio.
 
-El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. La cámara toma como referencia la **proporción real entregada por el dispositivo** y nunca se estira.
+El **canvas** se calcula a partir del área real disponible del navegador y se reajusta cuando cambia la orientación o el tamaño de la ventana. Los ejemplos con cámara de esta sección aplican las correcciones de encuadre introducidas en la revisión **V8** del ejemplo 4.10:
 
-- Si el teléfono entrega una **señal de cámara vertical**, se utiliza **cover** para aprovechar la pantalla.
-- Si el teléfono entrega una **señal horizontal** aunque la pantalla esté vertical, la ampliación se limita aproximadamente a **1,35× sobre contain**. Esto evita el zoom excesivo y permite ver una porción mayor del cuerpo.
-- En ese segundo caso pueden quedar zonas del canvas fuera del video; esas áreas forman parte del fondo visual del ejemplo en lugar de recortar agresivamente la cámara.
-- En **pantalla horizontal**, se conserva el fotograma completo con **contain**.
+- En teléfono vertical se solicita preferentemente una captura **9:16**; en horizontal se solicita **16:9**.
+- Si el navegador permite controlar el zoom de la cámara, se selecciona el **zoom mínimo disponible** para obtener un campo de visión más abierto.
+- La imagen puede ocupar todo el canvas mediante un recorte centrado, pero **nunca se estira ni se achata**. El rectángulo fuente y el canvas conservan la misma relación de aspecto.
+- Los puntos y líneas del esqueleto se transforman con exactamente el mismo recorte de cámara para que permanezcan alineados.
+- Con **Vista cámara: OFF**, el video deja de dibujarse, pero el stream sigue suministrando fotogramas a HandPose o BodyPose.
 
-La misma transformación se aplica a los puntos y líneas del esqueleto de HandPose y BodyPose, por lo que permanecen alineados con la imagen. La resolución también se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
+La resolución se limita según el tipo de dispositivo para equilibrar calidad y rendimiento. En teléfonos se solicita preferentemente la cámara frontal.
 
 !!! note "Compatibilidad"
     El funcionamiento depende del navegador, permisos de cámara y capacidad gráfica del dispositivo. En móviles recientes se recomienda Chrome o Safari actualizado y cerrar otras aplicaciones que estén usando la cámara. Los ejemplos se mantienen dentro del viewport normal del navegador y no intentan activar pantalla completa ni ocultar automáticamente los controles.
