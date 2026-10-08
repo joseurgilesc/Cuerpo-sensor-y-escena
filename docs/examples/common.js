@@ -85,17 +85,27 @@ function keepVideoCaptureActive(video) {
 
   const elt = video.elt;
   elt.setAttribute('playsinline', '');
+  elt.setAttribute('autoplay', '');
   elt.setAttribute('aria-hidden', 'true');
   elt.muted = true;
+  elt.playsInline = true;
+  elt.autoplay = true;
 
+  // Mantener el <video> técnicamente visible dentro del viewport evita que
+  // algunos navegadores móviles suspendan sus fotogramas. Es solo 1x1 px y
+  // prácticamente transparente: la vista grande sigue dependiendo
+  // exclusivamente de showCamera + image(video, ...).
   Object.assign(elt.style, {
     position: 'fixed',
-    left: '-10000px',
-    top: '0',
-    opacity: '0.001',
+    left: '0px',
+    top: '0px',
+    width: '1px',
+    height: '1px',
+    opacity: '0.01',
     pointerEvents: 'none',
     zIndex: '-1',
-    display: 'block'
+    display: 'block',
+    visibility: 'visible'
   });
 
   const playPromise = elt.play && elt.play();
@@ -132,6 +142,10 @@ function configureVideoElement(video, profile = getDeviceProfile()) {
   h = Math.max(240, h);
 
   video.size(w, h);
+
+  // video.size() puede modificar dimensiones del elemento HTML. Reaplicamos
+  // el modo de captura activa para que ocultar la vista nunca afecte a ml5.
+  keepVideoCaptureActive(video);
 
   return {
     width: w,
