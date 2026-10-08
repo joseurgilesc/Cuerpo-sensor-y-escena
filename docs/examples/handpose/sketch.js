@@ -53,7 +53,7 @@ function startCam() {
   camBtn.html('👁 Vista: ON');
   pointsBtn.html('● Esqueleto: ON');
   
-  video = createCapture(getResponsiveCameraConstraints(deviceProfile), videoReady);
+  video = createCapture(getNaturalCameraConstraints(deviceProfile), videoReady);
   keepVideoCaptureActive(video);
 
   playBtn.attribute('disabled', '');
@@ -61,10 +61,17 @@ function startCam() {
   camBtn.removeAttribute('disabled');
 }
 
-function videoReady() {
-  const dims = configureVideoElement(video, deviceProfile);
+async function videoReady() {
+  let dims = configureVideoElement(video, deviceProfile);
   SRC_W = dims.width;
   SRC_H = dims.height;
+
+  await setMinimumCameraZoom(video);
+
+  dims = configureVideoElement(video, deviceProfile);
+  SRC_W = dims.width;
+  SRC_H = dims.height;
+
   handPose.detectStart(video, gotHands);
 }
 
@@ -86,6 +93,7 @@ function stopCam() {
 function toggleCam() {
   showCam = !showCam;
   camBtn.html(showCam ? '👁 Vista: ON' : '👁 Vista: OFF');
+  if (video) keepVideoCaptureActive(video);
 }
 
 function togglePoints() {
@@ -98,39 +106,43 @@ function gotHands(results) {
 }
 
 function draw() {
-  background(0, 25); // estela suave de las partículas
+  pumpHiddenVideoFrame(video);
+  background(0, 25);
 
-  // Mapeo "contain" (sin zoom)
-  const cameraFit = fitCameraToCanvas(width, height, SRC_W, SRC_H);
-  let s = cameraFit.scale;
-  let ox = cameraFit.x;
-  let oy = cameraFit.y;
+  const cameraFit = fitCameraCoverCrop(width, height, SRC_W, SRC_H);
 
-  // Puntas de los dedos (índices 4, 8, 12, 16, 20) como atractores
+  // Puntas de los dedos como atractores, usando exactamente el mismo recorte.
   let attractors = [];
   for (let hand of hands) {
     for (let idx of [4, 8, 12, 16, 20]) {
       let kp = hand.keypoints[idx];
-      if (kp) attractors.push(createVector(kp.x * s + ox, kp.y * s + oy));
+      if (kp) {
+        const p = mapPointToCameraCrop(kp, cameraFit, false);
+        attractors.push(createVector(p.x, p.y));
+      }
     }
   }
 
-  // Dibuja la vista de cámara solo si está activada
   if (showCam && video) {
-    image(video, ox, oy, SRC_W * s, SRC_H * s);
+    image(
+      video,
+      cameraFit.dx, cameraFit.dy, cameraFit.dw, cameraFit.dh,
+      cameraFit.sx, cameraFit.sy, cameraFit.sw, cameraFit.sh
+    );
   }
 
   if (showPoints) {
-    drawHandSkeletonOverlay(hands, kp => ({ x: kp.x * s + ox, y: kp.y * s + oy }));
+    drawHandSkeletonOverlay(
+      hands,
+      kp => mapPointToCameraCrop(kp, cameraFit, false)
+    );
   }
 
-  // Actualiza y dibuja las partículas
   for (let p of particles) {
     p.update(attractors);
     p.show();
   }
 
-  // Estado de la cámara: se oculta en modo escena móvil.
   fill(255);
   noStroke();
   textAlign(LEFT, TOP);
