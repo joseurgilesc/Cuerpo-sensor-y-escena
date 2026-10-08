@@ -64,6 +64,7 @@ async function setup(){
   volumeLabel.style('background','rgba(30,25,22,.75)');
   volumeLabel.style('color','#fff');
 
+  createExampleVersionBadge('V8');
   createControlsVisibilityButton();
 }
 
