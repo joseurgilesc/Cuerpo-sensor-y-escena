@@ -1,7 +1,7 @@
 let video,bodyPose,poses=[],connections=[],playBtn,stopBtn,camBtn,pointsBtn;
 let running=false,showCamera=false,showPoints=true,deviceProfile;
 let SRC_W=640,SRC_H=480;
-const EXAMPLE_VERSION='V5';
+const EXAMPLE_VERSION='V6';
 
 async function setup(){
   deviceProfile=setupResponsiveCanvas();
@@ -75,22 +75,10 @@ function toggleCam(){
   if(video) keepVideoCaptureActive(video);
 }
 function togglePoints(){showPoints=!showPoints;pointsBtn.html(showPoints?'● Esqueleto: ON':'○ Esqueleto: OFF');}
-// Encuadre propio del 4.10: prioriza ver más cuerpo y evita el zoom fuerte.
+// V6: la cámara principal conserva siempre el fotograma completo.
+// No usa cover, por lo tanto no recorta ni produce sensación de zoom.
 function fitCamera410(){
-  const contain=fitContain(width,height,SRC_W,SRC_H);
-  const cover=fitCover(width,height,SRC_W,SRC_H);
-  const portrait=height>width;
-
-  if(portrait && SRC_W>SRC_H){
-    const s=min(cover.scale,contain.scale*1.12);
-    return{
-      s,
-      ox:(width-SRC_W*s)/2,
-      oy:(height-SRC_H*s)/2
-    };
-  }
-
-  const f=portrait?cover:contain;
+  const f=fitContain(width,height,SRC_W,SRC_H);
   return{s:f.scale,ox:f.x,oy:f.y};
 }
 
@@ -111,17 +99,23 @@ function mpStage(k){
 function drawCameraBackdrop(){
   if(!video)return;
 
+  // Esta copia llena toda la pantalla. Puede recortar sus bordes porque funciona
+  // únicamente como fondo; el video principal permanece completo y sin zoom.
   const f=fitCover(width,height,SRC_W,SRC_H);
 
   push();
   translate(width,0);
   scale(-1,1);
-  tint(255,32);
 
   drawingContext.save();
-  drawingContext.filter='blur(20px)';
+  drawingContext.filter='blur(24px)';
   image(video,f.x,f.y,SRC_W*f.scale,SRC_H*f.scale);
   drawingContext.restore();
+
+  // Suaviza el fondo para que el fotograma principal siga siendo legible.
+  noStroke();
+  fill(245,242,235,105);
+  rect(0,0,width,height);
 
   pop();
 }
@@ -142,12 +136,11 @@ function draw(){
   const {s,ox,oy}=fitCamera410();
 
   if(showCamera&&video){
-    // Fondo suave para aprovechar toda la pantalla sin forzar el encuadre principal.
+    // El fondo llena la pantalla; la cámara principal conserva todo el encuadre.
     drawCameraBackdrop();
 
-    // Cámara principal con aumento limitado.
     push();
-    tint(255,118);
+    tint(255,205);
     translate(width,0);
     scale(-1,1);
     image(video,ox,oy,SRC_W*s,SRC_H*s);
