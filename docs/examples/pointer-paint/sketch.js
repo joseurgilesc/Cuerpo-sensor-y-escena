@@ -16,6 +16,7 @@ function setup(){
   pointerBtn.position(108,10);
   pointerBtn.mousePressed(togglePointer);
 
+  createExampleVersionBadge('V8');
   createControlsVisibilityButton();
 }
 
