@@ -152,9 +152,9 @@ Las entradas frontales más útiles para estos ejercicios son:
 !!! tip "Probar sin Makey Makey"
     Todos los ejemplos también funcionan con el **teclado del computador**. Esto permite probar primero el comportamiento y luego conectar las mismas teclas al Makey Makey.
 
-### 5.15.2. Ejemplo 1 — columnas que se encienden
+### 5.15.2. Ejemplo 1 — grupos de columnas
 
-Cada entrada activa una columna diferente. El contacto produce además una nota corta.
+Cada entrada activa un **grupo de columnas** distribuido con distancias inspiradas en la serie de Fibonacci. Las columnas apagadas permanecen blancas y, al activarse, aparecen colores intensos acompañados por acordes armónicos.
 
 ```
 entrada 1 → columna 1
@@ -167,11 +167,11 @@ entrada 3 → columna 3
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-columns/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
 **Controles:** ←, ↑, →, ↓, SPACE y W.  
-**Versión:** V8.
+**Versión:** V10.
 
 ### 5.15.3. Ejemplo 2 — barridos con Perlin Noise
 
-Dos entradas producen barridos opuestos de columnas. El ruido Perlin modifica la altura de las barras para que el movimiento sea más orgánico.
+Las columnas permanecen blancas hasta que el barrido las atraviesa. El ruido Perlin modifica la altura y el frente de color genera pequeñas partículas. El sonido utiliza síntesis FM con reverb y delay para acompañar el desplazamiento.
 
 ```
 ← → barrido de izquierda a derecha
@@ -185,7 +185,7 @@ Dos entradas producen barridos opuestos de columnas. El ruido Perlin modifica la
 
 ### 5.15.4. Ejemplo 3 — crecimiento de partículas
 
-Cada contacto aumenta progresivamente la cantidad de partículas. Si los contactos se producen con mayor frecuencia, también aumenta la energía y velocidad del sistema.
+Cada contacto aumenta progresivamente la cantidad de partículas. Si los contactos se producen con mayor frecuencia, aumenta la energía y velocidad. El pulso sonoro hace crecer temporalmente el tamaño de las partículas, vinculando directamente sonido e imagen.
 
 ```
 más contactos → más partículas
@@ -200,7 +200,7 @@ contactos rápidos → más velocidad + energía
 
 ### 5.15.5. Ejemplo 4 — tres fuentes de partículas
 
-Tres entradas activan chorros de partículas tipo agua desde tres zonas distintas de la pantalla.
+Tres entradas activan fuentes más densas de partículas tipo agua desde tres zonas distintas. Las gotas rebotan, producen ondas y cada fuente genera un color y un conjunto sonoro diferente.
 
 ```
 ←     → fuente izquierda
