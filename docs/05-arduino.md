@@ -112,16 +112,138 @@ Antes de integrar, prueba **cada sensor por separado**:
 
 ## 5.15. Makey Makey como interfaz alternativa
 
-Makey Makey es una placa que convierte **objetos conductores cotidianos** (frutas, plastilina, grafito, agua, papel aluminio) en **teclas y clics** del computador. Es una alternativa rápida a Arduino para prototipar interacción por contacto sin armar circuitos de sensores.
+Makey Makey convierte el **contacto físico** con objetos conductores en eventos de teclado o mouse. El computador lo reconoce como un dispositivo **HID**, por lo que p5.js puede leerlo directamente sin usar Serial ni programar firmware.
 
-- Se conecta por **USB** y el computador la reconoce como **teclado y ratón** (HID): no requiere drivers ni programación.
-- Se conectan los objetos conductores con **caimanes (pinzas)** a sus entradas.
-- Dispara teclas o clics que luego se mapean en los visuales o en Tone.js, igual que cualquier otra entrada.
-- Las placas basadas en el microcontrolador **ATmega32U4** pueden **reprogramarse** desde Arduino IDE para usos más avanzados.
+### 5.15.1. ¿Cómo funciona?
 
-| Característica | Makey Makey | Arduino + sensores |
-| --- | --- | --- |
-| Programación | No requiere (HID) | Requiere firmware |
-| Señal de salida | Teclas y clics | Valores analógicos y digitales |
-| Puesta en marcha | Inmediata | Requiere circuito y calibración |
-| Rango expresivo | Eventos discretos | Valores continuos y discretos |
+El principio es sencillo:
+
+```
+cuerpo ──▶ objeto conductor ──▶ Makey Makey ──▶ tecla ──▶ p5.js ──▶ imagen + sonido
+```
+
+Para cerrar el circuito, una persona mantiene contacto con **EARTH** y toca un objeto conectado a una entrada del Makey Makey. Cuando el circuito se cierra, la placa envía una tecla al computador.
+
+Ejemplo:
+
+```
+EARTH en la mano
+      +
+papel aluminio conectado a SPACE
+      ↓
+la persona toca el aluminio
+      ↓
+Makey Makey envía SPACE
+      ↓
+p5.js ejecuta una acción
+```
+
+Las entradas frontales más útiles para estos ejercicios son:
+
+| Entrada Makey Makey | Evento en p5.js |
+| --- | --- |
+| Flecha izquierda | `LEFT_ARROW` |
+| Flecha derecha | `RIGHT_ARROW` |
+| Flecha arriba | `UP_ARROW` |
+| Flecha abajo | `DOWN_ARROW` |
+| SPACE | barra espaciadora |
+| Entradas posteriores | W, A, S, D, F, G, según configuración |
+
+!!! tip "Probar sin Makey Makey"
+    Todos los ejemplos también funcionan con el **teclado del computador**. Esto permite probar primero el comportamiento y luego conectar las mismas teclas al Makey Makey.
+
+### 5.15.2. Ejemplo 1 — columnas que se encienden
+
+Cada entrada activa una columna diferente. El contacto produce además una nota corta.
+
+```
+entrada 1 → columna 1
+entrada 2 → columna 2
+entrada 3 → columna 3
+...
+```
+
+<a href="../examples/makey-columns/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-columns/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+**Controles:** ←, ↑, →, ↓, SPACE y W.  
+**Versión:** V8.
+
+### 5.15.3. Ejemplo 2 — barridos con Perlin Noise
+
+Dos entradas producen barridos opuestos de columnas. El ruido Perlin modifica la altura de las barras para que el movimiento sea más orgánico.
+
+```
+← → barrido de izquierda a derecha
+→ → barrido de derecha a izquierda
+```
+
+<a href="../examples/makey-sweep/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-sweep/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+**Versión:** V8.
+
+### 5.15.4. Ejemplo 3 — crecimiento de partículas
+
+Cada contacto aumenta progresivamente la cantidad de partículas. Si los contactos se producen con mayor frecuencia, también aumenta la energía y velocidad del sistema.
+
+```
+más contactos → más partículas
+contactos rápidos → más velocidad + energía
+```
+
+<a href="../examples/makey-particle-growth/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-particle-growth/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+**Control:** SPACE.  
+**Versión:** V8.
+
+### 5.15.5. Ejemplo 4 — tres fuentes de partículas
+
+Tres entradas activan chorros de partículas tipo agua desde tres zonas distintas de la pantalla.
+
+```
+←     → fuente izquierda
+SPACE → fuente central
+→     → fuente derecha
+```
+
+<a href="../examples/makey-water/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-water/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+Cada zona utiliza un color y una nota diferente.  
+**Versión:** V8.
+
+### 5.15.6. Ejemplo 5 — juego de burbujas
+
+Un ejemplo más lúdico. Dos entradas lanzan burbujas desde lados opuestos. Las nuevas burbujas chocan y empujan a las que ya están en pantalla.
+
+```
+← → lanza burbuja desde la izquierda
+→ → lanza burbuja desde la derecha
+       ↓
+colisión y empuje entre burbujas
+```
+
+<a href="../examples/makey-bubble-game/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-bubble-game/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+**Versión:** V8.
+
+### 5.15.7. Sonido y uso en clase
+
+Los ejemplos incorporan **Tone.js** de forma sencilla. Primero se pulsa **Activar sonido** y luego cada contacto del Makey Makey genera una respuesta visual y sonora.
+
+Una secuencia de trabajo recomendada es:
+
+```
+1. probar con teclado
+2. conectar Makey Makey
+3. conectar EARTH
+4. conectar objetos conductores
+5. probar cada entrada
+6. modificar color, sonido o comportamiento
+```
+
+El objetivo no es solamente que una tecla dispare un efecto, sino explorar cómo el **material, el gesto, la respuesta visual y el sonido** pueden construir una interacción con sentido artístico.
+
