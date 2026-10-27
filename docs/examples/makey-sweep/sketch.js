@@ -5,7 +5,7 @@ const COLORS=['#00BBF9','#9B5DE5','#F15BB5','#FEE440','#00F5D4'];
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V10');
+  createExampleVersionBadge('V11');
   createAudioButton();
   createClearButton();
   installKeyboard();
@@ -45,7 +45,7 @@ function draw(){
 
   for(let i=0;i<cols;i++){
     const n=noise(i*.15,frameCount*.012);
-    const base=map(n,0,1,height*.18,height*.52);
+    const base=map(n,0,1,height*.42,height*.78);
 
     noStroke();
     fill(255,235);
@@ -62,7 +62,7 @@ function draw(){
       if(d<width*.20){
         const amp=1-d/(width*.20);
         const n=noise(i*.20,s.seed+frameCount*.018);
-        const h=map(n,0,1,height*.24,height*.86)*amp;
+        const h=map(n,0,1,height*.48,height*.96)*amp;
         const a=90+165*amp;
 
         noStroke();
