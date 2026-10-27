@@ -4,8 +4,10 @@ const COLORS=['#5BC0BE','#FDE74C','#FF6B6B','#9B5DE5','#00BBF9'];
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
+  createClearButton();
+  installKeyboard();
   createControlsVisibilityButton();
 }
 
@@ -79,9 +81,19 @@ function launchSweep(dir){
   }
 }
 
-function keyPressed(){
-  if(keyCode===LEFT_ARROW){launchSweep(1);return false;}
-  if(keyCode===RIGHT_ARROW){launchSweep(-1);return false;}
+function installKeyboard(){
+  window.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();
+    if(e.repeat)return;
+    if(e.code==='ArrowLeft')launchSweep(1);
+    if(e.code==='ArrowRight')launchSweep(-1);
+  },{passive:false});
+}
+
+function createClearButton(){
+  const b=createButton('✕ Limpiar');
+  b.position(160,10);
+  b.mousePressed(()=>{sweeps=[];});
 }
 
 function windowResized(){resizeResponsiveCanvas();}
