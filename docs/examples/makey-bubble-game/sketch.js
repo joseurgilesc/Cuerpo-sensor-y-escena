@@ -5,8 +5,10 @@ const COLORS=['#5BC0BE','#FDE74C','#FF6B6B','#CDB4DB','#74C0FC','#B9FBC0'];
 function setup(){
   setupResponsiveCanvas();
   for(let i=0;i<16;i++)bubbles.push(new Bubble(random(width),random(height*.25,height*.8),random(18,42)));
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
+  createClearButton();
+  installKeyboard();
   createControlsVisibilityButton();
 }
 
@@ -54,9 +56,22 @@ function launch(side){
   if(audioReady)synth.triggerAttackRelease(side==='left'?'C5':'G5','16n');
 }
 
-function keyPressed(){
-  if(keyCode===LEFT_ARROW){launch('left');return false;}
-  if(keyCode===RIGHT_ARROW){launch('right');return false;}
+function installKeyboard(){
+  window.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();
+    if(e.repeat)return;
+    if(e.code==='ArrowLeft')launch('left');
+    if(e.code==='ArrowRight')launch('right');
+  },{passive:false});
+}
+
+function createClearButton(){
+  const b=createButton('✕ Limpiar');
+  b.position(160,10);
+  b.mousePressed(()=>{
+    bubbles=[];
+    for(let i=0;i<16;i++)bubbles.push(new Bubble(random(width),random(height*.25,height*.8),random(18,42)));
+  });
 }
 
 function resolveCollisions(){
