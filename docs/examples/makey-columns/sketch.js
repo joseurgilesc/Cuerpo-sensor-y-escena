@@ -1,19 +1,21 @@
 let columns=[];
-let synth,audioReady=false;
-const PALETTE=['#7BDFF2','#B2F7EF','#EFF7F6','#F7D6E0','#F2B5D4','#CDB4DB'];
+let synth,reverb,delay,audioReady=false;
+const TOTAL_COLUMNS=34;
+const PALETTE=['#00D1FF','#3A86FF','#8338EC','#FF006E','#FB5607','#FFBE0B'];
 const INPUTS=[
-  {code:'ArrowLeft',label:'←'},
-  {code:'ArrowUp',label:'↑'},
-  {code:'ArrowRight',label:'→'},
-  {code:'ArrowDown',label:'↓'},
-  {code:'Space',label:'SPACE'},
-  {code:'KeyW',label:'W'}
+  {code:'ArrowLeft',label:'←',center:2,notes:['C4','E4','G4']},
+  {code:'ArrowUp',label:'↑',center:5,notes:['D4','F4','A4']},
+  {code:'ArrowRight',label:'→',center:9,notes:['E4','G4','B4']},
+  {code:'ArrowDown',label:'↓',center:14,notes:['G4','B4','D5']},
+  {code:'Space',label:'SPACE',center:22,notes:['A4','C5','E5']},
+  {code:'KeyW',label:'W',center:31,notes:['C5','E5','G5']}
 ];
+const FIB_OFFSETS=[0,1,-1,2,-2,3,-3,5,-5];
 
 function setup(){
   setupResponsiveCanvas();
-  columns=INPUTS.map((_,i)=>({level:0,target:0,i}));
-  createExampleVersionBadge('V9');
+  columns=Array.from({length:TOTAL_COLUMNS},(_,i)=>({level:0,target:0,i,color:'#FFFFFF'}));
+  createExampleVersionBadge('V10');
   createAudioButton();
   createClearButton();
   installKeyboard();
@@ -25,11 +27,16 @@ function createAudioButton(){
   b.position(10,10);
   b.mousePressed(async()=>{
     await Tone.start();
-    synth=new Tone.Synth({
-      oscillator:{type:'sine'},
-      envelope:{attack:.01,decay:.12,sustain:.08,release:.28}
-    }).toDestination();
-    synth.volume.value=-13;
+
+    reverb=new Tone.Reverb({decay:2.6,wet:.32}).toDestination();
+    delay=new Tone.FeedbackDelay({delayTime:'8n',feedback:.22,wet:.20}).connect(reverb);
+
+    synth=new Tone.PolySynth(Tone.Synth,{
+      oscillator:{type:'triangle8'},
+      envelope:{attack:.02,decay:.22,sustain:.20,release:.85}
+    }).connect(delay);
+
+    synth.volume.value=-8;
     audioReady=true;
     b.html('🔊 Sonido activo');
     b.attribute('disabled','');
@@ -37,45 +44,69 @@ function createAudioButton(){
 }
 
 function draw(){
-  background('#0B1020');
-  const gap=10;
-  const usable=width-gap*(columns.length+1);
-  const cw=max(20,usable/columns.length);
+  background('#09111F');
+
+  const gap=3;
+  const top=84;
+  const bottom=38;
+  const usable=width-gap*(TOTAL_COLUMNS+1);
+  const cw=max(5,usable/TOTAL_COLUMNS);
 
   for(let i=0;i<columns.length;i++){
     const c=columns[i];
-    c.level=lerp(c.level,c.target,.18);
-    c.target*=.94;
+    c.level=lerp(c.level,c.target,.20);
+    c.target*=.925;
 
     const x=gap+i*(cw+gap);
-    const h=map(c.level,0,1,height*.08,height*.78);
-    const y=height-h-40;
+    const baseH=height-top-bottom;
+    const activeH=baseH*(.36+.64*c.level);
 
     noStroke();
-    fill('#FFFFFF18');
-    rect(x,80,cw,height-120,10);
+    fill(255,235);
+    rect(x,top,cw,baseH,3);
 
-    fill(PALETTE[i]);
-    rect(x,y,cw,h,10);
-
-    fill(255);
-    textAlign(CENTER,CENTER);
-    textSize(12);
-    text(INPUTS[i].label,x+cw/2,height-22);
+    if(c.level>.01){
+      const alpha=80+175*c.level;
+      fill(colorWithAlpha(c.color,alpha));
+      rect(x,height-bottom-activeH,cw,activeH,3);
+    }
   }
 
   fill(255);
   textAlign(LEFT,TOP);
-  textSize(15);
-  text('Cada contacto enciende una columna',14,54);
+  textSize(14);
+  text('Grupos de columnas con distancias Fibonacci',14,54);
+
+  textAlign(CENTER,TOP);
+  textSize(11);
+  for(const input of INPUTS){
+    const x=map(input.center,0,TOTAL_COLUMNS-1,0,width);
+    text(input.label,x,height-24);
+  }
+}
+
+function colorWithAlpha(hexColor,alpha){
+  const c=color(hexColor);
+  c.setAlpha(alpha);
+  return c;
 }
 
 function triggerInput(index){
-  if(index<0||index>=columns.length)return;
-  columns[index].target=1;
+  if(index<0||index>=INPUTS.length)return;
+  const input=INPUTS[index];
+  const col=PALETTE[index];
+
+  for(let j=0;j<FIB_OFFSETS.length;j++){
+    const idx=input.center+FIB_OFFSETS[j];
+    if(idx>=0&&idx<columns.length){
+      const strength=max(.24,1-j*.085);
+      columns[idx].target=max(columns[idx].target,strength);
+      columns[idx].color=col;
+    }
+  }
+
   if(audioReady){
-    const notes=['C4','D4','E4','G4','A4','C5'];
-    synth.triggerAttackRelease(notes[index],'16n');
+    synth.triggerAttackRelease(input.notes,'8n');
   }
 }
 
@@ -93,7 +124,7 @@ function createClearButton(){
   const b=createButton('✕ Limpiar');
   b.position(160,10);
   b.mousePressed(()=>{
-    for(const c of columns){c.level=0;c.target=0;}
+    for(const c of columns){c.level=0;c.target=0;c.color='#FFFFFF';}
   });
 }
 
