@@ -1,15 +1,17 @@
 let drops=[];
 let synth,audioReady=false;
 const SOURCES=[
-  {code:LEFT_ARROW,x:.18,color:'#54C6EB',note:'C5',label:'← izquierda'},
-  {code:32,x:.50,color:'#FDE74C',note:'E5',label:'SPACE centro'},
-  {code:RIGHT_ARROW,x:.82,color:'#FF6B9A',note:'G5',label:'→ derecha'}
+  {code:'ArrowLeft',x:.18,color:'#54C6EB',note:'C5',label:'← izquierda'},
+  {code:'Space',x:.50,color:'#FDE74C',note:'E5',label:'SPACE centro'},
+  {code:'ArrowRight',x:.82,color:'#FF6B9A',note:'G5',label:'→ derecha'}
 ];
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
+  createClearButton();
+  installKeyboard();
   createControlsVisibilityButton();
 }
 
@@ -75,10 +77,20 @@ function fountain(index){
   if(audioReady)synth.triggerAttackRelease(s.note,'16n');
 }
 
-function keyPressed(){
-  for(let i=0;i<SOURCES.length;i++){
-    if(keyCode===SOURCES[i].code){fountain(i);return false;}
-  }
+function installKeyboard(){
+  window.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();
+    if(e.repeat)return;
+
+    const index=SOURCES.findIndex(s=>s.code===e.code);
+    if(index>=0)fountain(index);
+  },{passive:false});
+}
+
+function createClearButton(){
+  const b=createButton('✕ Limpiar');
+  b.position(160,10);
+  b.mousePressed(()=>{drops=[];});
 }
 
 function windowResized(){resizeResponsiveCanvas();}
