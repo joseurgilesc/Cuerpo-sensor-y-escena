@@ -5,8 +5,10 @@ const COLORS=['#5BC0BE','#FDE74C','#FF6B6B','#CDB4DB','#90F1EF'];
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
+  createClearButton();
+  installKeyboard();
   createControlsVisibilityButton();
 }
 
@@ -65,8 +67,24 @@ function hit(){
   }
 }
 
-function keyPressed(){
-  if(keyCode===32){hit();return false;}
+function installKeyboard(){
+  window.addEventListener('keydown',e=>{
+    if(e.code==='Space'){
+      e.preventDefault();
+      if(!e.repeat)hit();
+    }
+  },{passive:false});
+}
+
+function createClearButton(){
+  const b=createButton('✕ Limpiar');
+  b.position(160,10);
+  b.mousePressed(()=>{
+    particles=[];
+    hits=0;
+    energy=0;
+    lastHit=0;
+  });
 }
 
 class Particle{
