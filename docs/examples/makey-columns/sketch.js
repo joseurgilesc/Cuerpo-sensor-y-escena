@@ -2,19 +2,21 @@ let columns=[];
 let synth,audioReady=false;
 const PALETTE=['#7BDFF2','#B2F7EF','#EFF7F6','#F7D6E0','#F2B5D4','#CDB4DB'];
 const INPUTS=[
-  {code:LEFT_ARROW,label:'←'},
-  {code:UP_ARROW,label:'↑'},
-  {code:RIGHT_ARROW,label:'→'},
-  {code:DOWN_ARROW,label:'↓'},
-  {code:32,label:'SPACE'},
-  {key:'w',label:'W'}
+  {code:'ArrowLeft',label:'←'},
+  {code:'ArrowUp',label:'↑'},
+  {code:'ArrowRight',label:'→'},
+  {code:'ArrowDown',label:'↓'},
+  {code:'Space',label:'SPACE'},
+  {code:'KeyW',label:'W'}
 ];
 
 function setup(){
   setupResponsiveCanvas();
   columns=INPUTS.map((_,i)=>({level:0,target:0,i}));
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
+  createClearButton();
+  installKeyboard();
   createControlsVisibilityButton();
 }
 
@@ -77,15 +79,22 @@ function triggerInput(index){
   }
 }
 
-function keyPressed(){
-  for(let i=0;i<INPUTS.length;i++){
-    const input=INPUTS[i];
-    if((input.code!==undefined&&keyCode===input.code)||
-       (input.key&&key.toLowerCase()===input.key)){
-      triggerInput(i);
-      return false;
-    }
-  }
+function installKeyboard(){
+  window.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowUp','ArrowRight','ArrowDown','Space'].includes(e.code))e.preventDefault();
+    if(e.repeat)return;
+
+    const index=INPUTS.findIndex(input=>input.code===e.code);
+    if(index>=0)triggerInput(index);
+  },{passive:false});
+}
+
+function createClearButton(){
+  const b=createButton('✕ Limpiar');
+  b.position(160,10);
+  b.mousePressed(()=>{
+    for(const c of columns){c.level=0;c.target=0;}
+  });
 }
 
 function windowResized(){resizeResponsiveCanvas();}
