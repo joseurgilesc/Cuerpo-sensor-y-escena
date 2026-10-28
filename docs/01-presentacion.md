@@ -158,7 +158,7 @@ El repositorio incluye, en la medida en que avanza el cronograma:
 - **Ejemplos integrados** (cuerpo–imagen, sensor–sonido, cuerpo–imagen–sonido).
 
 !!! note "Pendiente de datos del ingeniero"
-    La lista exacta de archivos, sus nombres y las versiones se completa en la sección [12. Entrega y transferencia](12-entrega.md) conforme se desarrollan los prototipos.
+    La lista exacta de archivos, sus nombres y las versiones se completa en la sección [13. Entrega y transferencia](13-entrega.md) conforme se desarrollan los prototipos.
 
 ## Correspondencia con el cronograma
 
