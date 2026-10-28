@@ -95,7 +95,7 @@ Arduino IDE es el entorno donde se escribe, compila y carga el firmware en la pl
 
 <!-- TODO: indicar librerías adicionales que instalar desde el gestor de librerías -->
 
-Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.), instala las librerías desde **Herramientas → Administrar bibliotecas** (gestor de librerías). Las librerías concretas de cada interfaz se documentan en la sección [5. Arduino e interfaces físicas](05-arduino.md).
+Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.), instala las librerías desde **Herramientas → Administrar bibliotecas** (gestor de librerías). Las librerías concretas de cada interfaz se documentan en la sección [5. Arduino e interfaces físicas](06-arduino.md).
 
 !!! note "Créditos de las imágenes"
     Las capturas de pantalla del Arduino IDE provienen de [Wikimedia Commons](https://commons.wikimedia.org/) y se usan bajo licencia [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es): *Arduino ide v2 blink screenshot* por 松浦知也; *Select Board Arduino Uno* y *Select port arduino uno* por Edwiyanto.
@@ -109,7 +109,7 @@ Cuando el firmware necesite componentes específicos (sensores, pantallas, etc.)
 ## 3.6. Configuración de Tone.js
 
 1. Incluye Tone.js en el sketch (CDN o descarga local).
-2. Inicia el contexto de audio con la primera interacción del usuario (ver [8.12](08-sonido.md#812-configuracion-de-latencia-y-audio)).
+2. Inicia el contexto de audio con la primera interacción del usuario (ver [8.12](09-sonido.md#812-configuracion-de-latencia-y-audio)).
 3. Crea las fuentes de sonido (sintetizadores o samples) y los efectos que usarás.
 4. Crea un sketch base con las pistas preparadas para mapear.
 
