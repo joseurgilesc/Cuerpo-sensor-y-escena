@@ -58,12 +58,13 @@ nav:
   - "2. Arquitectura general": 02-arquitectura.md
   - "3. Preparación del entorno": 03-preparacion.md
   - "4. Captura corporal: webcam y ml5.js": 04-captura-corporal.md
-  - "5. Arduino e interfaces físicas": 05-arduino.md
-  - "6. Comunicación entre hardware y software": 06-comunicacion.md
-  - "7. Visuales generativos": 07-visuales.md
-  - "8. Integración sonora con Tone.js": 08-sonido.md
-  - "9. Prototipos integrados": 09-prototipos.md
-  - "10. Pruebas y validación": 10-pruebas.md
-  - "11. Operación y mantenimiento": 11-operacion.md
-  - "12. Entrega y transferencia": 12-entrega.md
+  - "5. Makey Makey": 05-makey-makey.md
+  - "6. Arduino e interfaces físicas": 06-arduino.md
+  - "7. Comunicación entre hardware y software": 07-comunicacion.md
+  - "8. Visuales generativos": 08-visuales.md
+  - "9. Integración sonora con Tone.js": 09-sonido.md
+  - "10. Prototipos integrados": 10-prototipos.md
+  - "11. Pruebas y validación": 11-pruebas.md
+  - "12. Operación y mantenimiento": 12-operacion.md
+  - "13. Entrega y transferencia": 13-entrega.md
   - Glosario técnico: glosario.md
