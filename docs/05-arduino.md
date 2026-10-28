@@ -230,6 +230,41 @@ colisión y empuje entre burbujas
 
 **Versión:** V8.
 
+
+
+### 5.15.8. Ejemplo 6 — fuego
+
+Una variación del sistema de agua, pero con comportamiento ascendente, turbulencia, brasas y una paleta más cálida.
+
+```
+←     → fuego izquierda
+SPACE → fuego centro
+→     → fuego derecha
+```
+
+<a href="../examples/makey-fire/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-fire/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+El sonido combina síntesis percusiva grave con ruido filtrado para acompañar la aparición de las llamas.  
+**Versión:** V8.
+
+### 5.15.9. Ejemplo 7 — cámara con rejas Fibonacci
+
+El primer contacto activa la cámara. Sobre la imagen aparecen **rejas negras verticales** con anchos inspirados en proporciones de la serie de Fibonacci.
+
+```
+contacto → activar cámara
+contacto → sonido + pulso de zoom
+```
+
+<a href="../examples/makey-camera-fibonacci/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-camera-fibonacci/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital** de la imagen. La intensidad del zoom depende de la velocidad de las pulsaciones. Las rejas mantienen una estructura basada en la secuencia `1, 1, 2, 3, 5, 8, 13...`.
+
+**Controles:** ←, SPACE y →.  
+**Versión:** V8.
+
 ### 5.15.7. Sonido y uso en clase
 
 Los ejemplos incorporan **Tone.js** de forma sencilla. Primero se pulsa **Activar sonido** y luego cada contacto del Makey Makey genera una respuesta visual y sonora.
