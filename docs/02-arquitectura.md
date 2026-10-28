@@ -79,7 +79,7 @@ Tres formas de comunicación conviven en el sistema, cada una para una tarea:
 | **OSC** | Datos entre aplicaciones | Mensajes tipados, flexible, en red |
 | **HID** | Makey Makey → computador | Plug-and-play; funciona como teclado o mouse |
 
-La elección depende de qué dispositivo se conecta con qué programa (ver [sección 6](06-comunicacion.md)).
+La elección depende de qué dispositivo se conecta con qué programa (ver [sección 7](07-comunicacion.md)).
 
 ## 2.6. Flujo de datos entre dispositivos y programas
 
@@ -129,4 +129,4 @@ Esta última ruta es especialmente útil para ejercicios de iniciación, instala
 | Tone.js | <!-- TODO --> | Pendiente de prueba |
 
 !!! tip "Matriz viva"
-    Esta tabla se actualiza con los resultados de la sección [10. Pruebas y validación](10-pruebas.md).
+    Esta tabla se actualiza con los resultados de la sección [11. Pruebas y validación](11-pruebas.md).
