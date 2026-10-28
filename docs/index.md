@@ -17,7 +17,7 @@ El resultado es un sistema que transforma gesto, movimiento y presencia física 
 
 ## Cómo está organizada esta documentación
 
-La documentación se estructura en doce secciones que siguen el ciclo de vida del proyecto, desde su presentación hasta la entrega y transferencia:
+La documentación se estructura en trece secciones que siguen el ciclo de vida del proyecto, desde su presentación hasta la entrega y transferencia:
 
 | # | Sección | Qué responde |
 | --- | --- | --- |
@@ -25,14 +25,15 @@ La documentación se estructura en doce secciones que siguen el ciclo de vida de
 | 2 | Arquitectura general | Cómo fluye el dato desde el cuerpo hasta la imagen y el sonido. |
 | 3 | Preparación del entorno | Cómo instalar y configurar todo el software necesario. |
 | 4 | Captura corporal | Cómo funciona la captura con la cámara web y ml5.js. |
-| 5 | Arduino e interfaces físicas | Cómo construir y leer los sensores físicos. |
-| 6 | Comunicación hardware–software | Cómo viaja el dato por Serial y OSC. |
-| 7 | Visuales generativos | Cómo convertir datos en comportamiento visual. |
-| 8 | Integración sonora | Cómo generar sonido con Tone.js desde el cuerpo y los sensores. |
-| 9 | Prototipos integrados | Ejemplos completos que combinan los sistemas. |
-| 10 | Pruebas y validación | Cómo verificar que el sistema funciona y es estable. |
-| 11 | Operación y mantenimiento | Cómo montar, encender, apagar y conservar el sistema. |
-| 12 | Entrega y transferencia | Qué se entrega y cómo se transfiere al equipo docente. |
+| 5 | Makey Makey | Cómo convertir contacto físico en eventos de teclado para p5.js y Tone.js. |
+| 6 | Arduino e interfaces físicas | Cómo construir y leer los sensores físicos. |
+| 7 | Comunicación hardware–software | Cómo viaja el dato por Serial y OSC. |
+| 8 | Visuales generativos | Cómo convertir datos en comportamiento visual. |
+| 9 | Integración sonora | Cómo generar sonido con Tone.js desde el cuerpo y los sensores. |
+| 10 | Prototipos integrados | Ejemplos completos que combinan los sistemas. |
+| 11 | Pruebas y validación | Cómo verificar que el sistema funciona y es estable. |
+| 12 | Operación y mantenimiento | Cómo montar, encender, apagar y conservar el sistema. |
+| 13 | Entrega y transferencia | Qué se entrega y cómo se transfiere al equipo docente. |
 
 ## Relación con Google Classroom
 
