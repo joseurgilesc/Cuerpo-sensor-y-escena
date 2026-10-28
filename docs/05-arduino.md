@@ -265,6 +265,25 @@ Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital** de 
 **Controles:** ←, SPACE y →.  
 **Versión:** V8.
 
+
+
+### 5.15.10. Ejemplo 8 — selector de videos
+
+Este ejemplo permite cambiar entre cuatro videos utilizando las flechas del Makey Makey.
+
+```
+←     → video anterior
+→     → video siguiente
+SPACE → pausa / reproducción
+```
+
+<a href="../examples/makey-video-switcher/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
+<a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-video-switcher/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
+
+Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve y, si el sonido está activado, un acorde asociado al video seleccionado.
+
+**Versión:** V8.
+
 ### 5.15.7. Sonido y uso en clase
 
 Los ejemplos incorporan **Tone.js** de forma sencilla. Primero se pulsa **Activar sonido** y luego cada contacto del Makey Makey genera una respuesta visual y sonora.
