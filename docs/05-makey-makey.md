@@ -209,7 +209,7 @@ En este ejercicio trabajaremos con:
 
 Copia el siguiente texto en un chat nuevo. Puedes cambiar las correspondencias de las flechas, los colores, los sonidos y la propuesta estética.
 
-\`\`\`text
+```text
 Actúa como artista de nuevos medios y programador especializado en
 creative coding. Quiero crear una experiencia interactiva para una
 clase de Artes Musicales y Artes Escénicas, utilizando Makey Makey,
@@ -270,7 +270,7 @@ una versión artística propia.
 
 Si debes elegir detalles no especificados, toma decisiones creativas
 coherentes y entrega una primera versión funcional.
-\`\`\`
+```
 
 ### Del prompt al prototipo
 
