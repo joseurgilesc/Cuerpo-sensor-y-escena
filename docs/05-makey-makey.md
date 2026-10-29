@@ -138,7 +138,7 @@ El sonido combina síntesis percusiva grave con ruido filtrado para acompañar l
 
 ## 5.8. Ejemplo 7 — cámara con rejas Fibonacci
 
-El primer contacto activa la cámara. Sobre la imagen aparecen **rejas negras verticales** con anchos inspirados en proporciones de la serie de Fibonacci.
+El primer contacto activa la cámara. Sobre la imagen aparecen **rejas negras verticales** con anchos inspirados en proporciones de la serie de Fibonacci y espacios visibles más amplios entre ellas.
 
 ```
 contacto → activar cámara
@@ -151,13 +151,13 @@ contacto → sonido + pulso de zoom
 Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital** de la imagen. La intensidad del zoom depende de la velocidad de las pulsaciones. Las rejas mantienen una estructura basada en la secuencia `1, 1, 2, 3, 5, 8, 13...`.
 
 **Controles:** ←, SPACE y →.  
-**Versión:** V8.
+**Versión:** V9.
 
 
 
 ## 5.9. Ejemplo 8 — selector de videos
 
-Este ejemplo permite cambiar entre cuatro videos utilizando las flechas del Makey Makey.
+Este ejemplo permite cambiar entre tres videos utilizando las flechas del Makey Makey.
 
 ```
 ←     → video anterior
@@ -170,7 +170,7 @@ SPACE → pausa / reproducción
 
 Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve y, si el sonido está activado, un acorde asociado al video seleccionado.
 
-**Versión:** V8.
+**Versión:** V9.
 
 ## 5.10. Sonido y uso en clase
 
