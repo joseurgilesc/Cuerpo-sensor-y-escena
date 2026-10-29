@@ -138,7 +138,7 @@ El sonido combina síntesis percusiva grave con ruido filtrado para acompañar l
 
 ## 5.8. Ejemplo 7 — cámara con rejas Fibonacci
 
-El primer contacto activa la cámara. Sobre la imagen aparecen **rejas negras verticales** con anchos inspirados en proporciones de la serie de Fibonacci y espacios visibles más amplios entre ellas.
+Antes de activar la cámara, una estructura de **rejas verticales inspiradas en la serie de Fibonacci** se mueve lentamente sobre el fondo. El primer contacto activa la cámara y la retícula continúa en movimiento sobre la imagen.
 
 ```
 contacto → activar cámara
@@ -148,10 +148,10 @@ contacto → sonido + pulso de zoom
 <a href="../examples/makey-camera-fibonacci/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-camera-fibonacci/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital** de la imagen. La intensidad del zoom depende de la velocidad de las pulsaciones. Las rejas mantienen una estructura basada en la secuencia `1, 1, 2, 3, 5, 8, 13...`.
+Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital**. Además, el encuadre mantiene una respiración orgánica muy suave, sin deformar la proporción de la cámara. La intensidad del pulso de zoom depende de la velocidad de las pulsaciones. Las rejas conservan la estructura `1, 1, 2, 3, 5, 8, 13...`, pero se desplazan y respiran de forma continua.
 
 **Controles:** ←, SPACE y →.  
-**Versión:** V9.
+**Versión:** V10.
 
 
 
