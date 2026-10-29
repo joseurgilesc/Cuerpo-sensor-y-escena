@@ -168,9 +168,9 @@ SPACE → pausa / reproducción
 <a href="../examples/makey-video-switcher/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-video-switcher/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve y, si el sonido está activado, un acorde asociado al video seleccionado.
+Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve y, si el sonido está activado, un acorde asociado al video seleccionado. Si un archivo no existe o no puede cargarse, el ejemplo muestra ahora el nombre del video que debe revisarse.
 
-**Versión:** V9.
+**Versión:** V10.
 
 ## 5.10. Sonido y uso en clase
 
