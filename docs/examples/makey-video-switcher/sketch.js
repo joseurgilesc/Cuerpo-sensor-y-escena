@@ -220,6 +220,9 @@ function createMusicControls(){
     localMusicURL=nextURL;
     if(oldURL)URL.revokeObjectURL(oldURL);
     musicStatus='Pista local: '+file.name;
+    credits.html('Música local: '+file.name.replace(/[&<>"']/g,c=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]))+' · comprueba su licencia antes de publicar');
     const promise=backgroundMusic.play();
     if(promise && promise.catch)promise.then(()=>{
       musicButton.html('⏸ Pausar música');
