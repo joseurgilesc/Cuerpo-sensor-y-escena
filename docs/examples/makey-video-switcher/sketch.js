@@ -18,7 +18,7 @@ const VIDEO_FILES=[
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V11');
+  createExampleVersionBadge('V12');
   createAudioButton();
   createVideoPicker();
   createControlsVisibilityButton();
