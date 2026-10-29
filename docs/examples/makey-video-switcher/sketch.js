@@ -1,8 +1,12 @@
 let videos=[];
 let currentIndex=0;
 let transition=0;
-let audioReady=false;
-let synth,reverb;
+let backgroundMusic=null;
+let musicButton=null;
+let musicStatus='';
+let localMusicURL=null;
+const STOCK_MUSIC_URL='https://upload.wikimedia.org/wikipedia/commons/2/28/Horizon_Flare_by_Alexander_Nakarada.ogg';
+const STOCK_MUSIC_PAGE='https://commons.wikimedia.org/wiki/File:Horizon_Flare_by_Alexander_Nakarada.ogg';
 let loadedCount=0;
 let failedFiles=[];
 let loadStartedAt=0;
@@ -18,8 +22,8 @@ const VIDEO_FILES=[
 
 function setup(){
   setupResponsiveCanvas();
-  createExampleVersionBadge('V12');
-  createAudioButton();
+  createExampleVersionBadge('V13');
+  createMusicControls();
   createVideoPicker();
   createControlsVisibilityButton();
   installKeyboard();
@@ -137,22 +141,112 @@ function playSelected(){
   }
 }
 
-function createAudioButton(){
-  const b=createButton('🔊 Activar sonido');
-  b.position(10,10);
-  b.style('z-index','100');
-  b.mousePressed(async()=>{
-    await Tone.start();
-    reverb=new Tone.Reverb({decay:2.8,wet:.34}).toDestination();
-    synth=new Tone.PolySynth(Tone.Synth,{
-      oscillator:{type:'triangle8'},
-      envelope:{attack:.008,decay:.14,sustain:.05,release:.55}
-    }).connect(reverb);
-    synth.volume.value=-7;
-    audioReady=true;
-    b.html('🔊 Sonido activo');
-    b.attribute('disabled','');
+function createMusicControls(){
+  // Música instrumental ambiental: una pista continua e independiente del video.
+  // Los navegadores exigen interacción antes de reproducir audio.
+  backgroundMusic=new Audio();
+  backgroundMusic.src=STOCK_MUSIC_URL;
+  backgroundMusic.preload='none';
+  backgroundMusic.loop=true;
+  backgroundMusic.volume=.26;
+  backgroundMusic.addEventListener('error',()=>{
+    musicStatus='No se pudo cargar la pista externa. Puedes elegir un audio local.';
+    if(musicButton)musicButton.html('🎭 Reintentar música');
   });
+
+  const bar=createDiv('');
+  bar.position(10,10);
+  bar.style('display','flex');
+  bar.style('align-items','center');
+  bar.style('gap','8px');
+  bar.style('flex-wrap','wrap');
+  bar.style('background','rgba(0,0,0,.66)');
+  bar.style('padding','4px 8px');
+  bar.style('border-radius','10px');
+  bar.style('z-index','100');
+
+  musicButton=createButton('🎭 Activar música');
+  musicButton.parent(bar);
+  musicButton.mousePressed(()=>{
+    if(backgroundMusic.paused){
+      musicStatus='';
+      // Iniciar directamente en el clic, compatible con la política de autoplay.
+      const promise=backgroundMusic.play();
+      if(promise && promise.catch){
+        promise.then(()=>musicButton.html('⏸ Pausar música')).catch(err=>{
+          musicStatus='No se pudo iniciar la música: '+(err?.name||'error')+
+            '. Prueba cargando una pista local.';
+          musicButton.html('🎭 Reintentar música');
+        });
+      }else{
+        musicButton.html('⏸ Pausar música');
+      }
+    }else{
+      backgroundMusic.pause();
+      musicButton.html('🎭 Reanudar música');
+    }
+  });
+
+  const volumeLabel=createSpan('Vol. 26%');
+  volumeLabel.parent(bar);
+  volumeLabel.style('color','#fff');
+  volumeLabel.style('font-size','12px');
+  const volume=createSlider(0,100,26,1);
+  volume.parent(bar);
+  volume.style('width','110px');
+  volume.input(()=>{
+    backgroundMusic.volume=volume.value()/100;
+    volumeLabel.html('Vol. '+volume.value()+'%');
+  });
+
+  const audioInput=document.createElement('input');
+  audioInput.type='file';
+  audioInput.accept='audio/*,.mp3,.ogg,.wav,.m4a';
+  audioInput.style.display='none';
+  document.body.appendChild(audioInput);
+
+  const localButton=createButton('🎵 Cambiar pista');
+  localButton.position(200,58);
+  localButton.style('z-index','100');
+  localButton.mousePressed(()=>audioInput.click());
+  audioInput.addEventListener('change',()=>{
+    const file=audioInput.files && audioInput.files[0];
+    if(!file)return;
+    const nextURL=URL.createObjectURL(file);
+    const oldURL=localMusicURL;
+    backgroundMusic.pause();
+    backgroundMusic.src=nextURL;
+    backgroundMusic.load();
+    localMusicURL=nextURL;
+    if(oldURL)URL.revokeObjectURL(oldURL);
+    musicStatus='Pista local: '+file.name;
+    const promise=backgroundMusic.play();
+    if(promise && promise.catch)promise.then(()=>{
+      musicButton.html('⏸ Pausar música');
+    }).catch(()=>{
+      musicButton.html('🎭 Activar música');
+      musicStatus='Seleccionada: '+file.name+'. Pulsa Activar música.';
+    });
+    audioInput.value='';
+  });
+
+  // La atribución CC BY 4.0 permanece visible en el ejemplo.
+  const credits=createDiv(
+    'Música de stock: <a href="'+STOCK_MUSIC_PAGE+'" target="_blank" rel="noopener noreferrer" style="color:#fff">Horizon Flare</a>'+
+    ' · Alexander Nakarada · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" style="color:#fff">CC BY 4.0</a>'
+  );
+  credits.position(12,0);
+  credits.style('position','fixed');
+  credits.style('left','12px');
+  credits.style('bottom','52px');
+  credits.style('top','auto');
+  credits.style('color','#ddd');
+  credits.style('background','rgba(0,0,0,.72)');
+  credits.style('padding','5px 8px');
+  credits.style('border-radius','8px');
+  credits.style('font-size','11px');
+  credits.style('z-index','100');
+  credits.attribute('data-persistent-ui','true');
 }
 
 function installKeyboard(){
@@ -189,14 +283,6 @@ function changeVideo(dir){
   playSelected();
   transition=1;
 
-  if(audioReady){
-    const notes=['C4','E4','G4'];
-    const root=notes[currentIndex%notes.length];
-    synth.triggerAttackRelease(
-      [root,Tone.Frequency(root).transpose(7).toNote()],
-      '8n'
-    );
-  }
 }
 
 function togglePlayback(){
@@ -272,7 +358,7 @@ function drawVideoCover(video){
 function drawHUD(){
   noStroke();
   fill(0,175);
-  rect(12,112,min(510,width-24),playbackWarning?100:76,10);
+  rect(12,112,min(510,width-24),playbackWarning||musicStatus?115:76,10);
   fill(255);
   textAlign(LEFT,TOP);
   textSize(14);
@@ -284,6 +370,10 @@ function drawHUD(){
   if(playbackWarning){
     fill(255,200,125);
     text(playbackWarning,24,189,width-45,22);
+  }
+  if(musicStatus){
+    fill(255,215,160);
+    text(musicStatus,24,playbackWarning?210:189,width-45,35);
   }
 }
 
