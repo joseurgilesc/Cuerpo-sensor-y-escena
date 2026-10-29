@@ -238,19 +238,27 @@ function drawLoadingState(){
   const allFailed=videos.length>0&&failedFiles.length===videos.length;
   const waited=millis()-loadStartedAt;
 
-  if(allFailed || (loadedCount===0&&waited>5000)){
+  if(allFailed){
     textSize(width<500?14:17);
-    text('No se encontraron videos reproducibles.',width/2,height/2-57);
+    text('No se pudieron reproducir los videos.',width/2,height/2-57);
     textSize(width<500?11:14);
     fill(220);
-    text('Pulsa «Seleccionar videos (MP4)» arriba a la izquierda.',width/2,height/2-22);
-    text('Elige varios videos del ordenador o arrástralos a esta ventana.',width/2,height/2+8);
+    text('Verifica los archivos MP4 o prueba «Seleccionar videos».',width/2,height/2-22);
+    text('También puedes arrastrar videos a esta ventana.',width/2,height/2+8);
     textSize(11);
     fill(170);
-    text('Los MP4 referenciados en el código no están publicados en GitHub Pages.',width/2,height/2+47);
+    text('Comprueba que el navegador admita el códec de los videos.',width/2,height/2+47);
   }else{
     textSize(16);
-    text('Cargando videos… '+loadedCount+'/'+videos.length,width/2,height/2);
+    text('Cargando videos… '+loadedCount+'/'+videos.length,width/2,height/2-14);
+    if(waited>5000){
+      textSize(12);
+      fill(190);
+      text('Los archivos grandes pueden tardar. No cierres la página.',width/2,height/2+16);
+      if(waited>20000){
+        text('Si no avanzan, prueba Ctrl+F5 o selecciona archivos locales.',width/2,height/2+42);
+      }
+    }
   }
 }
 
