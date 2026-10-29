@@ -4,6 +4,8 @@ let transition=0;
 let audioReady=false;
 let synth,reverb;
 let loadedCount=0;
+let failedFiles=[];
+let loadStartedAt=0;
 
 const VIDEO_FILES=[
   'videos/19201294-hd_1080_1920_50fps.mp4',
@@ -13,8 +15,9 @@ const VIDEO_FILES=[
 
 function setup(){
   setupResponsiveCanvas();
+  loadStartedAt=millis();
   loadVideos();
-  createExampleVersionBadge('V9');
+  createExampleVersionBadge('V10');
   createAudioButton();
   createControlsVisibilityButton();
   installKeyboard();
@@ -36,6 +39,11 @@ function loadVideos(){
         v.play().catch(()=>{});
       }
     });
+    v.elt.addEventListener('error',()=>{
+      const name=VIDEO_FILES[i];
+      if(!failedFiles.includes(name)) failedFiles.push(name);
+    });
+
     videos.push(v);
   }
 }
@@ -120,11 +128,7 @@ function draw(){
   if(v&&v.elt.readyState>=2){
     drawVideoCover(v);
   }else{
-    fill(255);
-    noStroke();
-    textAlign(CENTER,CENTER);
-    textSize(16);
-    text('Cargando videos… '+loadedCount+'/'+VIDEO_FILES.length,width/2,height/2);
+    drawLoadingState();
   }
 
   if(transition>.01){
@@ -135,6 +139,31 @@ function draw(){
   }
 
   drawHUD();
+}
+
+function drawLoadingState(){
+  fill(255);
+  noStroke();
+  textAlign(CENTER,CENTER);
+
+  const waited=millis()-loadStartedAt;
+  if(failedFiles.length>0 || waited>4500){
+    textSize(16);
+    text('No se pudieron cargar los videos',width/2,height/2-34);
+
+    textSize(12);
+    fill(210);
+    const missing=failedFiles.length?failedFiles:VIDEO_FILES;
+    const shown=missing.slice(0,3).map(p=>p.replace('videos/','')).join('\n');
+    text(shown,width/2,height/2+8);
+
+    textSize(11);
+    fill(170);
+    text('Revisa que los archivos existan dentro de la carpeta videos/.',width/2,height/2+72);
+  }else{
+    textSize(16);
+    text('Cargando videos… '+loadedCount+'/'+VIDEO_FILES.length,width/2,height/2);
+  }
 }
 
 function drawVideoCover(v){
