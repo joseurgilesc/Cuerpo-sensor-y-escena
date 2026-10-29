@@ -14,7 +14,7 @@ const FIB=[1,1,2,3,5,8,13,8,5,3,2,1];
 
 function setup(){
   deviceProfile=setupResponsiveCanvas();
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
   createStopButton();
   installKeyboard();
@@ -150,11 +150,18 @@ function drawFibonacciBars(){
 
   noStroke();
   for(let i=0;i<FIB.length;i++){
-    const w=FIB[i]*unit;
-    const wobble=1+.08*sin(frameCount*.02+i*.7);
-    fill(0,235);
-    rect(x,0,w*wobble,height);
-    x+=w;
+    const cellW=FIB[i]*unit;
+
+    // La barra negra ocupa solo una parte de cada celda Fibonacci.
+    // Así quedan "ventanas" de cámara más amplias entre rejas.
+    const barRatio=.52+.05*sin(frameCount*.018+i*.65);
+    const barW=cellW*barRatio;
+    const barX=x+(cellW-barW)/2;
+
+    fill(0,238);
+    rect(barX,0,barW,height);
+
+    x+=cellW;
   }
 }
 
