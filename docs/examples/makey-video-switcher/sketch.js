@@ -6,7 +6,6 @@ let synth,reverb;
 let loadedCount=0;
 
 const VIDEO_FILES=[
-  'videos/12773175_3840_2160_24fps.mp4',
   'videos/19201294-hd_1080_1920_50fps.mp4',
   'videos/5382693-hd_1920_1080_24fps.mp4',
   'videos/855734-hd_1920_1080_30fps.mp4'
@@ -15,7 +14,7 @@ const VIDEO_FILES=[
 function setup(){
   setupResponsiveCanvas();
   loadVideos();
-  createExampleVersionBadge('V8');
+  createExampleVersionBadge('V9');
   createAudioButton();
   createControlsVisibilityButton();
   installKeyboard();
@@ -91,7 +90,7 @@ function changeVideo(dir){
   transition=1;
 
   if(audioReady){
-    const notes=['C4','E4','G4','B4'];
+    const notes=['C4','E4','G4'];
     const root=notes[currentIndex];
     synth.triggerAttackRelease(
       [root,Tone.Frequency(root).transpose(7).toNote()],
