@@ -138,11 +138,12 @@ El sonido combina síntesis percusiva grave con ruido filtrado para acompañar l
 
 ## 5.8. Ejemplo 7 — cámara con rejas Fibonacci
 
-Antes de activar la cámara, una estructura de **rejas verticales inspiradas en la serie de Fibonacci** se mueve lentamente sobre el fondo. El primer contacto activa la cámara y la retícula continúa en movimiento sobre la imagen.
+La cámara se muestra **únicamente mientras SPACE permanece presionada**. Al soltar SPACE, la pantalla vuelve completamente a negro. Durante la activación, las rejas Fibonacci pasan gradualmente de negro a blanco y siguen moviéndose.
 
 ```
-contacto → activar cámara
-contacto → sonido + pulso de zoom
+SPACE presionado → cámara + rejas que cambian de negro a blanco
+SPACE liberado    → pantalla completamente negra
+← y → (con SPACE) → sonido y pulso de zoom
 ```
 
 <a href="../examples/makey-camera-fibonacci/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
@@ -150,8 +151,8 @@ contacto → sonido + pulso de zoom
 
 Cada pulsación genera un acorde y aumenta temporalmente el **zoom digital**. Además, el encuadre mantiene una respiración orgánica muy suave, sin deformar la proporción de la cámara. La intensidad del pulso de zoom depende de la velocidad de las pulsaciones. Las rejas conservan la estructura `1, 1, 2, 3, 5, 8, 13...`, pero se desplazan y respiran de forma continua.
 
-**Controles:** ←, SPACE y →.  
-**Versión:** V10.
+**Controles:** mantén SPACE para mostrar la cámara; ← y → generan pulsos adicionales.  
+**Versión:** V11.
 
 
 
@@ -168,13 +169,17 @@ SPACE → pausa / reproducción
 <a href="../examples/makey-video-switcher/" target="_blank" rel="noopener" class="md-button md-button--primary">▶ Abrir ejemplo</a>
 <a href="https://github.com/joseurgilesc/Cuerpo-sensor-y-escena/blob/main/docs/examples/makey-video-switcher/sketch.js" target="_blank" rel="noopener" class="md-button">Ver código</a>
 
-Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve y, si el sonido está activado, un acorde asociado al video seleccionado. Si un archivo no existe o no puede cargarse, el ejemplo muestra ahora el nombre del video que debe revisarse.
+Los videos se muestran a pantalla completa manteniendo su proporción. Cada cambio produce una transición visual breve. El usuario puede seleccionar videos locales desde el equipo si los MP4 publicados no están disponibles.
 
-**Versión:** V10.
+La **música instrumental teatral de fondo** sustituye a los acordes que antes se reproducían en cada cambio: la pista permanece sonando sin reiniciarse al alternar videos. Pulsa **Activar música** para iniciar (los navegadores bloquean el audio automático), y ajusta el volumen con el deslizador. También se puede utilizar **Cambiar pista** para seleccionar un archivo de audio local.
+
+**Pista de referencia:** [Horizon Flare, de Alexander Nakarada](https://commons.wikimedia.org/wiki/File:Horizon_Flare_by_Alexander_Nakarada.ogg), música de piano cinematográfica, licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Se reproduce mediante enlace a Wikimedia Commons; requiere conexión a internet. No se han introducido cambios en el audio de la composición, solo se controla reproducción y volumen.
+
+**Versión:** V13.
 
 ## 5.10. Sonido y uso en clase
 
-Los ejemplos incorporan **Tone.js** de forma sencilla. Primero se pulsa **Activar sonido** y luego cada contacto del Makey Makey genera una respuesta visual y sonora.
+La mayoría de ejemplos incorpora **Tone.js** y síntesis en tiempo real. El **selector de videos** usa en cambio una pista instrumental pregrabada, que se inicia pulsando **Activar música** para respetar las restricciones de reproducción automática del navegador.
 
 Una secuencia de trabajo recomendada es:
 
