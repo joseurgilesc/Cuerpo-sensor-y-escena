@@ -193,3 +193,94 @@ Una secuencia de trabajo recomendada es:
 ```
 
 El objetivo no es solamente que una tecla dispare un efecto, sino explorar cómo el **material, el gesto, la respuesta visual y el sonido** pueden construir una interacción con sentido artístico.
+
+## 5.11. Crear visuales y música con ChatGPT: ejemplo de prompt
+
+Además de ejecutar los ejemplos anteriores, puedes usar **ChatGPT como asistente de programación creativa** para diseñar tu propia interacción entre el **Makey Makey, la imagen y el sonido**. No es necesario conocer previamente todo el código: lo importante es describir con claridad la experiencia artística, qué hará cada entrada y qué herramientas se utilizarán.
+
+En este ejercicio trabajaremos con:
+
+- **Makey Makey:** envía al computador las flechas del teclado.
+- **p5.js:** dibuja y anima visuales generativos en el navegador.
+- **Tone.js:** genera música y sonidos originales en tiempo real.
+- **HTML, CSS y JavaScript:** integran el prototipo en una página web.
+
+### Prompt de ejemplo para copiar en ChatGPT
+
+Copia el siguiente texto en un chat nuevo. Puedes cambiar las correspondencias de las flechas, los colores, los sonidos y la propuesta estética.
+
+\`\`\`text
+Actúa como artista de nuevos medios y programador especializado en
+creative coding. Quiero crear una experiencia interactiva para una
+clase de Artes Musicales y Artes Escénicas, utilizando Makey Makey,
+p5.js y Tone.js.
+
+OBJETIVO ARTÍSTICO
+Diseña una pequeña pieza audiovisual generativa, abstracta y
+experimental. Cada flecha del Makey Makey debe transformar tanto los
+visuales como la música instrumental. Quiero transiciones suaves,
+movimiento continuo y una estética adecuada para una escena teatral.
+
+CONTROLES E INTERACCIÓN
+El Makey Makey funciona como un teclado USB. Usa los eventos
+ArrowLeft, ArrowRight, ArrowUp, ArrowDown y Space.
+
+- Flecha izquierda: ondas horizontales azules, movimiento lento y
+  música ambiental con notas graves y largas.
+- Flecha derecha: partículas cálidas que se dispersan, pulsos
+  rítmicos y sonidos percusivos suaves.
+- Flecha arriba: columnas luminosas que crecen, arpegios ascendentes
+  y una sensación de expansión.
+- Flecha abajo: líneas y retículas que descienden, notas más graves,
+  ritmo lento y una sensación de contracción.
+- SPACE: detener o reanudar la animación y la música.
+
+Cada flecha debe cambiar a una escena visual y sonora distinta.
+La música debe ser ORIGINAL, generada con Tone.js, no una canción
+preexistente ni un archivo de audio externo. Evita que al cambiar
+de escena queden sintetizadores o secuencias duplicados sonando.
+
+REQUISITOS TÉCNICOS
+1. Usa p5.js para los visuales generativos y Tone.js para la música.
+2. Entrégame un único archivo index.html con HTML, CSS y JavaScript,
+   listo para abrir en el navegador y publicar con GitHub Pages.
+3. Carga las bibliotecas desde un CDN; no uses servidores, archivos
+   adicionales ni dependencias que requieran instalación.
+4. El canvas debe ocupar la pantalla y adaptarse a su tamaño.
+5. Incluye un botón visible "Activar sonido" porque el navegador
+   exige una interacción del usuario antes de reproducir audio.
+6. Añade control de volumen y un indicador de la escena activa.
+7. Haz que las flechas funcionen primero con el teclado convencional
+   y después con Makey Makey, sin cambiar el código.
+8. Evita el desplazamiento de la página al presionar las flechas
+   o SPACE. Gestiona las pulsaciones mantenidas sin errores.
+9. Escribe funciones separadas para visuales, música y teclado.
+   Añade comentarios claros para que estudiantes principiantes
+   puedan modificar parámetros como colores, velocidad, notas,
+   instrumentos y patrones rítmicos.
+10. Prioriza estabilidad y funcionamiento real en Chrome o Firefox.
+    No uses imágenes ni música con derechos de terceros.
+
+FORMA DE ENTREGA
+Primero explica brevemente qué ocurre con cada flecha.
+Después entrega TODO el código completo de index.html.
+Al final, indica cómo probarlo sin Makey Makey, cómo conectarlo
+al Makey Makey y qué partes del código puedo modificar para crear
+una versión artística propia.
+
+Si debes elegir detalles no especificados, toma decisiones creativas
+coherentes y entrega una primera versión funcional.
+\`\`\`
+
+### Del prompt al prototipo
+
+1. **Experimenta primero con el teclado:** comprueba la respuesta visual y musical de cada flecha.
+2. **Prueba con Makey Makey:** conecta las entradas de las flechas a objetos conductores y utiliza **EARTH** para cerrar el circuito.
+3. **Modifica tu idea:** solicita a ChatGPT cambios específicos, por ejemplo: «Haz que la flecha derecha genere partículas más lentas y una textura sonora menos rítmica».
+4. **Documenta el resultado:** guarda tu código, registra una prueba audiovisual y describe cómo se relacionan el gesto, el sonido y la imagen.
+
+!!! note "Importante"
+    ChatGPT ayuda a **generar y revisar el código**, pero la interacción física sucede en la **página web abierta en el navegador**, con el Makey Makey conectado por USB. Para escuchar la música es necesario pulsar **Activar sonido**. Una vez generado, prueba el código y solicita correcciones si algún control no funciona.
+
+**Para reflexionar:** ¿qué cambia en el significado escénico cuando una flecha no solo activa un efecto, sino que modifica simultáneamente el movimiento visual, el ritmo y la atmósfera sonora?
+
