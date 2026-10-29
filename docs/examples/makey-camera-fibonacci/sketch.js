@@ -14,7 +14,7 @@ const FIB=[1,1,2,3,5,8,13,8,5,3,2,1];
 
 function setup(){
   deviceProfile=setupResponsiveCanvas();
-  createExampleVersionBadge('V9');
+  createExampleVersionBadge('V10');
   createAudioButton();
   createStopButton();
   installKeyboard();
@@ -101,7 +101,11 @@ function installKeyboard(){
 
 function fitZoomedCamera(){
   const base=fitCameraCoverCrop(width,height,SRC_W,SRC_H);
-  const z=1+zoomPulse;
+
+  // Respiración orgánica muy suave: nunca deforma la imagen,
+  // solo modifica lentamente el recorte/zoom.
+  const organicZoom=map(noise(millis()*.00032),0,1,.004,.045);
+  const z=1+zoomPulse+organicZoom;
   const sw=base.sw/z;
   const sh=base.sh/z;
   const sx=base.sx+(base.sw-sw)/2;
@@ -116,6 +120,8 @@ function draw(){
   zoomPulse=lerp(zoomPulse,zoomTarget,.16);
   zoomTarget*=.91;
 
+  // La estructura Fibonacci ya está viva antes de activar la cámara.
+  // El primer contacto abre la cámara y la misma retícula continúa moviéndose.
   if(cameraActive&&video){
     const f=fitZoomedCamera();
 
@@ -125,8 +131,16 @@ function draw(){
     image(video,f.dx,f.dy,f.dw,f.dh,f.sx,f.sy,f.sw,f.sh);
     pop();
 
-    drawFibonacciBars();
+    drawFibonacciBars(false);
   }else{
+    drawFibonacciBars(true);
+
+    fill(0,185);
+    noStroke();
+    rectMode(CENTER);
+    rect(width/2,height/2,width<520?width*.9:500,82,12);
+    rectMode(CORNER);
+
     fill(255);
     noStroke();
     textAlign(CENTER,CENTER);
@@ -143,24 +157,37 @@ function draw(){
   text('←   SPACE   →   ·   contacto = sonido + zoom',width/2,58);
 }
 
-function drawFibonacciBars(){
+function drawFibonacciBars(preview=false){
   const total=FIB.reduce((a,b)=>a+b,0);
-  const unit=width/total;
-  let x=0;
+
+  // El ciclo es un poco más ancho que la pantalla para permitir
+  // desplazamiento lateral sin descubrir los bordes.
+  const cycleW=width*1.14;
+  const unit=cycleW/total;
+  const globalDrift=
+    sin(frameCount*.008)*width*.022+
+    (noise(frameCount*.0022)-.5)*width*.035;
+
+  let x=-width*.07+globalDrift;
 
   noStroke();
   for(let i=0;i<FIB.length;i++){
     const cellW=FIB[i]*unit;
 
-    // La barra negra ocupa solo una parte de cada celda Fibonacci.
-    // Así quedan "ventanas" de cámara más amplias entre rejas.
-    const barRatio=.52+.05*sin(frameCount*.018+i*.65);
-    const barW=cellW*barRatio;
-    const barX=x+(cellW-barW)/2;
+    // Respiración y deriva independiente por cada franja.
+    const breathe=.50+.09*sin(frameCount*.014+i*.63);
+    const localDrift=sin(frameCount*.011+i*1.17)*min(18,cellW*.18);
+    const barW=max(2,cellW*breathe);
+    const barX=x+(cellW-barW)/2+localDrift;
 
-    fill(0,238);
-    rect(barX,0,barW,height);
+    if(preview){
+      // Antes de abrir la cámara las líneas se ven como una composición viva.
+      fill(220,38);
+    }else{
+      fill(0,232);
+    }
 
+    rect(barX,-8,barW,height+16);
     x+=cellW;
   }
 }
