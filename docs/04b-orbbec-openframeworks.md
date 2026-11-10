@@ -1,671 +1,1032 @@
 # 4B. Captura de profundidad: Orbbec + openFrameworks
 
-Esta sección documenta una **ruta avanzada de captura corporal y espacial** mediante cámaras de profundidad Orbbec y openFrameworks.
+Esta sección documenta la **ruta avanzada de captura corporal y espacial** del proyecto «Cuerpo, sensor y escena», basada en la implementación real desarrollada en el repositorio [Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc).
 
-La propuesta pedagógica del proyecto mantiene una progresión gradual:
+A diferencia del primer acercamiento con webcam + ml5.js, aquí se trabaja con:
 
-```
+- cámara **Orbbec RGB-D**;
+- profundidad real alineada a color;
+- **openFrameworks** como motor C++;
+- **MediaPipe PoseLandmarker** como detector corporal;
+- un adaptador C++ que combina pose 2D + profundidad real;
+- silueta corporal obtenida desde el mapa de profundidad;
+- escenas 2D y volumétricas 3D;
+- mappings corporales X/Y/Z;
+- OSC, MIDI, presets y secuenciación.
+
+La progresión pedagógica se mantiene:
+
+```text
 webcam + ml5.js
       ↓
 comprender coordenadas, gesto y mapeo
       ↓
-Orbbec + profundidad 3D
+Orbbec RGB-D
       ↓
-openFrameworks + C++
+profundidad real + pose
       ↓
-prototipos escénicos de mayor complejidad
-```
-
-!!! info "Por qué Orbbec aparece después de webcam + ml5.js"
-    La cámara web permite comprender primero la lógica básica de **captura → dato → mapeo → respuesta** con una barrera técnica baja. Orbbec añade profundidad real, flujos RGB-D, configuración del SDK, bibliotecas nativas y compilación en C++; por eso se plantea como una segunda etapa.
-
----
-
-## 4B.1. ¿Qué aporta una cámara Orbbec?
-
-Una cámara RGB-D combina imagen convencional con información de profundidad. En lugar de trabajar únicamente con coordenadas X/Y, cada punto puede incorporar una distancia respecto a la cámara.
-
-```
-cuerpo
-  ↓
-cámara RGB-D
-  ↓
-color + profundidad
-  ↓
-coordenadas / distancias / nube de puntos
-  ↓
 openFrameworks
-  ↓
-imagen + sonido + espacio escénico
+      ↓
+escenas 2D / 3D / volumétricas
 ```
 
-Esto permite explorar:
+---
 
-- distancia real del intérprete a la cámara;
-- zonas de presencia;
-- segmentación por profundidad;
-- volumen espacial;
-- nubes de puntos;
-- interacción con objetos y superficies;
-- relaciones cuerpo–espacio más precisas que con una webcam convencional.
+## 4B.1. Arquitectura real implementada
+
+La arquitectura actual separa captura, detección y visualización:
+
+```text
+Orbbec RGB-D
+   │
+   ├── Color RGB 1280×720 @ 30 fps
+   │        ↓
+   │   submuestreo 480×270
+   │        ↓
+   │   pose_detector.py
+   │   MediaPipe PoseLandmarker
+   │        ↓
+   │   33 landmarks
+   │        ↓
+   └── Depth Y16 alineado D2C
+            ↓
+      profundidad real en mm
+            ↓
+      OrbbecAdapter
+            ↓
+      18 joints X/Y/Z
+            ↓
+      DepthStore
+            ↓
+      silueta + contorno
+            ↓
+      SceneEngine
+            ↓
+      escenas 2D / 3D / OSC / MIDI
+```
+
+El elemento central es `OrbbecAdapter`, que se encuentra en:
+
+- [src/adapters/kinect/OrbbecAdapter.cpp](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/adapters/kinect/OrbbecAdapter.cpp)
+- [src/adapters/kinect/OrbbecAdapter.h](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/adapters/kinect/OrbbecAdapter.h)
+
+!!! note "Nombre heredado"
+    El proyecto conserva la interfaz `IKinectAdapter` y la carpeta `adapters/kinect/` por compatibilidad con la arquitectura original. Sin embargo, el backend activo puede ser Orbbec, MediaPipe o un adaptador simulado.
 
 ---
 
-## 4B.2. Antes de instalar: identificar modelo, firmware y SDK
+# 4B.2. Entorno probado en el proyecto
 
-No todas las cámaras Orbbec utilizan exactamente el mismo protocolo.
+La implementación actual fue desarrollada y compilada en **Linux** con openFrameworks.
 
-Antes de instalar software:
+Los addons declarados en `addons.make` son:
 
-1. Identifica el **modelo exacto** de la cámara.
-2. Revisa la **versión de firmware**.
-3. Verifica si el dispositivo está soportado por **Orbbec SDK v2**.
-4. Si es un modelo heredado, revisa si requiere Orbbec SDK v1 / OpenNI.
+```text
+ofxOsc
+ofxImGui
+ofxMidi
+```
 
-Orbbec recomienda **SDK v2 para nuevos desarrollos** cuando el dispositivo esté soportado.
+Archivo:
 
-Referencias oficiales:
+- [addons.make](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/addons.make)
 
-- [Orbbec SDK v2 — documentación](https://orbbec.github.io/OrbbecSDK_v2/)
-- [Lista de dispositivos compatibles](https://orbbec.github.io/OrbbecSDK_v2/)
-- [Descargas del SDK](https://www.orbbec.com/developers/orbbec-sdk/)
-- [Repositorio oficial OrbbecSDK v2](https://github.com/orbbec/OrbbecSDK_v2)
+La aplicación utiliza además:
 
-!!! warning "No mezclar SDK sin verificar"
-    Algunos dispositivos y firmwares antiguos usan protocolos distintos. Si la cámara no aparece en la lista de soporte de SDK v2, no conviene forzar la instalación: primero debe verificarse la ruta correspondiente al modelo.
-
----
-
-## 4B.3. Requisitos recomendados
-
-Para trabajo de aula y prototipado:
-
-| Componente | Recomendación |
-| --- | --- |
-| Sistema operativo | Windows 10/11 o Ubuntu 20.04+ |
-| CPU | 4 núcleos o más |
-| RAM | 8 GB mínimo; 16 GB recomendado |
-| USB | USB 3.0 |
-| GPU | No obligatoria para captura básica; útil para visuales complejos |
-| Compilador | Visual Studio en Windows / GCC-Clang en Linux/macOS |
-| openFrameworks | Versión estable compatible con el compilador |
-| SDK | Orbbec SDK v2 si el modelo lo soporta |
+- Orbbec SDK;
+- MediaPipe Tasks para detección de pose;
+- Python 3.12 para el detector;
+- JSON para configuraciones y mappings;
+- TCP local para comunicar openFrameworks con el detector de pose;
+- OSC y MIDI como entradas adicionales del sistema.
 
 ---
 
-# 4B.4. Paso 1 — instalar Orbbec SDK y comprobar la cámara
-
-## Windows
-
-La ruta más simple es utilizar el instalador oficial.
-
-1. Descarga el instalador **OrbbecSDK v2 para Windows**.
-2. Ejecuta el archivo `.exe`.
-3. Completa la instalación.
-4. Conecta la cámara por USB 3.0.
-5. Abre **Orbbec Viewer**.
-6. Comprueba:
-   - imagen de color;
-   - profundidad;
-   - resolución;
-   - estabilidad del flujo.
-
-En Windows, la documentación oficial indica además que debe configurarse el registro de **metadata/timestamps** cuando corresponda.
+# 4B.3. Instalación de openFrameworks
 
 ## Linux
 
-Si utilizas el paquete `.deb`:
+1. Descarga openFrameworks desde:
 
-```bash
-sudo dpkg -i OrbbecSDK_v2.x.x_amd64.deb
-```
+   [https://openframeworks.cc/download/](https://openframeworks.cc/download/)
 
-Si trabajas desde el SDK descomprimido o desde código fuente, instala las reglas `udev`:
+2. Descomprime el paquete.
 
-```bash
-cd OrbbecSDK_v2/scripts/env_setup
-sudo chmod +x ./install_udev_rules.sh
-sudo ./install_udev_rules.sh
-sudo udevadm control --reload
-sudo udevadm trigger
-```
+3. Instala las dependencias siguiendo el script correspondiente de openFrameworks.
 
-!!! success "No continuar hasta aquí"
-    Antes de abrir openFrameworks, la cámara debe funcionar correctamente en **Orbbec Viewer**. Si el Viewer no recibe profundidad, el problema todavía no pertenece a openFrameworks.
+4. Coloca el proyecto dentro de:
 
----
-
-## 4B.5. Paso 2 — probar los ejemplos oficiales de Orbbec
-
-El SDK incluye ejemplos en C/C++.
-
-Empieza por:
-
-1. **quick_start**
-2. **enumerate**
-3. **depth**
-4. **color**
-5. **multi_streams**
-6. **point_cloud**
-
-Una estructura típica del SDK v2 utiliza un `Pipeline`:
-
-```cpp
-ob::Pipeline pipe;
-pipe.start();
-
-while(true) {
-    auto frameSet = pipe.waitForFrameset();
-    if(!frameSet) continue;
-
-    // aquí se procesan color, profundidad, etc.
-}
-
-pipe.stop();
-```
-
-Para profundidad:
-
-```cpp
-auto depthFrameRaw = frameSet->getFrame(OB_FRAME_DEPTH);
-
-if(depthFrameRaw) {
-    auto depthFrame = depthFrameRaw->as<ob::DepthFrame>();
-
-    uint32_t width  = depthFrame->getWidth();
-    uint32_t height = depthFrame->getHeight();
-
-    float scale = depthFrame->getValueScale();
-
-    const uint16_t* data =
-        reinterpret_cast<const uint16_t*>(depthFrame->getData());
-
-    float centerDistance =
-        data[width * height / 2 + width / 2] * scale;
-}
-```
-
-El valor de profundidad se expresa normalmente como una distancia física tras aplicar la escala proporcionada por el frame.
-
-Referencia:
-
-- [Ejemplos oficiales Orbbec SDK v2](https://orbbec.github.io/OrbbecSDK_v2/examples/)
-
----
-
-# 4B.6. Paso 3 — instalar openFrameworks
-
-openFrameworks es un toolkit C++ para creative coding.
-
-Sitio oficial:
-
-- [Descarga de openFrameworks](https://openframeworks.cc/download/)
-- [Guía de instalación](https://openframeworks.cc/learning/)
-- [Crear un proyecto](https://openframeworks.cc/learning/01_basics/create_a_new_project/)
-
-## Windows + Visual Studio
-
-1. Instala Visual Studio.
-2. Incluye las herramientas de desarrollo **C++ Desktop**.
-3. Descarga la versión de openFrameworks para Visual Studio.
-4. Descomprime la carpeta completa.
-5. No cambies su estructura interna.
-6. Abre primero un ejemplo incluido y compílalo.
-
-Por ejemplo:
-
-```
+```text
 openFrameworks/
-├── addons/
-├── apps/
-├── examples/
-├── libs/
-└── projectGenerator/
+└── apps/
+    └── myApps/
+        └── Danza-Interactiva-Orbecc/
 ```
 
-!!! tip "Regla práctica"
-    Si un ejemplo oficial de openFrameworks no compila, todavía no conviene integrar Orbbec. Primero debe funcionar openFrameworks por sí solo.
+5. Instala los addons requeridos dentro de:
+
+```text
+openFrameworks/addons/
+```
+
+En particular:
+
+- `ofxImGui`
+- `ofxMidi`
+
+`ofxOsc` normalmente viene incluido con openFrameworks.
+
+6. Verifica primero que compile un ejemplo básico de openFrameworks.
+
+!!! warning "No integrar Orbbec todavía"
+    Antes de trabajar con la cámara, openFrameworks debe compilar correctamente por sí solo.
 
 ---
 
-## 4B.7. Paso 4 — crear un proyecto openFrameworks
+# 4B.4. Instalar Orbbec SDK
 
-Utiliza **Project Generator**.
+La implementación usa Orbbec SDK con la API C++:
+
+```cpp
+#include <libobsensor/ObSensor.hpp>
+```
+
+El SDK debe instalarse siguiendo las instrucciones oficiales del modelo de cámara utilizado.
+
+Referencias:
+
+- [Orbbec SDK](https://www.orbbec.com/developers/orbbec-sdk/)
+- [Orbbec SDK v2](https://orbbec.github.io/OrbbecSDK_v2/)
+- [Repositorio oficial](https://github.com/orbbec/OrbbecSDK_v2)
+
+## Verificación previa
+
+Antes de compilar la aplicación:
+
+1. conecta la cámara por USB 3.0;
+2. abre **Orbbec Viewer**;
+3. verifica color;
+4. verifica profundidad;
+5. confirma que el stream sea estable.
+
+!!! success "Regla de diagnóstico"
+    Si Orbbec Viewer no muestra depth correctamente, el problema todavía no pertenece a openFrameworks.
+
+---
+
+# 4B.5. Cómo inicializa la cámara el proyecto real
+
+`OrbbecAdapter::setupCamera()` crea un `ob::Pipeline`.
+
+La implementación busca primero:
+
+- color RGB;
+- preferentemente **1280 × 720 a 30 fps**;
+- profundidad en formato **Y16**;
+- alineación **Depth-to-Color por hardware**.
+
+Fragmento simplificado de la implementación:
+
+```cpp
+pipe_ = std::make_shared<ob::Pipeline>();
+
+auto colorList = pipe_->getStreamProfileList(OB_SENSOR_COLOR);
+
+// Selección de color RGB 1280x720 @ 30 fps.
+
+auto d2cList =
+    pipe_->getD2CDepthProfileList(
+        colorProfile,
+        ALIGN_D2C_HW_MODE
+    );
+
+// Selección de depth Y16.
+
+auto config = std::make_shared<ob::Config>();
+config->enableStream(colorProfile);
+config->enableStream(depthProfile);
+config->setAlignMode(ALIGN_D2C_HW_MODE);
+
+pipe_->start(config, callback);
+```
+
+Esto es fundamental porque permite que un punto detectado en la imagen RGB pueda consultar la profundidad correspondiente en la misma posición.
+
+---
+
+# 4B.6. Color + profundidad alineada D2C
+
+Cada frame entrega dos flujos:
+
+```text
+RGB
++
+Depth
+```
+
+El depth se guarda como valores `uint16_t`.
+
+```cpp
+const uint16_t* data =
+    reinterpret_cast<const uint16_t*>(
+        depthFrame->getData()
+    );
+```
+
+El proyecto conserva estos valores en:
+
+```cpp
+depthData_
+```
+
+y además los publica a un almacén compartido:
+
+```cpp
+DepthStore::instance().update(
+    depthData_,
+    depthW_,
+    depthH_
+);
+```
+
+Este mecanismo permite que las escenas accedan al mapa de profundidad sin depender directamente del adaptador de cámara.
+
+---
+
+# 4B.7. Detector de pose: MediaPipe como proceso separado
+
+Una decisión importante del proyecto es **no ejecutar MediaPipe directamente dentro del hilo principal de openFrameworks**.
+
+El flujo real es:
+
+```text
+OrbbecAdapter
+      ↓
+RGB 480×270
+      ↓
+TCP localhost:5005
+      ↓
+pose_detector.py
+      ↓
+MediaPipe PoseLandmarker
+      ↓
+33 landmarks JSON
+      ↓
+OrbbecAdapter
+```
+
+Archivo:
+
+- [pose_detector.py](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/pose_detector.py)
+
+El detector utiliza:
+
+```text
+models/pose_landmarker_lite.task
+```
+
+y funciona como un servidor TCP local.
+
+Protocolo:
+
+```text
+cliente → servidor
+[uint32 width]
+[uint32 height]
+[RGB bytes]
+
+servidor → cliente
+[uint32 longitud]
+[JSON con landmarks]
+```
+
+Este diseño desacopla el procesamiento de pose del renderer de openFrameworks.
+
+---
+
+# 4B.8. Instalar MediaPipe para el detector
+
+El script `run.sh` del proyecto documenta una condición importante:
+
+> MediaPipe debe ejecutarse con **Python 3.12** en el entorno utilizado, ya que versiones posteriores pueden no disponer del wheel requerido.
 
 Ruta recomendada:
 
-```
-openFrameworks/
-└── apps/
-    └── CuerpoSensorEscena/
-        └── orbbecDepth/
-```
-
-Estructura básica:
-
-```
-orbbecDepth/
-├── src/
-│   ├── main.cpp
-│   ├── ofApp.cpp
-│   └── ofApp.h
-├── bin/
-└── orbbecDepth.sln
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install mediapipe numpy
 ```
 
-La lógica de openFrameworks se organiza normalmente en:
+El detector puede probarse de forma independiente:
 
-```cpp
-void ofApp::setup() {
-    // inicialización
-}
+```bash
+python pose_detector.py --host 127.0.0.1 --port 5005
+```
 
-void ofApp::update() {
-    // lectura de frames y actualización de datos
-}
+Salida esperada:
 
-void ofApp::draw() {
-    // dibujo de imagen, profundidad o visuales
-}
+```text
+cargando modelo MediaPipe Pose...
+modelo listo
+escuchando en 127.0.0.1:5005
 ```
 
 ---
 
-# 4B.8. Paso 5 — integrar Orbbec SDK dentro de openFrameworks
+# 4B.9. Arranque automatizado del sistema
 
-Para una integración estable conviene pensar en cuatro elementos:
+El proyecto incluye:
 
-```
-headers
-  +
-libraries
-  +
-runtime DLL / shared libraries
-  +
-código C++
-```
+- [run.sh](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/run.sh)
 
-## A. Headers
+Uso:
 
-El proyecto debe conocer la carpeta de cabeceras del SDK.
-
-Ejemplo conceptual:
-
-```
-OrbbecSDK/
-└── include/
+```bash
+bash run.sh start
+bash run.sh status
+bash run.sh stop
 ```
 
-## B. Librerías
+El script:
 
-El linker debe conocer la biblioteca Orbbec correspondiente a la plataforma.
+1. localiza el proyecto;
+2. copia configuraciones hacia `bin/data/config`;
+3. inicia `pose_detector.py`;
+4. inicia la aplicación openFrameworks;
+5. guarda logs separados.
 
-En Windows será normalmente una biblioteca `.lib` asociada a las DLL del SDK.
+Logs:
 
-En Linux se enlaza con la biblioteca compartida correspondiente.
-
-## C. Librerías de ejecución
-
-En Windows, las DLL requeridas deben quedar accesibles al ejecutable.
-
-Una estrategia habitual durante el prototipado es copiarlas a:
-
-```
-bin/
+```text
+detector.log
+app.log
 ```
 
-del proyecto openFrameworks.
+Esto simplifica mucho la operación en ensayo o escena.
 
-## D. Dependencias adicionales
+---
 
-Dependiendo del ejemplo o procesamiento:
+# 4B.10. De 33 landmarks a 18 joints
 
-- Orbbec SDK;
-- OpenCV / `ofxOpenCv` si se requiere procesamiento de imagen;
-- GLM, ya incluido en openFrameworks para trabajo vectorial;
-- OSC si se decide enviar datos a otra aplicación.
+MediaPipe entrega 33 landmarks.
 
-!!! note "Integración por etapas"
-    No intentes incluir profundidad, color, nube de puntos, seguimiento corporal y OSC al mismo tiempo. La secuencia recomendada es:
+El sistema los convierte en una representación corporal de **18 joints** compatible con la arquitectura del proyecto.
 
+Entre ellos:
+
+- cabeza;
+- cuello;
+- hombros;
+- codos;
+- muñecas;
+- manos;
+- columna media;
+- base de columna;
+- caderas;
+- rodillas;
+- tobillos.
+
+El adaptador también calcula:
+
+```text
+NECK
+SPINE_MID
+SPINE_BASE
 ```
-1. abrir cámara
-2. recibir depth
-3. visualizar depth
-4. leer una distancia
-5. mapear distancia a un parámetro
-6. añadir color
-7. añadir nube de puntos
-8. integrar interacción artística
+
+a partir de puntos medios.
+
+---
+
+# 4B.11. Profundidad Z real para cada articulación
+
+La diferencia clave respecto a webcam + ml5.js es que aquí Z proviene del depth real.
+
+Para cada articulación:
+
+```text
+landmark MediaPipe X/Y
+        ↓
+pixel correspondiente en depth
+        ↓
+valor en milímetros
+        ↓
+normalización near/far
+        ↓
+joint X/Y/Z
+```
+
+La función real del proyecto:
+
+```cpp
+float zReal =
+    sampleDepthNormalized(r.x, r.y);
+```
+
+La profundidad se normaliza mediante:
+
+```cpp
+z = (mm - depthNearMM_)
+    / (depthFarMM_ - depthNearMM_);
+```
+
+y se limita a:
+
+```text
+0.0 → 1.0
+```
+
+Así, el cuerpo deja de ser solamente una figura plana y pasa a tener un parámetro espacial real.
+
+---
+
+# 4B.12. Suavizado y estabilidad corporal
+
+La posición de cada joint se suaviza temporalmente:
+
+```cpp
+current =
+    ofLerp(previous, newValue, smoothingFactor);
+```
+
+Además, el sistema conserva el frame anterior cuando una articulación tiene baja confianza.
+
+Esto reduce:
+
+- jitter;
+- saltos;
+- vibración;
+- pérdidas breves de tracking.
+
+El parámetro se controla mediante:
+
+```cpp
+setSmoothing(...)
+setConfidenceThreshold(...)
 ```
 
 ---
 
-# 4B.9. Primer ejercicio: profundidad → círculo
+# 4B.13. DepthStore: silueta real del cuerpo
 
-Objetivo:
+Una de las mejoras más importantes respecto a trabajar únicamente con joints es `DepthStore`.
 
-> Utilizar la distancia de una persona a la cámara para modificar el tamaño de un círculo.
+Archivo:
 
-```
-distancia Orbbec
-      ↓
-normalización
-      ↓
-escala
-      ↓
-círculo
+- [DepthStore.h](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/input/sensors/DepthStore.h)
+
+El mapa de profundidad se reduce a una rejilla de:
+
+```text
+96 × 54
 ```
 
-Pseudocódigo:
+y aplica suavizado temporal mediante EMA.
+
+Un punto pertenece al cuerpo si:
 
 ```cpp
-float distancia = leerProfundidadCentro();
-
-float valor = ofMap(
-    distancia,
-    distanciaMin,
-    distanciaMax,
-    1.0,
-    0.0,
-    true
-);
-
-float radio = ofMap(valor, 0.0, 1.0, 30, 300);
+depth > 0
+&&
+depth < thresholdMM
 ```
 
-En `draw()`:
+Valor inicial:
 
-```cpp
-ofDrawCircle(
-    ofGetWidth() / 2,
-    ofGetHeight() / 2,
-    radio
-);
+```text
+2500 mm
 ```
 
-### Para reflexionar
-
-- ¿Qué ocurre cuando el intérprete se acerca?
-- ¿Qué ocurre cuando se aleja?
-- ¿Conviene invertir la relación?
-- ¿La distancia debe controlar tamaño, brillo, sonido o varios parámetros?
+Esto permite obtener una **silueta real basada en depth**, en lugar de aproximar el cuerpo con un polígono generado a partir de articulaciones.
 
 ---
 
-# 4B.10. Segundo ejercicio: zonas de profundidad
+# 4B.14. Contorno corporal
 
-El espacio puede dividirse en zonas:
+`DepthStore::contourPoints()` identifica las celdas de borde de la silueta.
 
+Posteriormente ordena los puntos por ángulo respecto al centroide.
+
+Esto solucionó un problema observado durante el desarrollo: un contorno sin ordenar produce líneas cruzadas o zigzag.
+
+El commit correspondiente documenta esta corrección:
+
+> contorno de silueta ordenado por ángulo — outline coherente, no zigzag.
+
+---
+
+# 4B.15. Ajustar el umbral de silueta
+
+Durante la ejecución:
+
+```text
+,  → disminuir umbral
+.  → aumentar umbral
 ```
-0.5–1.0 m → zona cercana
-1.0–2.0 m → zona media
-2.0–3.5 m → zona lejana
+
+Paso:
+
+```text
+200 mm
 ```
+
+Rango:
+
+```text
+500 – 6000 mm
+```
+
+El valor se muestra como feedback en pantalla.
+
+También aparece dentro del debug overlay.
 
 Ejemplo:
 
-```cpp
-if(distancia < 1000) {
-    // respuesta A
-}
-else if(distancia < 2000) {
-    // respuesta B
-}
-else {
-    // respuesta C
-}
+```text
+Silueta: 2500 mm
+(',' baja / '.' sube)
 ```
-
-Aplicaciones escénicas:
-
-- cambiar color;
-- modificar densidad de partículas;
-- activar capas sonoras;
-- cambiar una escena;
-- abrir/cerrar un filtro;
-- controlar intensidad o reverberación.
 
 ---
 
-# 4B.11. Tercer ejercicio: imagen de profundidad como textura
+# 4B.16. Persistencia del umbral
 
-Una imagen de profundidad puede transformarse en una textura visual.
+Al cerrar la aplicación se guarda:
 
-Principio:
-
-```
-pixel de profundidad
-      ↓
-distancia
-      ↓
-normalización 0–1
-      ↓
-brillo / color / desplazamiento
+```json
+{
+  "silhouetteThreshold": 2500
+}
 ```
 
-Esto permite crear:
+en:
 
-- siluetas;
-- máscaras;
-- relieves;
-- desplazamientos;
-- campos de partículas;
-- efectos de feedback;
-- visuales que reaccionan al volumen corporal.
+```text
+bin/data/config/depth.json
+```
+
+y se restaura al iniciar/cargar configuración.
+
+Esto permite conservar la calibración entre sesiones.
 
 ---
 
-# 4B.12. Nube de puntos
+# 4B.17. Escenas que utilizan profundidad real
 
-Una de las ventajas de una cámara RGB-D es generar una representación 3D.
+La implementación ya no se limita a una prueba técnica.
 
-```
-depth + calibración
-      ↓
-coordenadas X,Y,Z
-      ↓
-point cloud
-      ↓
-ofMesh / OpenGL
-```
+Existen escenas que utilizan el depth y/o la silueta corporal.
 
-El SDK oficial incluye un ejemplo de **point cloud** que conviene probar antes de reimplementarlo dentro de openFrameworks.
+Entre las más relevantes:
 
-En openFrameworks, una nube de puntos puede representarse con un `ofMesh`:
+## BodySilhouetteScene
 
-```cpp
-ofMesh mesh;
-mesh.setMode(OF_PRIMITIVE_POINTS);
-```
+- utiliza la silueta real del cuerpo;
+- genera partículas dentro de la figura;
+- trabaja con presencia corporal completa.
 
-Cada punto 3D se agrega como vértice.
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/BodySilhouetteScene.cpp)
 
-Posibles transformaciones artísticas:
+## BodyContourPaintScene
 
-- dispersión;
-- ruido Perlin;
-- rotación;
-- atracción/repulsión;
-- deformación según sonido;
-- persistencia temporal;
-- múltiples capas del cuerpo.
+- obtiene puntos del contorno real;
+- genera pintura/partículas desde los bordes corporales.
+
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/BodyContourPaintScene.cpp)
+
+## SilhouetteDepthTunnelScene
+
+- utiliza la silueta como base de un túnel visual;
+- integra profundidad con representación espacial.
+
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/SilhouetteDepthTunnelScene.cpp)
+
+## VolumetricLatticeScene
+
+- construye una escena volumétrica;
+- incorpora profundidad, estructura espacial y glow.
+
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/VolumetricLatticeScene.cpp)
+
+## VoxelFluidDisruptionScene
+
+- explora una respuesta volumétrica tipo fluido/voxel.
+
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/VoxelFluidDisruptionScene.cpp)
+
+## DepthKineticVortexScene
+
+- transforma datos corporales/depth en movimiento vorticial.
+
+[Ver código](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/scenes/DepthKineticVortexScene.cpp)
 
 ---
 
-# 4B.13. De Orbbec a sonido
+# 4B.18. Escenas 2D y escenas volumétricas 3D
 
-La profundidad también puede convertirse en control sonoro.
+El port desarrollado para Orbbec incorporó:
 
-```
-distancia
+- **10 escenas 2D** vinculadas al cuerpo y la proximidad;
+- **8 escenas volumétricas 3D**;
+- una secuencia conceptual denominada **Génesis Volumétrica**;
+- cámara fija;
+- core motif;
+- mappings X/Y/Z.
+
+El sistema ya supera, por tanto, la etapa de “leer profundidad”: la profundidad funciona como una variable artística y escénica.
+
+---
+
+# 4B.19. Mapping corporal
+
+La aplicación utiliza un motor de mappings.
+
+Archivo principal de configuración:
+
+- [config/kinect-mappings.json](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/config/kinect-mappings.json)
+
+La implementación inicial del port Orbbec incorporó **324 mappings** basados en vectores XYZ para las escenas.
+
+La lógica general es:
+
+```text
+joint
+  ↓
+componente X / Y / Z
   ↓
 normalización
   ↓
-OSC / MIDI / parámetro
-  ↓
-sonido
+parámetro de escena
 ```
 
-Por ejemplo:
+Ejemplos:
 
-| Gesto / dato | Parámetro sonoro |
+```text
+mano derecha Y → altura de partículas
+mano derecha Z → tamaño
+distancia corporal → densidad
+cadera X → desplazamiento
+```
+
+---
+
+# 4B.20. OSC
+
+El proyecto incluye `ofxOsc` y una arquitectura dedicada de OSC:
+
+```text
+src/adapters/
+├── OSCAdapter.cpp
+└── OSCSettings.cpp
+```
+
+Esto permite conectar los datos corporales o parámetros del sistema con otras aplicaciones.
+
+OSC puede utilizarse para:
+
+- audio externo;
+- Ableton Live;
+- Pure Data;
+- Max;
+- otras aplicaciones openFrameworks;
+- herramientas de visualización.
+
+---
+
+# 4B.21. MIDI
+
+El proyecto también utiliza:
+
+```text
+ofxMidi
+```
+
+y dispone de routing y MIDI Learn.
+
+Esto permite utilizar controladores MIDI para:
+
+- escenas;
+- parámetros;
+- cues;
+- transiciones;
+- operación en vivo.
+
+El sistema incorpora además configuración persistente mediante JSON.
+
+---
+
+# 4B.22. UI con ofxImGui
+
+La interfaz gráfica utiliza:
+
+```text
+ofxImGui
+```
+
+y un sistema de paneles para:
+
+- escenas;
+- parámetros;
+- transporte;
+- mappings;
+- puertos de entrada.
+
+La UI está pensada como una interfaz de operación del sistema, no únicamente como herramienta de desarrollo.
+
+---
+
+# 4B.23. Ciclo principal en openFrameworks
+
+La estructura sigue el patrón habitual:
+
+```cpp
+void ofApp::setup() {
+    // cámara
+    // mappings
+    // UI
+    // OSC
+    // MIDI
+}
+
+void ofApp::update() {
+    kinectAdapter_->update();
+    kinectMappingEngine_->update(delta);
+    sceneEngine.update(delta);
+}
+
+void ofApp::draw() {
+    sceneEngine.draw();
+    skeletonView_->draw(...);
+    uiManager.draw();
+}
+```
+
+Esto mantiene separadas:
+
+- adquisición de datos;
+- mappings;
+- lógica de escena;
+- UI;
+- render.
+
+---
+
+# 4B.24. Atajos útiles de la aplicación
+
+Entre los controles implementados:
+
+| Tecla | Función |
 | --- | --- |
-| acercarse | aumentar brillo del sonido |
-| alejarse | cerrar filtro |
-| entrar en zona cercana | disparar evento |
-| desplazarse lateralmente | paneo |
-| altura del cuerpo | frecuencia |
-| velocidad | densidad rítmica |
-
-Si el sonido corre en otra aplicación, openFrameworks puede transmitir datos mediante OSC.
-
-Referencia de openFrameworks:
-
-- [Network / OSC en openFrameworks](https://openframeworks.cc/learning/)
-
----
-
-# 4B.14. Ruta recomendada de aprendizaje
-
-## Nivel 1 — verificar hardware
-
-- Orbbec Viewer.
-- Color.
-- Depth.
-- Distancia al centro.
-
-## Nivel 2 — comprender el SDK
-
-- Quick Start.
-- Depth.
-- Multi-stream.
-- Point cloud.
-
-## Nivel 3 — openFrameworks
-
-- Compilar un ejemplo estándar.
-- Crear proyecto.
-- Dibujar formas.
-- Incorporar datos de profundidad.
-
-## Nivel 4 — interacción
-
-- Distancia → escala.
-- Posición → color.
-- Zonas → eventos.
-- Profundidad → partículas.
-
-## Nivel 5 — escena
-
-- nube de puntos;
-- visuales;
-- OSC;
-- sonido;
-- calibración escénica;
-- pruebas de iluminación y distancia.
+| `U` | mostrar/ocultar UI |
+| `T` | transparencia de ventanas |
+| `S` | guardar parámetros y mappings |
+| `L` | cargar parámetros y mappings |
+| `D` | debug overlay |
+| `F` | pantalla completa |
+| `M` | interacción con mouse |
+| `,` | disminuir umbral de silueta |
+| `.` | aumentar umbral de silueta |
+| `R` | reiniciar tracking |
+| ← / → | cambiar de escena |
+| Shift + número | disparar cue |
+| `[` / `]` | cue anterior / siguiente |
+| F5 | recargar configuración MIDI |
 
 ---
 
-# 4B.15. Pruebas mínimas antes de usar en aula o escena
+# 4B.25. Prueba mínima recomendada
 
-| Prueba | Resultado esperado |
-| --- | --- |
-| Orbbec Viewer reconoce dispositivo | Sí |
-| Stream de profundidad estable | Sí |
-| Stream de color estable | Sí |
-| Ejemplo oficial `depth` ejecuta | Sí |
-| Proyecto openFrameworks básico compila | Sí |
-| SDK enlaza sin errores | Sí |
-| DLL / shared libraries disponibles | Sí |
-| Lectura de distancia coherente | Sí |
-| Visual responde sin congelamientos | Sí |
+Antes de trabajar con las escenas complejas:
+
+1. confirmar Orbbec en Viewer;
+2. iniciar `pose_detector.py`;
+3. iniciar la aplicación openFrameworks;
+4. comprobar que aparecen joints;
+5. mostrar skeleton;
+6. mover el cuerpo;
+7. comprobar Z;
+8. activar una escena basada en depth;
+9. ajustar el umbral;
+10. cerrar y comprobar que el threshold se conserva.
 
 ---
 
-# 4B.16. Problemas frecuentes
+# 4B.26. Diagnóstico de errores
 
-## La cámara no aparece
+## No hay cámara
 
 Revisar:
 
-- cable;
 - USB 3.0;
 - alimentación;
-- modelo y firmware;
-- compatibilidad con SDK v1/v2;
+- SDK;
+- permisos;
 - Orbbec Viewer.
 
-## El Viewer funciona pero openFrameworks no compila
+## Hay color pero no profundidad
 
-El problema suele estar en:
+Revisar:
 
-- headers no encontrados;
-- biblioteca no enlazada;
-- arquitectura x64/x86 incompatible;
-- rutas incorrectas;
-- configuración del compilador.
+- perfil depth;
+- formato Y16;
+- compatibilidad D2C;
+- modelo/firmware.
 
-## Compila pero no inicia
+## Hay cámara pero no skeleton
 
-Revisar DLL o bibliotecas compartidas requeridas por Orbbec SDK.
+Comprobar primero:
 
-## Profundidad = 0
+```bash
+python pose_detector.py
+```
 
-Un valor 0 puede indicar:
+Luego:
 
-- objeto fuera del rango;
-- superficie problemática;
-- ausencia de lectura válida;
-- configuración incorrecta.
+```bash
+bash run.sh status
+```
 
-## Depth y color no coinciden
+y revisar:
 
-Para superponer color y profundidad se debe revisar la alineación **D2C (Depth-to-Color)** y los parámetros de calibración.
+```text
+detector.log
+app.log
+```
 
-Orbbec SDK incluye ejemplos específicos para alineación y transformación de coordenadas.
+## MediaPipe no instala
+
+Usar Python 3.12 en un entorno virtual.
+
+## La silueta incluye demasiado fondo
+
+Disminuir:
+
+```text
+silhouetteThreshold
+```
+
+con `,`.
+
+## La silueta corta partes del cuerpo
+
+Aumentar el threshold con `.`.
+
+## El contorno vibra
+
+La implementación aplica:
+
+- downsampling;
+- EMA temporal;
+- orden por ángulo alrededor del centroide.
+
+Si todavía existe ruido, revisar iluminación, rango y superficie del fondo.
 
 ---
 
-# 4B.17. Documentación y referencias
+# 4B.27. Ruta didáctica propuesta
 
-## Orbbec
+## Ejercicio 1 — Depth como dato
 
-- [Orbbec SDK v2](https://orbbec.github.io/OrbbecSDK_v2/)
-- [Guía de instalación y desarrollo](https://orbbec.github.io/OrbbecSDK_v2/docs/tutorial/installation_and_development_guide.html)
-- [Ejemplos oficiales](https://orbbec.github.io/OrbbecSDK_v2/examples/)
-- [C++ API User Guide](https://orbbec.github.io/docs/OrbbecSDKv2_API_User_Guide/)
-- [Descargas oficiales](https://www.orbbec.com/developers/orbbec-sdk/)
-- [GitHub oficial de Orbbec](https://github.com/orbbec)
+Observar la distancia del cuerpo.
 
-## openFrameworks
+```text
+Z → tamaño
+```
 
-- [openFrameworks](https://openframeworks.cc/)
-- [Descargas](https://openframeworks.cc/download/)
-- [Visual Studio Setup](https://openframeworks.cc/setup/vs/)
-- [Crear un nuevo proyecto](https://openframeworks.cc/learning/01_basics/create_a_new_project/)
-- [Añadir addons](https://openframeworks.cc/learning/01_basics/how_to_add_addon_to_project/)
+## Ejercicio 2 — Zona espacial
 
-## Repositorio de desarrollo del proyecto
+```text
+cerca → respuesta A
+medio → respuesta B
+lejos → respuesta C
+```
 
-- [Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc)
+## Ejercicio 3 — Joint XYZ
 
-!!! warning "Estado del repositorio Danza-Interactiva-Orbecc"
-    Al momento de actualizar esta documentación, GitHub expone este repositorio sin archivos ni commits accesibles. Por ello, esta página se apoya en la arquitectura del proyecto «Cuerpo, sensor y escena» y en documentación oficial de Orbbec y openFrameworks. Cuando el código de pruebas de Orbbec esté publicado en el repositorio, conviene enlazar aquí sus ejemplos, versiones y configuraciones exactas.
+Elegir una articulación y mapear:
+
+```text
+X → posición
+Y → color
+Z → escala
+```
+
+## Ejercicio 4 — Silueta
+
+Utilizar `DepthStore::isBody()` para llenar solamente el cuerpo.
+
+## Ejercicio 5 — Contorno
+
+Utilizar `contourPoints()` para generar elementos desde el límite corporal.
+
+## Ejercicio 6 — Escena volumétrica
+
+Transformar profundidad en:
+
+- perspectiva;
+- partículas;
+- lattice;
+- voxels;
+- túneles;
+- campos de fuerza.
 
 ---
 
-# 4B.18. Resultado esperado de esta etapa
+# 4B.28. Evolución real del desarrollo
 
-Al finalizar esta sección se debería poder:
+El historial del repositorio documenta una progresión clara:
 
-- instalar y verificar una cámara Orbbec;
-- ejecutar ejemplos oficiales del SDK;
-- instalar y compilar openFrameworks;
-- enlazar el SDK de Orbbec con un proyecto C++;
-- leer profundidad;
-- mapear distancia a parámetros visuales;
-- utilizar profundidad para una interacción artística;
-- preparar la base para nube de puntos, OSC y prototipos escénicos.
+### 15 de octubre de 2026
 
-La meta no es solamente obtener una imagen de profundidad, sino transformar el espacio físico en un **material expresivo y programable**.
+Port a Orbbec con:
+
+- color + depth D2C;
+- MediaPipe;
+- 18 joints con Z real;
+- 10 escenas 2D;
+- 8 escenas volumétricas 3D;
+- 324 mappings XYZ.
+
+### 20 de octubre
+
+Se incorpora silueta real mediante depth:
+
+- `DepthStore`;
+- `BodySilhouetteScene`;
+- `BodyContourPaint`;
+- `SilhouetteDepthTunnel`.
+
+### 24 de octubre
+
+Umbral de silueta ajustable.
+
+### 27 de octubre
+
+Feedback visual del threshold.
+
+### 30 de octubre
+
+Contorno ordenado por ángulo para evitar zigzag.
+
+### 4 de noviembre
+
+Persistencia del threshold entre sesiones.
+
+### 9 de noviembre
+
+Pulido estético:
+
+- silueta más estable;
+- core motif con halo;
+- lattice con glow.
+
+---
+
+# 4B.29. Archivos clave del repositorio
+
+## Captura y tracking
+
+- [OrbbecAdapter.cpp](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/adapters/kinect/OrbbecAdapter.cpp)
+- [OrbbecAdapter.h](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/adapters/kinect/OrbbecAdapter.h)
+- [pose_detector.py](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/pose_detector.py)
+- [DepthStore.h](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/input/sensors/DepthStore.h)
+
+## Aplicación
+
+- [ofApp.cpp](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/ofApp.cpp)
+- [ofApp.h](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/src/ofApp.h)
+- [run.sh](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/run.sh)
+
+## Configuración
+
+- [kinect-mappings.json](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/config/kinect-mappings.json)
+- [sequence.json](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/config/sequence.json)
+- [midi.json](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/config/midi.json)
+
+## Addons
+
+- [addons.make](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc/blob/main/addons.make)
+
+---
+
+# 4B.30. Resultado alcanzado
+
+La integración Orbbec del proyecto ya permite:
+
+- recibir color y depth;
+- alinear profundidad con color;
+- obtener pose con MediaPipe;
+- generar 18 joints;
+- añadir Z real a cada joint;
+- suavizar tracking;
+- construir una silueta corporal desde depth;
+- obtener un contorno estable;
+- ajustar y guardar el umbral de profundidad;
+- mapear XYZ a parámetros escénicos;
+- ejecutar escenas 2D y volumétricas;
+- utilizar OSC y MIDI;
+- operar el sistema mediante UI;
+- automatizar el arranque con scripts.
+
+Esto permite considerar la integración Orbbec + openFrameworks como una **implementación funcional avanzada**, no solamente como una prueba de concepto.
