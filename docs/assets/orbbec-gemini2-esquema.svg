@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" fill="#111318"/>
+  <text x="60" y="70" font-family="Arial, sans-serif" font-size="34" fill="#ffffff" font-weight="700">Orbbec Gemini 2 · esquema técnico de referencia</text>
+  <text x="60" y="110" font-family="Arial, sans-serif" font-size="18" fill="#b7c0cc">Active Stereo IR · USB-C · RGB + profundidad + IMU</text>
+  <rect x="120" y="205" width="960" height="190" rx="42" fill="#2c3138" stroke="#707984" stroke-width="3"/>
+  <rect x="155" y="230" width="890" height="140" rx="28" fill="#060708"/>
+  <circle cx="245" cy="300" r="48" fill="#15191e" stroke="#8b95a2" stroke-width="4"/>
+  <circle cx="245" cy="300" r="20" fill="#263649"/>
+  <circle cx="405" cy="300" r="24" fill="#15191e" stroke="#8b95a2" stroke-width="3"/>
+  <rect x="545" y="272" width="56" height="56" rx="10" fill="#5bc0eb" stroke="#d9f2ff" stroke-width="3"/>
+  <circle cx="730" cy="300" r="30" fill="#15191e" stroke="#8b95a2" stroke-width="3"/>
+  <circle cx="925" cy="300" r="48" fill="#15191e" stroke="#8b95a2" stroke-width="4"/>
+  <circle cx="925" cy="300" r="20" fill="#263649"/>
+  <line x1="245" y1="205" x2="245" y2="165" stroke="#95a3b5" stroke-width="2"/>
+  <line x1="925" y1="205" x2="925" y2="165" stroke="#95a3b5" stroke-width="2"/>
+  <text x="155" y="150" font-family="Arial, sans-serif" font-size="18" fill="#dbe4ee">Par estéreo IR · profundidad</text>
+  <line x1="575" y1="230" x2="575" y2="175" stroke="#95a3b5" stroke-width="2"/>
+  <text x="520" y="155" font-family="Arial, sans-serif" font-size="18" fill="#dbe4ee">RGB</text>
+  <line x1="730" y1="370" x2="730" y2="430" stroke="#95a3b5" stroke-width="2"/>
+  <text x="675" y="465" font-family="Arial, sans-serif" font-size="18" fill="#dbe4ee">Proyector IR / sensores</text>
+  <text x="80" y="520" font-family="Arial, sans-serif" font-size="18" fill="#c6d0db">Rango depth: 0.15–10 m · rango ideal aprox.: 0.20–5 m · depth hasta 1280×800 @ 30 fps</text>
+  <text x="80" y="555" font-family="Arial, sans-serif" font-size="18" fill="#c6d0db">FoV depth aprox.: 90° × 65° · conexión USB 3 · dimensiones: 90 × 25 × 30 mm</text>
+  <text x="80" y="590" font-family="Arial, sans-serif" font-size="15" fill="#7e8996">Diagrama propio basado en especificaciones públicas de Orbbec Gemini 2. No sustituye el plano mecánico oficial.</text>
+</svg>
