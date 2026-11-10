@@ -58,6 +58,7 @@ nav:
   - "2. Arquitectura general": 02-arquitectura.md
   - "3. Preparación del entorno": 03-preparacion.md
   - "4. Captura corporal: webcam y ml5.js": 04-captura-corporal.md
+  - "4B. Captura de profundidad: Orbbec + openFrameworks": 04b-orbbec-openframeworks.md
   - "5. Makey Makey": 05-makey-makey.md
   - "6. Arduino e interfaces físicas": 06-arduino.md
   - "7. Comunicación entre hardware y software": 07-comunicacion.md
