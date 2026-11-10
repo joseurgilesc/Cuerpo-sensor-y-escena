@@ -76,7 +76,28 @@ Para danza, prioriza relaciones que el cuerpo entienda de forma natural:
 - Plan de contingencia ante fallos (ver [11.8](12-operacion.md#118-recuperacion-ante-fallos)).
 - Iluminación y fondo que no interfieran con la detección de pose.
 
-## 9.11. Descarga de código, presets y ejemplos
+## 9.11. Prototipos avanzados con Orbbec + openFrameworks
+
+La ruta avanzada del proyecto ya dispone de una implementación funcional basada en profundidad real:
+
+- 18 joints con X/Y/Z.
+- silueta real desde depth.
+- contorno corporal.
+- mappings corporales.
+- escenas 2D y volumétricas 3D.
+
+Ejemplos implementados en el repositorio [Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc):
+
+- BodySilhouetteScene.
+- BodyContourPaintScene.
+- SilhouetteDepthTunnelScene.
+- VolumetricLatticeScene.
+- VoxelFluidDisruptionScene.
+- DepthKineticVortexScene.
+
+Consulta el tutorial y la arquitectura real en [4B. Captura de profundidad: Orbbec + openFrameworks](04b-orbbec-openframeworks.md).
+
+## 9.12. Descarga de código, presets y ejemplos
 
 Todo el material se aloja en el repositorio:
 
