@@ -7,6 +7,7 @@ El código se entrega en el repositorio, organizado por tipo:
 - Firmware de Arduino.
 - Aplicaciones de visuales (p5.js).
 - Programas puente de comunicación.
+- Implementación avanzada Orbbec + openFrameworks documentada en el repositorio [Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc).
 
 <!-- TODO: listar los archivos definitivos y sus rutas -->
 
@@ -34,7 +35,9 @@ Diagramas del flujo de datos y de las conexiones generales (ver [sección 2](02-
 
 | Versión | Fecha | Cambios |
 | --- | --- | --- |
-| 0.1 | <!-- TODO --> | Estructura inicial de la documentación |
+| 0.1 | 09/2026 | Estructura inicial de la documentación. |
+| 0.2 | 10/2026 | Captura corporal web, Makey Makey y prototipos interactivos. |
+| 0.3 | 11/2026 | Integración avanzada Orbbec + openFrameworks, depth real, silueta y escenas 3D. |
 
 ## 12.6. Manual rápido para docentes
 
