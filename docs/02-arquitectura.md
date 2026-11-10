@@ -21,6 +21,7 @@ CUERPO ──▶ SENSOR / INTERFAZ ──▶ DATO ──▶ MAPEO ──▶ IMAG
                          │                COMPUTADOR                  │
                          │                                            │
  Webcam + ml5.js ───────▶│ captura corporal      ┌─▶ visuales (p5.js)│
+ Orbbec + openFrameworks ─▶│ profundidad / 3D      │                   │
  (navegador)             │ (articulaciones)      │                   │
                          │                        │                   │
  Arduino + sensores ────▶│ lectura de sensores   │─▶ Tone.js (sonido)│
@@ -42,6 +43,7 @@ El hardware se organiza en tres vías de entrada complementarias:
 | Dispositivo | Tipo de dato | Conexión |
 | --- | --- | --- |
 | Cámara web | Posición de articulaciones (X, Y) | USB |
+| Orbbec RGB-D | Profundidad, distancia, X/Y/Z, nube de puntos | USB 3.0 |
 | Arduino + sensores | Niveles de luz, presión, distancia; pulsadores | USB |
 | Makey Makey | Contacto convertido en teclas o clics | USB (HID) |
 | Computador | Procesamiento y salida | — |
@@ -51,6 +53,7 @@ El hardware se organiza en tres vías de entrada complementarias:
 Las tres vías permiten trabajar con distintos niveles de complejidad:
 
 - **Cámara + ml5.js**: interacción corporal y captura de movimiento sin contacto.
+- **Orbbec + openFrameworks**: ruta avanzada para profundidad real, espacio 3D y nubes de puntos, después de comprender la lógica básica de mapeo.
 - **Arduino + sensores**: lectura continua o discreta de variables físicas.
 - **Makey Makey**: interacción por contacto, especialmente útil para prototipos rápidos con objetos, superficies y materiales conductores.
 
@@ -61,6 +64,8 @@ Cada programa cumple un rol específico en la cadena:
 | Programa / interfaz | Rol | Entrada | Salida |
 | --- | --- | --- | --- |
 | Cámara web | Entregar frames de video | Hardware | Imagen de video |
+| Orbbec SDK | Capturar color y profundidad RGB-D | Cámara Orbbec | Frames de color/profundidad y datos 3D |
+| openFrameworks | Procesar profundidad y construir interacción escénica | Orbbec SDK / C++ | Imagen, geometría, OSC y visuales |
 | ml5.js | Detectar la pose (articulaciones) desde el video | Cámara web | Coordenadas |
 | Arduino IDE (firmware) | Leer sensores y enviar valores | Sensores | Serial |
 | Makey Makey | Emular teclado o mouse mediante USB HID | Contacto físico | Teclas / clics |
@@ -130,3 +135,16 @@ Esta última ruta es especialmente útil para ejercicios de iniciación, instala
 
 !!! tip "Matriz viva"
     Esta tabla se actualiza con los resultados de la sección [11. Pruebas y validación](11-pruebas.md).
+
+
+## 2.9. Ruta avanzada de profundidad con Orbbec
+
+Cuando el proyecto requiere información espacial real se incorpora una segunda ruta de captura:
+
+```text
+cuerpo → Orbbec RGB-D → Orbbec SDK → openFrameworks → mapeo → visual / sonido / OSC
+```
+
+Esta ruta se desarrolla después del primer acercamiento con webcam + ml5.js, porque añade SDK nativo, compilación C++, flujos de profundidad, alineación de color/profundidad y posibles nubes de puntos.
+
+Consulta el tutorial completo: [4B. Captura de profundidad: Orbbec + openFrameworks](04b-orbbec-openframeworks.md).
