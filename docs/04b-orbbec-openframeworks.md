@@ -207,8 +207,8 @@ Fuentes técnicas:
 ### Interfaz de openFrameworks en ejecución
 
 <figure markdown>
-![Espacio reservado para captura de openFrameworks](assets/orbbec-openframeworks-placeholder.svg)
-<figcaption>Figura pendiente. Reemplazar por una captura real de la interfaz con SceneEngine, skeleton, paneles ImGui y escena activa.</figcaption>
+![Interfaz real de openFrameworks con Orbbec y escena Body Silhouette](assets/orbbec-openframeworks-real.jpg)
+<figcaption>Figura. Interfaz real del sistema en openFrameworks: escena <code>bodySilhouette</code> activa, panel de Kinect/Orbbec conectado, lista de escenas, controles ImGui, mappings y transporte. En el área central se observa la silueta corporal generativa construida a partir de profundidad.</figcaption>
 </figure>
 
 ### Orbbec Gemini 2 funcionando
