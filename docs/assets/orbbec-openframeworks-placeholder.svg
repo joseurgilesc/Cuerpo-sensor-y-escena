@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#15181d"/>
+  <rect x="55" y="55" width="1090" height="610" rx="18" fill="#20252c" stroke="#697584" stroke-width="3" stroke-dasharray="16 10"/>
+  <text x="600" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ffffff" font-weight="700">ESPACIO PARA CAPTURA REAL</text>
+  <text x="600" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#b8c2ce">Interfaz de openFrameworks ejecutando Danza-Interactiva-Orbecc</text>
+  <text x="600" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#8e9aa8">Sugerencia: mostrar SceneEngine + Skeleton + paneles ImGui + escena activa</text>
+  <text x="600" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6f7b89">Reemplazar este SVG cuando exista una captura definitiva del sistema en funcionamiento.</text>
+</svg>
