@@ -9,6 +9,7 @@ Este sitio reúne la **documentación técnica** del proyecto «Cuerpo, sensor y
 «Cuerpo, sensor y escena» es un laboratorio de prototipado artístico que integra:
 
 - **Captura corporal** mediante la cámara web y ml5.js.
+- **Captura de profundidad 3D** mediante cámaras Orbbec y openFrameworks como ruta avanzada.
 - **Interfaces físicas** construidas con Arduino y sensores (luz, presión, movimiento, distancia).
 - **Visuales generativos** programados en p5.js.
 - **Sonido interactivo** generado con Tone.js, integrado en el mismo sketch que p5.js.
@@ -25,6 +26,7 @@ La documentación se estructura en trece secciones que siguen el ciclo de vida d
 | 2 | Arquitectura general | Cómo fluye el dato desde el cuerpo hasta la imagen y el sonido. |
 | 3 | Preparación del entorno | Cómo instalar y configurar todo el software necesario. |
 | 4 | Captura corporal | Cómo funciona la captura con la cámara web y ml5.js. |
+| 4B | Orbbec + openFrameworks | Cómo instalar, verificar e integrar captura de profundidad 3D. |
 | 5 | Makey Makey | Cómo convertir contacto físico en eventos de teclado para p5.js y Tone.js. |
 | 6 | Arduino e interfaces físicas | Cómo construir y leer los sensores físicos. |
 | 7 | Comunicación hardware–software | Cómo viaja el dato por Serial y OSC. |
