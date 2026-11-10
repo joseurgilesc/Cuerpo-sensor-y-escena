@@ -50,7 +50,7 @@ El hardware se organiza en tres vías de entrada complementarias:
 | Proyector / pantalla | Salida visual | HDMI/VGA |
 | Sistema de audio / interfaz | Salida sonora | USB/audio |
 
-Las tres vías permiten trabajar con distintos niveles de complejidad:
+Las cuatro vías permiten trabajar con distintos niveles de complejidad:
 
 - **Cámara + ml5.js**: interacción corporal y captura de movimiento sin contacto.
 - **Orbbec + openFrameworks**: ruta avanzada para profundidad real, espacio 3D y nubes de puntos, después de comprender la lógica básica de mapeo.
@@ -122,16 +122,16 @@ Esta última ruta es especialmente útil para ejercicios de iniciación, instala
 
 ## 2.8. Matriz de compatibilidad de equipos y software
 
-<!-- TODO: completar con la matriz real tras las pruebas de la sección 10 -->
-
-| Dispositivo / Software | Versión probada | Estado |
+| Dispositivo / Software | Estado verificado | Notas |
 | --- | --- | --- |
-| Cámara web | <!-- TODO --> | Pendiente de prueba |
-| ml5.js | <!-- TODO --> | Pendiente de prueba |
-| Arduino (placa) | <!-- TODO --> | Pendiente de prueba |
-| Makey Makey | <!-- TODO --> | Pendiente de prueba |
-| p5.js | <!-- TODO --> | Pendiente de prueba |
-| Tone.js | <!-- TODO --> | Pendiente de prueba |
+| Webcam + ml5.js | Funcional | Validado en navegador y dispositivos móviles. |
+| Orbbec RGB-D + Orbbec SDK | Funcional | Color + depth Y16 con alineación D2C por hardware. |
+| openFrameworks | Funcional | Integración C++ con Orbbec, UI, mappings, OSC y MIDI. |
+| MediaPipe PoseLandmarker | Funcional | 33 landmarks; adaptados a 18 joints con Z real. |
+| Makey Makey | Funcional | Ejemplos interactivos documentados. |
+| Arduino | En desarrollo | Falta consolidar firmware, pinouts y pruebas finales. |
+| p5.js | Funcional | Visuales generativos y ejemplos publicados. |
+| Tone.js | Funcional | Integración sonora en prototipos web. |
 
 !!! tip "Matriz viva"
     Esta tabla se actualiza con los resultados de la sección [11. Pruebas y validación](11-pruebas.md).
