@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#111418"/>
+  <rect x="55" y="55" width="1090" height="610" rx="18" fill="#1d2329" stroke="#697584" stroke-width="3" stroke-dasharray="16 10"/>
+  <text x="600" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ffffff" font-weight="700">ESPACIO PARA CAPTURA REAL</text>
+  <text x="600" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#b8c2ce">Orbbec Gemini 2 funcionando</text>
+  <text x="600" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#8e9aa8">Sugerencia: RGB + depth + silueta / skeleton en la misma evidencia</text>
+  <text x="600" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6f7b89">Reemplazar este SVG por fotografía o captura del montaje real.</text>
+</svg>
