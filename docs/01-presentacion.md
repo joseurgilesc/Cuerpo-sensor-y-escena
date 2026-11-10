@@ -65,11 +65,12 @@ La IA se utiliza como apoyo para **probar, comprender y transformar** ideas; las
 El objetivo técnico es entregar un sistema **funcional, documentado y reproducible** que permita:
 
 1. Capturar el movimiento corporal con la cámara web y ml5.js.
-2. Leer señales de sensores físicos mediante Arduino.
-3. Comunicar esos datos al computador por Serial u OSC.
-4. Transformar los datos en visuales generativos.
-5. Controlar parámetros sonoros con Tone.js.
-6. Integrar todo en prototipos cuerpo–imagen–sonido listos para aula, ensayo y escena.
+2. Ampliar la captura hacia profundidad 3D mediante Orbbec + openFrameworks en una etapa avanzada.
+3. Leer señales de sensores físicos mediante Arduino.
+4. Comunicar esos datos al computador por Serial u OSC.
+5. Transformar los datos en visuales generativos.
+6. Controlar parámetros sonoros con Tone.js.
+7. Integrar todo en prototipos cuerpo–imagen–sonido listos para aula, ensayo y escena.
 
 El sistema debe poder montarse, calibrarse y operarse siguiendo esta documentación, sin depender del conocimiento interno de una sola persona.
 
@@ -93,6 +94,7 @@ El sistema se compone de cuatro bloques que se detallan en la sección [2. Arqui
 | Bloque | Componentes | Función |
 | --- | --- | --- |
 | Captura corporal | Webcam + ml5.js | Detectar el cuerpo con machine learning y convertirlo en datos de articulaciones. |
+| Captura avanzada | Orbbec + openFrameworks | Incorporar profundidad real, coordenadas 3D y nubes de puntos en prototipos escénicos. |
 | Interfaces físicas | Arduino + sensores, Makey Makey | Leer luz, presión, movimiento, distancia o contacto. |
 | Visuales generativos | p5.js | Generar imagen a partir de los datos. |
 | Sonido interactivo | Tone.js (en p5.js) | Generar y controlar sonido a partir de los datos. |
@@ -167,5 +169,5 @@ La implementación técnica avanza en tres momentos:
 | Mes | Alcance |
 | --- | --- |
 | **Octubre** | Arquitectura general, preparación del entorno, integración de la cámara web con ml5.js, inicio de Arduino y sensores, primeras pruebas de conexión. |
-| **Noviembre** | Finalización de Arduino y sensores, protocolos de comunicación, visuales generativos, integración sonora con Tone.js, presets y ejemplos cuerpo–imagen–sonido, pruebas en aula y laboratorio. |
+| **Noviembre** | Finalización de Arduino y sensores, protocolos de comunicación, visuales generativos, integración sonora con Tone.js, incorporación progresiva de Orbbec + openFrameworks, presets y ejemplos cuerpo–imagen–sonido, pruebas en aula y laboratorio. |
 | **Diciembre** | Integración de prototipos, pruebas finales, documentación de operación y mantenimiento, entrega de código y transferencia técnica. |
