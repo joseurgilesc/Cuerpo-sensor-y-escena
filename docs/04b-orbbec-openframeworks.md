@@ -32,6 +32,197 @@ escenas 2D / 3D / volumétricas
 
 ---
 
+## 4B.0. Pruébalo tú mismo: clonar y ejecutar el repositorio
+
+Si quieres reproducir el sistema completo que se documenta en esta página, trabaja directamente con el repositorio de desarrollo:
+
+[github.com/joseurgilesc/Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc)
+
+### 1. Clonar el repositorio
+
+Desde una terminal:
+
+```bash
+cd ~/openFrameworks/apps/myApps
+git clone https://github.com/joseurgilesc/Danza-Interactiva-Orbecc.git
+cd Danza-Interactiva-Orbecc
+```
+
+Si ya lo habías clonado:
+
+```bash
+git pull
+```
+
+### 2. Revisar la estructura
+
+Deberías encontrar, entre otros:
+
+```text
+Danza-Interactiva-Orbecc/
+├── addons.make
+├── bin/
+├── config/
+├── docs/
+├── models/
+├── pose_detector.py
+├── run.sh
+└── src/
+    ├── adapters/
+    ├── engine/
+    ├── input/
+    ├── mapping/
+    ├── midi/
+    ├── scenes/
+    ├── sequencer/
+    └── ui/
+```
+
+### 3. Instalar los addons de openFrameworks
+
+El proyecto declara:
+
+```text
+ofxOsc
+ofxImGui
+ofxMidi
+```
+
+Comprueba que estén disponibles dentro de `openFrameworks/addons/`.
+
+### 4. Crear el entorno Python para MediaPipe
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install mediapipe numpy
+```
+
+El detector usa el modelo:
+
+```text
+models/pose_landmarker_lite.task
+```
+
+### 5. Probar solo el detector
+
+```bash
+python pose_detector.py
+```
+
+Deberías ver algo similar a:
+
+```text
+cargando modelo MediaPipe Pose...
+modelo listo
+escuchando en 127.0.0.1:5005
+```
+
+### 6. Conectar y verificar la Orbbec
+
+Antes de iniciar openFrameworks:
+
+1. conecta la cámara por USB 3.0;
+2. abre Orbbec Viewer;
+3. comprueba RGB;
+4. comprueba depth;
+5. confirma que la imagen de profundidad sea estable.
+
+### 7. Compilar la aplicación openFrameworks
+
+Desde la carpeta del proyecto:
+
+```bash
+make -j4
+```
+
+Si la compilación termina correctamente, puedes lanzar el sistema.
+
+### 8. Arrancar todo con el script incluido
+
+```bash
+bash run.sh start
+```
+
+Comprobar estado:
+
+```bash
+bash run.sh status
+```
+
+Detener:
+
+```bash
+bash run.sh stop
+```
+
+### 9. Qué deberías comprobar al arrancar
+
+En orden:
+
+- la cámara Orbbec aparece;
+- el detector MediaPipe responde;
+- se dibuja el skeleton;
+- los joints siguen el cuerpo;
+- Z cambia al acercarte o alejarte;
+- la silueta responde al threshold;
+- las escenas pueden cambiarse;
+- los mappings corporales afectan parámetros visuales.
+
+!!! tip "Prueba mínima antes de modificar código"
+    Ejecuta primero el repositorio **sin cambiar nada**. Cuando confirmes que el sistema base funciona, modifica una escena o un mapping. Esto hace más fácil distinguir un error de instalación de un error introducido durante la experimentación.
+
+---
+
+## 4B.0A. Cámara utilizada: Orbbec Gemini 2
+
+<figure markdown>
+![Esquema técnico de referencia del Orbbec Gemini 2](assets/orbbec-gemini2-esquema.svg)
+<figcaption>Figura. Esquema técnico propio del Gemini 2, basado en las especificaciones públicas de Orbbec.</figcaption>
+</figure>
+
+El **Gemini 2** utiliza tecnología Active Stereo IR y ofrece RGB, profundidad e IMU en un dispositivo compacto. Para este proyecto son especialmente relevantes:
+
+| Característica | Referencia |
+| --- | --- |
+| Conexión | USB 3 |
+| Depth | hasta 1280 × 800 @ 30 fps |
+| Rango de profundidad | 0.15–10 m |
+| Rango recomendado | aprox. 0.20–5 m |
+| FoV depth | aprox. 90° × 65° |
+| D2C | soportado |
+| SDK | Orbbec SDK v2 |
+| Dimensiones | 90 × 25 × 30 mm |
+
+Fuentes técnicas:
+
+- [Orbbec Gemini 2](https://www.orbbec.com/products/stereo-vision-camera/gemini-2/)
+- [Datasheet Gemini 2](https://www.orbbec.com/wp-content/uploads/2023/04/ORBBEC_Datasheet_Gemini-2.pdf)
+- [Orbbec SDK v2](https://orbbec.github.io/OrbbecSDK_v2/)
+
+---
+
+## 4B.0B. Evidencias visuales del montaje
+
+### Interfaz de openFrameworks en ejecución
+
+<figure markdown>
+![Espacio reservado para captura de openFrameworks](assets/orbbec-openframeworks-placeholder.svg)
+<figcaption>Figura pendiente. Reemplazar por una captura real de la interfaz con SceneEngine, skeleton, paneles ImGui y escena activa.</figcaption>
+</figure>
+
+### Orbbec Gemini 2 funcionando
+
+<figure markdown>
+![Espacio reservado para captura del Orbbec Gemini 2 funcionando](assets/orbbec-camera-placeholder.svg)
+<figcaption>Figura pendiente. Reemplazar por una fotografía o captura del sistema mostrando RGB, depth y/o silueta corporal en funcionamiento.</figcaption>
+</figure>
+
+!!! note "Qué conviene fotografiar"
+    Para que estas imágenes también sirvan como evidencia institucional, procura que una captura muestre **la interfaz completa de openFrameworks** y otra muestre **la cámara físicamente conectada junto con la salida RGB/depth o la silueta**. Así la imagen documenta tanto montaje como funcionamiento.
+
+---
+
 ## 4B.1. Arquitectura real implementada
 
 La arquitectura actual separa captura, detección y visualización:
