@@ -271,3 +271,200 @@ Un **sensor LDR** requiere normalmente divisor de tensión; un **FSR** necesita 
 | Wayland no permite teclado | Enviar Serial a la aplicación o elegir una solución compatible con Wayland |
 
 **Siguiente unidad:** [7. Comunicación entre hardware y software](07-comunicacion.md).
+
+
+---
+
+## 6.10. Cinco sensores sencillos para *Cuerpo, sensor y escena*
+
+Elige primero **una acción expresiva** (tocar, acercar la mano, mover una perilla, iluminar un objeto) y después el sensor. Para comenzar recomendamos los cinco siguientes:
+
+| Dispositivo | Tipo de dato | Conexión de ejemplo | Interacción en p5.js / Tone.js |
+| --- | --- | --- | --- |
+| **Pulsador** | Discreto: pulsado / libre | D2 → pulsador → GND, con \`INPUT_PULLUP\` | Disparar una nota, iniciar/detener una animación |
+| **LDR + resistencia de 10 kΩ** | Continuo: 0–1023 | Divisor de tensión con salida A0 | La sombra transforma el color y el timbre |
+| **TTP223 táctil capacitivo** | Discreto: contacto / libre | VCC→5V, GND→GND, OUT→D3 | Activar una escena tocando un objeto |
+| **Potenciómetro de 10 kΩ** | Continuo: 0–1023 | Extremos 5V/GND, centro A1 | Controlar volumen, filtro o tamaño |
+| **HC-SR04 ultrasónico** | Continuo: distancia en cm | VCC→5V, GND→GND, TRIG→D9, ECHO→D10 | Instrumento gestual sin contacto |
+
+**Fotografías y referencias:** [Pulsadores](https://docs.arduino.cc/built-in-examples/digital/Button/) · [LDR (fotorresistencia)](https://docs.arduino.cc/built-in-examples/analog/AnalogInput/) · [TTP223 (ejemplo de módulo)](https://learn.adafruit.com/adafruit-capacitive-touch-sensor-breakouts/overview) · [Potenciómetro](https://docs.arduino.cc/built-in-examples/analog/ReadAnalogVoltage/) · [HC-SR04 con fotografías](https://itp.nyu.edu/physcomp/labs/lab-ultrasonic-distance-sensor/).
+
+!!! note "¿Qué es un sensor capacitivo?"
+    La superficie conductora funciona como electrodo. Cuando un dedo se acerca o la toca, cambia la capacitancia y el **módulo TTP223** detecta ese cambio. En la configuración habitual, su salida **OUT** pasa a HIGH al tocar y vuelve a LOW al soltar. Algunos módulos tienen opciones de funcionamiento configurables (por ejemplo, modo conmutado), por lo que se debe comprobar el comportamiento real del módulo usado. **No es necesario tocar eléctricamente GND**, a diferencia del contacto básico de Makey Makey. La detección a través de materiales depende de su grosor y del montaje.
+
+### Experimento A · Pulsador: activar y liberar una nota
+
+**Montaje:** un terminal del pulsador a D2 y el otro a GND. Activa la resistencia interna \`INPUT_PULLUP\`.
+
+~~~cpp
+const byte boton = 2;
+bool anterior = HIGH;
+void setup() {
+  pinMode(boton, INPUT_PULLUP);
+  Serial.begin(115200);
+}
+void loop() {
+  bool estado = digitalRead(boton);
+  if (estado != anterior) {
+    delay(25); // antirrebote didáctico
+    estado = digitalRead(boton);
+    if (estado != anterior) {
+      Serial.println(estado == LOW ? "BOTON,1" : "BOTON,0");
+      anterior = estado;
+    }
+  }
+}
+~~~
+
+**Práctica:** pulsar = comenzar sonido; soltar = detenerlo. Observa la diferencia entre evento de activación y estado continuo.
+
+### Experimento B · LDR: controlar visuales mediante sombra
+
+**Montaje del divisor de tensión:**
+
+~~~text
+5V ── LDR ──┬── A0
+            │
+         10 kΩ
+            │
+           GND
+~~~
+
+Con este montaje, el valor normalmente **sube con la luz** y **baja al oscurecer** (puede variar según el componente). Nunca conectes un LDR solo entre 5 V y A0 esperando una lectura estable: necesita una resistencia de referencia.
+
+~~~cpp
+void setup() { Serial.begin(115200); }
+void loop() {
+  int luz = analogRead(A0);
+  Serial.print("LUZ,");
+  Serial.println(luz); // 0..1023
+  delay(40);
+}
+~~~
+
+**Práctica:** proyecta un círculo en p5.js; al tapar la LDR el círculo se contrae y se aplica un filtro más oscuro o más grave. Registra primero los valores de luz y sombra reales.
+
+### Experimento C · Sensor táctil capacitivo TTP223: objeto sensible
+
+**Montaje:** \`VCC → 5V\`, \`GND → GND\`, \`OUT → D3\`, para **módulos TTP223 compatibles con 5 V**. Sigue las etiquetas impresas en tu módulo y verifica su alimentación admitida.
+
+~~~cpp
+const byte tactil = 3;
+bool anterior = LOW;
+void setup() {
+  pinMode(tactil, INPUT);
+  Serial.begin(115200);
+}
+void loop() {
+  bool actual = digitalRead(tactil);
+  if (actual != anterior) {
+    Serial.println(actual ? "TACTO,1" : "TACTO,0");
+    anterior = actual;
+  }
+  delay(15);
+}
+~~~
+
+**Práctica:** coloca el módulo detrás de una lámina fina de cartón o material no conductor y comprueba si todavía detecta el dedo. Úsalo para disparar una imagen o un sonido. Si hay falsas detecciones, revisa el cableado, el material y la alimentación.
+
+### Experimento D · Potenciómetro: controlar un parámetro
+
+**Montaje:** un terminal externo a 5V, el otro a GND, el central (cursor) a A1. No conectes el terminal central directamente a 5V y GND simultáneamente.
+
+~~~cpp
+void setup() { Serial.begin(115200); }
+void loop() {
+  Serial.print("PERILLA,");
+  Serial.println(analogRead(A1));
+  delay(40);
+}
+~~~
+
+**Práctica:** asigna 0–1023 a un rango de frecuencia (por ejemplo 200–1000 Hz) o al tamaño de partículas. El mapeo final se realiza en el programa receptor.
+
+### Experimento E · HC-SR04: acercar la mano para cambiar el sonido
+
+**Montaje:** \`VCC → 5V\`, \`GND → GND\`, \`TRIG → D9\`, \`ECHO → D10\`, con un UNO R3 de lógica 5 V.
+
+~~~cpp
+const byte trigPin = 9;
+const byte echoPin = 10;
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(115200);
+}
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  unsigned long duracion = pulseIn(echoPin, HIGH, 30000UL);
+  if (duracion > 0) {
+    float centimetros = duracion * 0.0343f / 2.0f;
+    if (centimetros >= 2 && centimetros <= 400) {
+      Serial.print("DISTANCIA,");
+      Serial.println(centimetros, 1);
+    }
+  }
+  delay(60);
+}
+~~~
+
+**Práctica:** acerca lentamente una mano: al disminuir la distancia, eleva la frecuencia de un oscilador o aumenta el tamaño de una figura. Si no recibe eco, el programa omite la lectura; no interpretes automáticamente un eco perdido como cero centímetros.
+
+## 6.11. Laboratorio: del sensor a p5.js y Tone.js
+
+Todas las prácticas anteriores transmiten **una línea de texto por lectura**:
+
+~~~text
+BOTON,1
+BOTON,0
+LUZ,683
+TACTO,1
+PERILLA,512
+DISTANCIA,28.4
+~~~
+
+Cada ejemplo es **independiente**: se carga un programa a la vez. Si necesitas simultáneamente varios sensores, combina sus lecturas en un solo sketch, manteniendo los pines asignados y enviando mensajes con nombre.
+
+En la escena web, interpreta cada línea separando por coma: \`tipo,valor\`. Por ejemplo:
+
+~~~javascript
+function procesarDato(linea) {
+  const [tipo, texto] = linea.trim().split(",");
+  const valor = Number(texto);
+  if (!Number.isFinite(valor)) return;
+
+  if (tipo === "LUZ") {
+    const brillo = Math.max(0, Math.min(255, valor * 255 / 1023));
+    // p5.js: usa brillo para color o tamaño
+    console.log("Brillo visual:", brillo);
+  }
+  if (tipo === "BOTON" && valor === 1) {
+    // Aquí puedes activar un evento musical (tras iniciar el audio con un gesto)
+    console.log("Disparar sonido");
+  }
+  if (tipo === "DISTANCIA") {
+    const v = Math.max(10, Math.min(100, valor));
+    // Rango de trabajo expresivo: 10 a 100 cm
+    console.log("Distancia medida:", v);
+  }
+}
+~~~
+
+Para recibir estas líneas en una web necesitas conectar la placa con **Web Serial** (en un navegador compatible, con autorización del usuario y contexto seguro) o usar un puente Serial→aplicación. El código anterior **procesa** mensajes, pero no abre por sí solo el puerto. Para sonidos con Tone.js, primero activa el contexto de audio mediante un gesto del usuario.
+
+### Secuencia sugerida para estudiantes
+
+1. **Primera sesión:** pulsador + tacto TTP223 (eventos discretos).
+2. **Segunda sesión:** LDR + potenciómetro (valores continuos y mapeo).
+3. **Tercera sesión:** HC-SR04 (gesto sin contacto).
+4. **Proyecto corto:** elegir dos sensores e implementar una relación **gesto → dato → transformación visual o sonora**.
+
+**Criterios de entrega:** fotografía del circuito, captura de lecturas Serial, código Arduino, captura o video de la escena y una explicación breve de la correspondencia expresiva.
+
+!!! warning "Alimentación y verificación"
+    Desconecta la alimentación antes de cambiar cables. Comprueba el nombre y tensión admitida de cada módulo: hay versiones de sensores diferentes. Los ejemplos anteriores están pensados para **Arduino UNO R3 de 5 V**; en otras placas podrían requerirse conversores de nivel.
