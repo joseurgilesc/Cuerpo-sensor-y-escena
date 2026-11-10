@@ -1,111 +1,273 @@
 # 6. Arduino e interfaces físicas
 
-## 6.1. Arquitectura de la interfaz
+> **Meta práctica:** crear un instrumento físico que transforme gestos o contactos en letras (**A, S, D, F**) para controlar imagen y sonido, como con Makey Makey.
 
-La interfaz física convierte una acción del intérprete en una señal eléctrica y luego en un valor numérico:
+## 6.1. Conoce el Arduino UNO R3
 
-```
-acción física ──▶ sensor ──▶ Arduino ──▶ Serial ──▶ computador
-```
+Arduino UNO R3 es una placa basada en el microcontrolador ATmega328P. El programa («sketch») se carga por USB y se ejecuta en la placa, incluso sin mantener abierto el entorno de programación.
 
-Cada interfaz se diseña alrededor de una **intención expresiva**: qué acción del cuerpo o del objeto queremos que el sistema perciba.
+![Mapa de conectores de Arduino UNO R3](assets/arduino-uno-mapa.svg)
 
-## 6.2. Alimentación y seguridad eléctrica
+**Observa la placa real y contrasta el esquema:** [Fotografía y características oficiales](https://docs.arduino.cc/hardware/uno-rev3/) · [Mapa oficial completo de pines (PDF)](https://content.arduino.cc/assets/A000066-full-pinout.pdf).
 
-- Alimenta Arduino por **USB** para la mayoría de los prototipos.
-- Usa una **fuente externa** solo si los sensores demandan más corriente.
-- No excedas la corriente que puede entregar cada pin (<!-- TODO: límites según placa -->).
-- Verifica la **polaridad** antes de conectar cualquier componente.
-
-!!! danger "Seguridad"
-    Trabaja con el circuito **desconectado** al montar o modificar conexiones. Usa resistencias de protección donde corresponda y evita cortocircuitos.
-
-## 6.3. Diagramas de conexión y pinout
-
-<!-- TODO: incluir los diagramas de conexión reales de cada interfaz -->
-
-Cada interfaz documenta su **pinout**: qué pin de Arduino se conecta a qué terminal del sensor.
-
-## 6.4. Entradas analógicas y digitales
-
-| Tipo | Señales | Uso |
+| Zona | ¿Qué hace? | Uso creativo |
 | --- | --- | --- |
-| Analógica | Continua (0–1023) | Luz, presión, distancia |
-| Digital | Dos estados (0/1) | Pulsadores, interruptores |
+| **USB tipo B** | Conecta Arduino al PC para alimentación, programación y datos serie | Envío de acciones al computador |
+| **D2–D13 digitales** | Detectan HIGH/LOW o generan salidas | Pulsadores, contacto de materiales conductores |
+| **D0/RX y D1/TX** | Comunicación serie UART | Evítalos en el primer ejercicio con USB |
+| **A0–A5 analógicas** | Miden de 0 a 1023 en el UNO R3 (ADC de 10 bits) | Luz, presión, potenciómetro |
+| **5V y 3.3V** | Alimentación de periféricos compatibles | Sensores |
+| **GND** | Referencia eléctrica común | Retorno de pulsadores |
+| **VIN** | Entrada de alimentación externa (no sensor) | Proyectos autónomos |
+| **RESET** | Reinicia el programa | Diagnóstico |
 
-## 6.5. Sensores de luz
+!!! warning "Seguridad"
+    Haz las conexiones con el USB desconectado. No conectes directamente 5 V a GND; no conectes tensiones superiores a las admitidas por los pines. El UNO R3 trabaja con lógica de **5 V**.
 
-Miden la cantidad de luz que reciben. Se usan para responder a la presencia, a la sombra o a una linterna.
+## 6.2. Instalar Arduino IDE y comprobar la placa
 
-- Tipo común: fotorresistor (LDR) con divisor de tensión.
-- <!-- TODO: modelo exacto y esquema -->
+1. Descarga **[Arduino IDE 2 desde la web oficial](https://www.arduino.cc/en/software/)** e instálalo.
+2. Conecta el UNO R3 usando un **cable USB de datos**.
+3. En el IDE selecciona **Herramientas → Placa → Arduino AVR Boards → Arduino Uno**. Si no aparece, instala *Arduino AVR Boards* desde el gestor de placas.
+4. Ve a **Herramientas → Puerto** y elige el puerto que aparece al conectar la placa.
+5. Abre **Archivo → Ejemplos → 01.Basics → Blink** y pulsa **Subir** (flecha).
+6. Comprueba que parpadea el LED integrado marcado **L**. ¡La instalación funciona!
 
-## 6.6. Sensores de presión
+=== "Windows"
+    El puerto suele llamarse **COM3**, **COM4**, etc. Si falta, comprueba el cable, el controlador USB de la placa y el Administrador de dispositivos.
+=== "macOS"
+    Busca puertos del tipo **/dev/cu.usbmodem*** o **/dev/cu.usbserial***.
+=== "Linux"
+    Busca **/dev/ttyACM0** o **/dev/ttyUSB0**. Puede ser necesario configurar permisos del dispositivo serial y reglas udev según tu distribución.
 
-Miden la fuerza aplicada. Se usan en superficies sensibles al tacto o al peso.
+Consulta también la [guía oficial de instalación](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE).
 
-- Tipo común: sensor de fuerza resistivo (FSR).
-- <!-- TODO: modelo exacto y esquema -->
+## 6.3. Leer entradas digitales: una pulsación
 
-## 6.7. Sensores de movimiento o distancia
+**Materiales:** 1 Arduino UNO R3, 1 pulsador, una protoboard, cables Dupont, cable USB.
 
-Miden la distancia a un objeto o detectan movimiento.
+Conecta **D2 → pulsador → GND**. Activa la resistencia interna mediante \`INPUT_PULLUP\`. Así, **sin pulsar = HIGH** y **pulsado = LOW**. Un pulsador de cuatro terminales tiene pares de patas internamente unidos: verifica cuáles cierran el contacto.
 
-- Tipos: ultrasónico, infrarrojo, tiempo de vuelo.
-- <!-- TODO: modelo exacto y esquema -->
+~~~cpp
+const byte boton = 2;
 
-## 6.8. Pulsadores y controles físicos
+void setup() {
+  pinMode(boton, INPUT_PULLUP);
+  Serial.begin(115200);
+}
 
-Entradas digitales simples para disparar eventos o cambiar estados.
+void loop() {
+  Serial.println(digitalRead(boton) == LOW ? "PULSADO" : "LIBRE");
+  delay(100);
+}
+~~~
 
-- Pulsador con resistencia **pull-up** o **pull-down**.
-- Potenciómetro como control continuo manual.
+Abre **Herramientas → Monitor serie**, selecciona **115200 baudios** y comprueba que cambia el texto al pulsar. Cierra el monitor antes de utilizar cualquier programa externo que lea ese puerto.
 
-## 6.9. Lectura de sensores
+## 6.4. Construir cuatro teclas físicas A, S, D y F
 
-En el firmware se leen las entradas y se preparan para enviarse:
+![Diagrama de cableado para cuatro teclas](assets/arduino-4-teclas.svg)
 
-```cpp
-// TODO: verificar y pegar el código base real usado en las interfaces
-int lectura = analogRead(A0);
-```
+Conecta un extremo de cada pulsador al pin indicado y el otro extremo al **GND común**.
 
-## 6.10. Calibración y normalización de valores
-
-1. Registra el **valor mínimo** y **máximo** real de cada sensor en uso.
-2. Normaliza con la función de mapeo de Arduino (`map`) a un rango cómodo.
-3. Guarda los valores de calibración como constantes al inicio del firmware.
-
-## 6.11. Filtrado, suavizado y eliminación de ruido
-
-- Usa un **promedio móvil** para suavizar lecturas inestables.
-- Define un **umbral** para ignorar variaciones pequeñas.
-- Aplica **histéresis** si un valor oscila alrededor de un límite.
-
-## 6.12. Código base para Arduino
-
-<!-- TODO: pegar el firmware base definitivo, con comentarios por sección -->
-
-El firmware base sigue esta estructura:
-
-1. Inclusión de librerías.
-2. Definición de pines y constantes de calibración.
-3. `setup()`: iniciar Serial y configurar pines.
-4. `loop()`: leer sensores, filtrar, normalizar y enviar por Serial.
-
-## 6.13. Pruebas individuales de los sensores
-
-Antes de integrar, prueba **cada sensor por separado**:
-
-1. Carga un sketch que muestre la lectura por el monitor Serial.
-2. Actúa sobre el sensor y observa que el valor responde como se espera.
-3. Registra el rango y el ruido observado.
-
-## 6.14. Problemas frecuentes y soluciones
-
-| Problema | Causa probable | Solución |
+| Entrada Arduino | Acción | Letra enviada |
 | --- | --- | --- |
-| Lectura constante (sin cambio) | Cable suelto o pin mal configurado | Revisar conexión y pinMode |
-| Valores que saltan | Ruido o contacto deficiente | Filtrar, revisar conexiones |
-| Valor siempre 0 o 1023 | Cortocircuito o sensor dañado | Revisar circuito, probar otro sensor |
-| Arduino no se comunica | Puerto o placa incorrectos | Verificar puerto y placa en el IDE |
+| D2 | Contacto 1 | **A** |
+| D3 | Contacto 2 | **S** |
+| D4 | Contacto 3 | **D** |
+| D5 | Contacto 4 | **F** |
+
+Carga este **sketch completo**, que informa de cada cambio de estado (presionar o soltar) y elimina rebotes mecánicos:
+
+~~~cpp
+const byte pines[4] = {2, 3, 4, 5};
+const char letras[4] = {'a', 's', 'd', 'f'};
+bool estadoEstable[4] = {HIGH, HIGH, HIGH, HIGH};
+bool lecturaAnterior[4] = {HIGH, HIGH, HIGH, HIGH};
+unsigned long ultimoCambio[4] = {0, 0, 0, 0};
+const unsigned long reboteMs = 30;
+
+void setup() {
+  Serial.begin(115200);
+  for (byte i = 0; i < 4; i++) {
+    pinMode(pines[i], INPUT_PULLUP);
+    estadoEstable[i] = digitalRead(pines[i]);
+    lecturaAnterior[i] = estadoEstable[i];
+  }
+}
+
+void loop() {
+  for (byte i = 0; i < 4; i++) {
+    bool lectura = digitalRead(pines[i]);
+    if (lectura != lecturaAnterior[i]) ultimoCambio[i] = millis();
+
+    if (millis() - ultimoCambio[i] > reboteMs &&
+        lectura != estadoEstable[i]) {
+      estadoEstable[i] = lectura;
+      Serial.print(letras[i]);
+      Serial.println(estadoEstable[i] == LOW ? ",DOWN" : ",UP");
+    }
+    lecturaAnterior[i] = lectura;
+  }
+}
+~~~
+
+El Monitor serie mostrará, por ejemplo, \`a,DOWN\` al presionar y \`a,UP\` al soltar.
+
+## 6.5. Hacer que Arduino UNO escriba letras como Makey Makey
+
+!!! important "Arduino UNO R3 ≠ teclado USB nativo"
+    En el **UNO R3**, \`Keyboard.h\` no funciona como en Arduino Leonardo o Micro: el UNO R3 transmite datos por **Serial**. Para convertir esos mensajes en teclas del sistema operativo necesitamos un **puente** en el PC. Para teclado USB directo, utiliza un Leonardo, Micro o una placa compatible HID.
+
+Instala Python 3 desde [python.org](https://www.python.org/downloads/), abre una terminal y ejecuta:
+
+~~~bash
+python -m pip install pyserial pynput
+~~~
+
+Crea un archivo **\`arduino_teclado.py\`** con este contenido:
+
+~~~python
+import sys
+import serial
+from pynput.keyboard import Controller
+
+if len(sys.argv) < 2:
+    raise SystemExit("Uso: python arduino_teclado.py PUERTO")
+
+teclado = Controller()
+permitidas = {"a", "s", "d", "f"}
+pulsadas = set()
+
+with serial.Serial(sys.argv[1], 115200, timeout=1) as arduino:
+    print("Controlador activo. Ctrl+C para salir.")
+    try:
+        while True:
+            mensaje = arduino.readline().decode("ascii", errors="ignore").strip()
+            if "," not in mensaje:
+                continue
+            letra, accion = mensaje.split(",", 1)
+            if letra not in permitidas:
+                continue
+            if accion == "DOWN" and letra not in pulsadas:
+                teclado.press(letra)
+                pulsadas.add(letra)
+            elif accion == "UP" and letra in pulsadas:
+                teclado.release(letra)
+                pulsadas.remove(letra)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        for letra in pulsadas:
+            teclado.release(letra)
+~~~
+
+Con el Monitor serie **cerrado**, ejecútalo sustituyendo el puerto:
+
+~~~bash
+# Windows (ejemplo)
+python arduino_teclado.py COM3
+
+# macOS (ejemplo)
+python3 arduino_teclado.py /dev/cu.usbmodemXXXX
+
+# Linux (ejemplo)
+python3 arduino_teclado.py /dev/ttyACM0
+~~~
+
+Abre un editor de texto, selecciona su ventana y pulsa los contactos: deberían aparecer letras. La ventana activa recibe las teclas. En macOS, es posible que debas autorizar el control de accesibilidad; en Linux con **Wayland**, la simulación de teclado mediante \`pynput\` puede no funcionar. En ese caso usa X11, una solución compatible con tu compositor o envía los datos directamente por Serial a una aplicación propia.
+
+!!! tip "Seguridad de software"
+    Ejecuta el puente solo cuando sea necesario; para detenerlo usa **Ctrl+C**. Puede enviar letras a cualquier ventana que tenga el foco.
+
+## 6.6. Conectar Makey Makey y Arduino: ¿son lo mismo?
+
+**No.** Makey Makey ya se presenta como teclado USB: cierra el circuito entre una entrada (SPACE, LEFT, UP, W, A, S, D, F, G, etc., según modelo) y **EARTH**, y el computador recibe una tecla. Arduino UNO R3, en cambio, necesita el puente anterior para imitar ese comportamiento.
+
+### Opción A — Recomendación para clase: ambos al mismo computador
+
+~~~text
+Objetos conductores → Makey Makey ─USB→ PC → p5.js / Tone.js
+Botones o sensores  → Arduino UNO ─USB/Serial→ PC → aplicación
+~~~
+
+Puedes usar ambos a la vez: Makey Makey para letras y Arduino para valores continuos (luz, presión, distancia). En la aplicación, los eventos de teclado se leen con \`keydown\` y los datos Arduino con Web Serial o un puente. **No hace falta unir físicamente ambas placas.**
+
+### Opción B — Conexión física Makey Makey → Arduino UNO
+
+Para que Arduino detecte **si se ha activado alguna tecla Makey Makey**:
+
+1. Localiza en la **cara posterior** de tu Makey Makey los pines rotulados **KEY_OUT** y **GND**. La disposición cambia entre revisiones: guíate por las etiquetas impresas, no por la posición.
+2. Con ambas placas desconectadas, conecta **KEY_OUT → D2** del UNO y **GND → GND** del UNO.
+3. Alimenta **cada placa por su propio USB** al computador y prueba con el siguiente programa.
+4. En Makey Makey, une una entrada con **EARTH**. Arduino detectará cuándo se activa la salida KEY_OUT.
+
+~~~cpp
+const byte entradaMakey = 2;
+bool anterior = LOW;
+
+void setup() {
+  pinMode(entradaMakey, INPUT);
+  Serial.begin(115200);
+}
+
+void loop() {
+  bool actual = digitalRead(entradaMakey) == HIGH;
+  if (actual != anterior) {
+    Serial.println(actual ? "MAKEY_ACTIVADO" : "MAKEY_LIBRE");
+    anterior = actual;
+  }
+  delay(10);
+}
+~~~
+
+!!! warning "Límite de KEY_OUT"
+    **KEY_OUT no indica qué letra se pulsó**: solo señala que hay alguna entrada de teclado activada. No conectes por error el pin de alimentación **5V** a D2, ni unas entre sí las salidas de ambas placas. Consulta las etiquetas de tu versión de Makey Makey. Esta opción asume niveles de salida compatibles con una entrada de **5 V** del UNO R3 y masa compartida.
+
+Para identificar **cada tecla por separado**, la vía más sencilla es usar Makey Makey por USB (el navegador sabe qué tecla llega) y Arduino por USB/Serial (el programa sabe qué sensor se mueve). Como alternativa avanzada, los contactos individuales pueden cablearse a entradas propias del UNO, siempre comprobando el circuito y las referencias de tierra.
+
+Fuentes: [Makey Makey: parte posterior y KEY_OUT](https://makeymakey.com/blogs/how-to-instructions/back-of-the-board-tutorial) · [Makey Makey FAQ](https://makeymakey.com/pages/faq).
+
+## 6.7. Entradas analógicas: luz y presión
+
+Para obtener una variación continua, conecta un **potenciómetro de 10 kΩ**: extremos a 5V y GND, terminal central a **A0**. Lee el valor:
+
+~~~cpp
+void setup() { Serial.begin(115200); }
+void loop() {
+  int valor = analogRead(A0);
+  Serial.println(valor); // 0 a 1023 en UNO R3
+  delay(30);
+}
+~~~
+
+Un **sensor LDR** requiere normalmente divisor de tensión; un **FSR** necesita una resistencia de referencia. No conectes una fotorresistencia o un FSR sin considerar el circuito de lectura.
+
+## 6.8. Del sensor a una escena
+
+1. **Acción corporal:** tocar una superficie conductora o presionar un botón.
+2. **Lectura:** Makey Makey detecta una tecla o Arduino detecta LOW/HIGH.
+3. **Comunicación:** teclado USB o Serial.
+4. **Interpretación:** el navegador o programa recibe el evento.
+5. **Respuesta:** reproducir un sonido en Tone.js, dibujar una forma en p5.js o cambiar una escena.
+
+### Práctica de aula · instrumento de cuatro zonas
+
+**Desafío:** construye cuatro contactos con papel aluminio, cartón, cinta conductora o pulsadores. Asigna A/S/D/F a cuatro sonidos o comportamientos gráficos diferentes. Debes demostrar una pulsación, una liberación y la respuesta observable.
+
+**Entrega:** fotografía de conexiones, captura del Monitor serie, código comentado y video de 30–60 segundos del instrumento funcionando.
+
+## 6.9. Diagnóstico rápido
+
+| Síntoma | Qué revisar |
+| --- | --- |
+| No aparece el puerto | USB de datos, controlador, permisos |
+| Error al subir Blink | Placa y puerto correctos; cierra programas que ocupen el puerto |
+| El botón no cambia | D2→pulsador→GND, posición de patas, INPUT_PULLUP |
+| Letras no aparecen | Programa Python ejecutándose, puerto correcto, ventana con foco |
+| Mensaje de puerto ocupado | Cerrar Monitor serie antes del puente |
+| Se envían muchas letras | Revisar antirrebote y contactos |
+| Makey Makey no activa Arduino | Identificar KEY_OUT y GND de la revisión correcta; probar cada placa por separado |
+| Wayland no permite teclado | Enviar Serial a la aplicación o elegir una solución compatible con Wayland |
+
+**Siguiente unidad:** [7. Comunicación entre hardware y software](07-comunicacion.md).
