@@ -60,14 +60,17 @@ Verificar que cada enlace de la cadena funciona:
 
 ## 10.9. Matriz de dispositivos y software
 
-<!-- TODO: completar con los resultados de las pruebas -->
-
-| Dispositivo / Software | Versión | Resultado | Notas |
-| --- | --- | --- | --- |
-| Cámara web + ml5.js | <!-- TODO --> | <!-- TODO --> | |
-| Arduino | <!-- TODO --> | <!-- TODO --> | |
-| p5.js | <!-- TODO --> | <!-- TODO --> | |
-| Tone.js | <!-- TODO --> | <!-- TODO --> | |
+| Dispositivo / Software | Resultado | Evidencia / notas |
+| --- | --- | --- |
+| Webcam + ml5.js | Aprobado | BodyPose/HandPose, móvil, visuales y audio probados. |
+| Orbbec RGB-D | Aprobado | Color + depth alineado D2C; profundidad real usada en joints y silueta. |
+| MediaPipe PoseLandmarker | Aprobado | 33 landmarks procesados en servidor TCP local. |
+| openFrameworks | Aprobado | SceneEngine, UI, mappings, OSC, MIDI y escenas 2D/3D operativas. |
+| DepthStore | Aprobado | Grid 96×54, EMA temporal, threshold ajustable y contorno ordenado. |
+| Makey Makey | Aprobado | Múltiples ejemplos interactivos y uso con teclado/Makey Makey. |
+| Arduino | En desarrollo | Pendientes diagramas, firmware definitivo y validación física completa. |
+| p5.js | Aprobado | Ejemplos generativos publicados. |
+| Tone.js | Aprobado | Prototipos sonoros y audiovisuales funcionales. |
 
 ## 10.10. Registro de errores y correcciones
 
@@ -91,3 +94,18 @@ El sistema se considera aceptado cuando:
 - Fotografías del montaje.
 
 <!-- TODO: enlazar las evidencias cuando se publiquen -->
+
+
+## 10.13. Registro resumido de validación Orbbec
+
+El repositorio de desarrollo documenta iteraciones verificables:
+
+- **15/10/2026**: integración Orbbec + D2C + MediaPipe + 18 joints con Z real.
+- **20/10/2026**: silueta real del cuerpo mediante depth y nuevas escenas.
+- **24/10/2026**: threshold de silueta ajustable.
+- **27/10/2026**: feedback visual del threshold.
+- **30/10/2026**: contorno corporal ordenado por ángulo.
+- **04/11/2026**: persistencia del threshold entre sesiones.
+- **09/11/2026**: pulido visual y estabilización.
+
+Repositorio: [Danza-Interactiva-Orbecc](https://github.com/joseurgilesc/Danza-Interactiva-Orbecc)
