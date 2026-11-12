@@ -1221,3 +1221,28 @@ La integración Orbbec del proyecto ya permite:
 - automatizar el arranque con scripts.
 
 Esto permite considerar la integración Orbbec + openFrameworks como una **implementación funcional avanzada**, no solamente como una prueba de concepto.
+
+
+---
+
+# 4B.31. Pruebas reales del sistema — noviembre de 2026
+
+Las siguientes capturas corresponden a pruebas reales del sistema realizadas con **Orbbec Gemini 2 + openFrameworks**. En ellas se observa la interfaz de operación, el tracking corporal y distintas escenas generativas vinculadas al movimiento.
+
+<figure markdown>
+![Galería de pruebas reales con Orbbec Gemini 2, skeleton y escenas generativas](assets/orbbec-pruebas-noviembre-2026.jpg)
+<figcaption>Pruebas reales del sistema: tracking corporal con skeleton, escena <code>pendulum</code>, <code>depthSliceScan</code>, <code>volumetricLattice</code>, <code>organicNet</code> y otras respuestas generativas. Las capturas muestran la interfaz con paneles de dispositivo, escenas y parámetros durante la operación.</figcaption>
+</figure>
+
+Estas pruebas permiten verificar varios componentes de la integración en una misma sesión:
+
+- detección corporal en tiempo real;
+- skeleton superpuesto sobre la imagen RGB;
+- respuesta de escenas a joints y movimiento;
+- variación de parámetros desde la interfaz;
+- funcionamiento continuo de SceneEngine;
+- cambio entre escenas sin detener el tracking;
+- generación de trazos, mallas, partículas y estructuras visuales vinculadas al cuerpo.
+
+!!! note "Lectura pedagógica"
+    Estas capturas corresponden a una **fase avanzada y demostrativa de laboratorio**. Por el costo y disponibilidad de una cámara de profundidad, así como por la mayor complejidad de openFrameworks, esta ruta se plantea como una extensión respecto a la secuencia inicial basada en webcam, ml5.js, p5.js y Tone.js.
