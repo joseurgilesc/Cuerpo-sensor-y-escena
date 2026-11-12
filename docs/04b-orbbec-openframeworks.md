@@ -214,8 +214,8 @@ Fuentes técnicas:
 ### Orbbec Gemini 2 funcionando
 
 <figure markdown>
-![Espacio reservado para captura del Orbbec Gemini 2 funcionando](assets/orbbec-camera-placeholder.svg)
-<figcaption>Figura pendiente. Reemplazar por una fotografía o captura del sistema mostrando RGB, depth y/o silueta corporal en funcionamiento.</figcaption>
+![Orbbec Gemini 2 funcionando con RGB, skeleton y escena interactiva](assets/orbbec-camera-real.jpg)
+<figcaption>Figura. Captura real del sistema con Orbbec Gemini 2: imagen RGB en vivo, skeleton corporal superpuesto, panel de dispositivo y tracking, escena <code>pendulum</code> activa, parámetros globales y trazos generativos vinculados al movimiento.</figcaption>
 </figure>
 
 !!! note "Qué conviene fotografiar"
